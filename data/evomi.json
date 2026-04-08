@@ -1,0 +1,69 @@
+{
+  "brand": "Evomi",
+  "kategori_produk": [
+    {
+      "id": "EVO-001",
+      "nama": "Peaceful Calm",
+      "ukuran": "50ml",
+      "konsentrasi": "Eau de Parfum",
+      "gender": "Unisex",
+      "karakter": ["Fresh", "Citrus", "Elegant"],
+      "image": "Artboard 1",
+      "notes": {
+        "top_notes": ["Bergamot", "Mandarin Orange"],
+        "middle_notes": ["Green Tea", "Black Currant"],
+        "base_notes": ["Musk", "Sandalwood"]
+      },
+      "harga": 25000,
+      "stok": 45
+    },
+    {
+      "id": "EVO-002",
+      "nama": "Sweet Shy",
+      "ukuran": "50ml",
+      "konsentrasi": "Eau de Parfum",
+      "gender": "Unisex",
+      "karakter": ["Floral", "Sweet", "Mysterious"],
+      "image": "Artboard 2",
+      "notes": {
+        "top_notes": ["Pear", "Pink Pepper"],
+        "middle_notes": ["Coffee", "Jasmine", "Almond"],
+        "base_notes": ["Vanilla", "Patchouli", "Cedar"]
+      },
+      "harga": 25000,
+      "stok": 20
+    },
+    {
+      "id": "EVO-003",
+      "nama": "Rabel Brave",
+      "ukuran": "50ml",
+      "konsentrasi": "Eau de Parfum",
+      "gender": "Unisex",
+      "karakter": ["Woody", "Smoky", "Bold"],
+      "image": "Artboard 3",
+      "notes": {
+        "top_notes": ["Saffron", "Rose"],
+        "middle_notes": ["Agarwood (Oud)", "Praline"],
+        "base_notes": ["Vanilla", "Guaiac Wood"]
+      },
+      "harga": 25000,
+      "stok": 12
+    },
+    {
+      "id": "EVO-004",
+      "nama": "Purpose Prestige",
+      "ukuran": "50ml",
+      "konsentrasi": "Eau de Parfum",
+      "gender": "Unisex",
+      "karakter": ["Woody", "Smoky", "Bold"],
+      "image": "Artboard 4",
+      "notes": {
+        "top_notes": ["Saffron", "Rose"],
+        "middle_notes": ["Agarwood (Oud)", "Praline"],
+        "base_notes": ["Vanilla", "Guaiac Wood"]
+      },
+      "harga": 25000,
+      "stok": 12
+    }
+  ]
+}

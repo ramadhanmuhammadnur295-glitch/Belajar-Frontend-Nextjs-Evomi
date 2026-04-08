@@ -1,267 +1,215 @@
 import React from "react";
 import Head from "next/head";
 import Image from 'next/image';
-
-// --------------------------------------------------
-// konfigurasi local font pada next js, ask gemini ai
-// --------------------------------------------------
+import Link from 'next/link';
+import evomiData from '../data/evomi.json';
+import ImageCarousel from '@/components/ImageCarousel';
 import localFont from 'next/font/local';
 
-// Inisialisasi Font Judul / Font Pertama
+// Inisialisasi Font
 const fontJudul = localFont({
-  src: "./fonts/8 Heavy.ttf", // Ganti dengan nama file kamu
+  src: "./fonts/8 Heavy.ttf",
   variable: "--font-brand",
   display: 'swap',
 });
 
-// Inisialisasi Font Caption / Font Kedua
 const fontCaption = localFont({
-  src: "./fonts/Nohemi-Regular.otf", // Ganti dengan nama file kamu
+  src: "./fonts/Nohemi-Regular.otf",
   variable: "--font-body",
   display: 'swap',
 });
 
 export default function EvomiLandingPage() {
-  return (
-    <div>
+  const topFourProducts = evomiData.kategori_produk.slice(0, 4);
 
-      {/* Head */}
+  return (
+    <div className={`${fontCaption.variable} ${fontJudul.variable} selection:bg-amber-100`}>
       <Head>
-        <title></title>
-        <meta property="og:title" content="title content" key="title" />
+        <title>Evomi Fragrance | Redefining Presence</title>
+        <meta name="description" content="Artisan perfume house based in Jakarta" />
       </Head>
 
-      {/* Body */}
-      <div className="min-h-screen bg-stone-50 text-stone-900 font-sans">
+      <div className="min-h-screen bg-[#FBFBF9] text-stone-900 font-sans antialiased">
 
-        {/* NAVBAR */}
-        <nav className="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-stone-200">
-          <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-            <div className="brand-logo">
+        {/* NAVBAR - Dibuat lebih tipis & minimalis */}
+        <nav className="fixed w-full z-50 bg-white/70 backdrop-blur-xl border-b border-stone-100">
+          <div className="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
+            <Link href="/" className="hover:opacity-70 transition-opacity">
               <Image
                 src="/img/Logo Evomi.png"
-                alt="Evomi Hero Background"
-                className="object-cover brightness-50"
-                width={120} height={120}
-                priority
+                alt="Evomi Logo"
+                width={100}
+                height={40}
+                className="brightness-0"
               />
-            </div>
-            <div className="hidden md:flex space-x-8 text-sm uppercase tracking-widest">
-              <a href="#about" className={`${fontJudul.className} text-gray-500 hover:text-stone-700 transition text-[18px] leading-[24px]`}>
-                About
-              </a>
-              <a href="#product" className={`${fontJudul.className} text-gray-500 hover:text-stone-700 transition text-[18px] leading-[24px]`}>
-                Product
-              </a>
-              <a href="#why" className={`${fontJudul.className} text-gray-500 hover:text-stone-700 transition text-[18px] leading-[24px]`}>
-                Why Choose Us
-              </a>
+            </Link>
+
+            <div className={`hidden md:flex items-center space-x-12 ${fontJudul.className} text-[14px] tracking-[0.2em] uppercase`}>
+              <a href="#about" className="hover:text-amber-800 transition-colors">About</a>
+              <a href="#product" className="hover:text-amber-800 transition-colors">Collection</a>
+              <a href="#why" className="hover:text-amber-800 transition-colors">Why</a>
+              <Link href="/produk" className="bg-stone-900 text-white px-6 py-2 hover:bg-amber-900 transition-all rounded-full">
+                Shop
+              </Link>
             </div>
           </div>
         </nav>
 
-        {/* HERO SECTION */}
-        <section className="relative h-screen flex items-center justify-center text-center px-4 overflow-hidden">
-
-          {/* Background Overlay */}
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1541605028087-325617a49994?q=80&w=2000')] bg-cover bg-center">
-            <div className="absolute inset-0 bg-black/70"></div>
+        {/* HERO SECTION - Teks dibuat lebih proporsional */}
+        <section className="relative h-screen flex items-center justify-center text-center px-6 overflow-hidden">
+          <div className="absolute inset-0">
+            <Image
+              src="/img/poster/Artboard 2.jpeg"
+              alt="Background"
+              fill
+              className="object-contain scale-100"
+              priority
+            />
+            <div className="absolute inset-0 bg-stone-900/70 backdrop-brightness-90"></div>
           </div>
 
-          <div className="relative z-10 text-white max-w-4xl">
-
-            {/* text caption */}
-            <span className={`${fontCaption.className} uppercase tracking-[0.3em] text-sm mb-4 block`}>
-              Fragrance House
+          <div className="relative z-10 text-white space-y-8">
+            <span className={`${fontCaption.className} uppercase tracking-[0.5em] text-xs md:text-sm animate-fade-in`}>
+              The Artisan Fragrance House
             </span>
-
-            {/* text judul */}
-            <h1 className={`${fontJudul.className} text-5xl md:text-7xl font-serif mb-6`}>EVOMI</h1>
-
-            <h2 className={`${fontCaption.className} text-xl md:text-2xl font-light mb-4 uppercase tracking-widest`}>
-              Aroma yang Mendefinisikan Identitasmu
-            </h2>
-
-            {/* text caption */}
-            <p className={`${fontCaption.className} tracking-widest text-lg opacity-90 mb-10 max-w-2xl mx-auto`}>
-              Temukan esensi dirimu dalam botol. Koleksi parfum premium yang
-              diracik khusus untuk momen-momen berharga.
+            <h1 className={`${fontJudul.className} text-7xl md:text-9xl tracking-tighter`}>
+              EVOMI
+            </h1>
+            <p className={`${fontCaption.className} max-w-xl mx-auto text-lg md:text-xl font-light opacity-90 leading-relaxed tracking-wide`}>
+              "Aroma yang mendefinisikan identitas, <br />esensi kemewahan dalam setiap tetes."
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <button className="bg-amber-700 hover:bg-amber-800 text-white px-8 py-3 transition uppercase text-xs tracking-widest">
-                Shop Now
-              </button>
-              <button className="bg-white text-stone-900 hover:bg-stone-100 px-8 py-3 transition uppercase text-xs tracking-widest">
-                Explore Collection
-              </button>
-              <button className="border border-white text-white hover:bg-white/10 px-8 py-3 transition uppercase text-xs tracking-widest">
-                Discover Your Scent
-              </button>
+            <div className="pt-8">
+              <Link href="/produk" className="group relative inline-flex items-center justify-center px-10 py-4 overflow-hidden border border-white transition-all hover:bg-white">
+                <span className="relative z-10 text-white group-hover:text-stone-900 uppercase tracking-widest text-xs font-bold transition-colors">
+                  Explore Collection
+                </span>
+              </Link>
+            </div>
+          </div>
+
+          {/* Scroll Indicator */}
+          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-50">
+            <div className="w-[1px] h-12 bg-white"></div>
+          </div>
+        </section>
+
+        {/* ABOUT SECTION - Dibuat lebih "Editorial" */}
+        <section id="about" className="py-32 px-8 max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-12 gap-16 items-center">
+            <div className="md:col-span-4">
+              <h2 className={`${fontJudul.className} text-4xl text-stone-400 leading-tight uppercase`}>
+                Crafting <br /> Memories
+              </h2>
+            </div>
+            <div className="md:col-span-8 grid md:grid-cols-2 gap-12">
+              <div className="space-y-4">
+                <h3 className="font-bold text-amber-900 uppercase tracking-widest text-xs">Pionir Wewangian</h3>
+                <p className="text-stone-600 leading-relaxed font-light">
+                  Evomi memadukan botani langka dengan teknik ekstraksi modern untuk menciptakan karakter aroma yang tidak ditemukan di tempat lain.
+                </p>
+              </div>
+              <div className="space-y-4">
+                <h3 className="font-bold text-amber-900 uppercase tracking-widest text-xs">Eksklusivitas</h3>
+                <p className="text-stone-600 leading-relaxed font-light">
+                  Setiap batch diproduksi secara terbatas untuk menjamin kualitas material organik tetap terjaga hingga ke tangan Anda.
+                </p>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* ABOUT SECTION */}
-        <section id="about" className="py-24 px-6 max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-12 border-b border-stone-200 pb-20">
-            <div>
-
-              {/* text judul */}
-              <h3 className={`${fontJudul.className} text-gray-500 text-2xl font-serif mb-4`}>Siapa Evomi?</h3>
-
-              {/* text caption */}
-              <p className={`${fontCaption.className} text-stone-600 leading-relaxed text-sm`}>
-                Evomi adalah pionir dalam industri wewangian artisan, berfokus
-                pada kualitas bahan alami dan kemewahan modern.
-              </p>
-            </div>
-            <div>
-
-              {/* text judul */}
-              <h3 className={`${fontJudul.className} text-gray-500 text-2xl font-serif mb-4`}>Filosofi Brand</h3>
-
-              {/* text caption */}
-              <p className={`${fontCaption.className} text-stone-600 leading-relaxed text-sm`}>
-                Kami percaya aroma adalah memori. Kami menciptakan parfum
-                sebagai jembatan antara emosi dan momen yang tak terlupakan.
-              </p>
-            </div>
-            <div>
-
-              {/* text judul */}
-              <h3 className={`${fontJudul.className} text-gray-500 text-2xl font-serif mb-4`}>Apa Yang Berbeda?</h3>
-
-              {/* text caption */}
-              <p className={`${fontCaption.className} text-stone-600 leading-relaxed text-sm`}>
-                Setiap batch kami dibuat secara terbatas (small-batch) untuk
-                menjaga eksklusivitas dan kemurnian setiap tetesnya.
-              </p>
-            </div>
+        {/* CAMPAIGN - Full Width biar dramatis */}
+        <section className="bg-stone-50 py-20">
+          <div className="max-w-screen-2xl mx-auto px-4">
+            <ImageCarousel />
           </div>
         </section>
 
-        {/* PRODUCT SECTION */}
-        <section id="product" className="py-24 bg-stone-100 px-6">
+        {/* PRODUCT SECTION - Card diredesain agar lebih bersih */}
+        <section id="product" className="py-32 px-8 bg-white">
           <div className="max-w-7xl mx-auto">
+            <div className="flex justify-between items-end mb-20">
+              <div>
+                <h2 className={`${fontJudul.className} text-5xl uppercase tracking-tighter text-stone-800`}>The Edit</h2>
+                <p className="text-stone-400 mt-2 tracking-[0.2em] uppercase text-xs">Featured Collection</p>
+              </div>
+              <Link href="/produk" className="text-stone-400 hover:text-stone-900 transition-colors uppercase text-xs tracking-widest border-b border-stone-200 pb-1">
+                View All
+              </Link>
+            </div>
 
-            {/* text judul */}
-            <h2 className={`${fontJudul.className} text-gray-500 text-4xl font-serif text-center mb-16 uppercase tracking-widest`}>
-              Our Collections
-            </h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              {
-                // Json / String
-                [
-                  {
-                    name: "Velvet Night",
-                    scent: "Woody Oriental",
-                    price: "Rp 25.000",
-                    notes: "Rose, Oud, Amber",
-                    story: "Misteri malam yang elegan dalam setiap semprotan.",
-                  },
-                  {
-                    name: "Oceanic Mist",
-                    scent: "Fresh Aquatic",
-                    price: "Rp 35.000",
-                    notes: "Sea Salt, Sage, Bergamot",
-                    story: "Kesegaran pagi di pesisir pantai yang menenangkan.",
-                  },
-                  {
-                    name: "Golden Hour",
-                    scent: "Floral Gourmand",
-                    price: "Rp 23.000",
-                    notes: "Vanilla, Jasmine, Sandalwood",
-                    story: "Kehangatan matahari terbenam yang manis dan mewah.",
-                  },
-                ].map((perfume, index) => (
-                  <div
-                    key={index}
-                    className="group bg-white p-6 shadow-sm hover:shadow-xl transition-shadow duration-500"
-                  >
-                    <div className="aspect-[3/4] bg-stone-200 mb-6 overflow-hidden relative">
-                      <div className="absolute inset-0 flex items-center justify-center text-stone-400 italic">
-                        Image Placeholder
-                      </div>
-                    </div>
-                    <span className="text-amber-700 text-xs font-bold uppercase tracking-tighter">
-                      {perfume.scent}
-                    </span>
-                    <h3 className={`${fontJudul.className} text-gray-500 text-xl font-serif mt-2`}>{perfume.name}</h3>
-                    <p className={`${fontCaption.className} text-xs text-stone-500 mb-4 italic`}>
-                      Notes: {perfume.notes}
-                    </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+              {topFourProducts.map((parfum) => (
+                <div key={parfum.id} className="group cursor-pointer">
+                  {/* Image Wrapper */}
+                  <div className="relative aspect-[3/4] overflow-hidden bg-stone-100 mb-6">
+                    <Image
+                      src={`/img/produk/${parfum.image}.jpeg`}
+                      alt={parfum.nama}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors"></div>
 
-                    {/* text caption */}
-                    <p className={`${fontCaption.className} text-sm text-stone-600 mb-6`}>{perfume.story}</p>
-                    <div className="flex justify-between items-center border-t pt-4">
-                      <span className="font-bold">{perfume.price}</span>
-                      <button className="text-xs uppercase tracking-widest border-b border-stone-900 pb-1 hover:text-amber-700 hover:border-amber-700 transition">
-                        View Details
-                      </button>
+                    {/* Hover Button Quick View */}
+                    <div className="absolute bottom-4 left-4 right-4 translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                      <Link href={`/produk/${parfum.id}`} className="block w-full bg-white/90 backdrop-blur text-center py-3 text-[10px] uppercase font-bold tracking-widest text-stone-900">
+                        Lihat Detail
+                      </Link>
                     </div>
                   </div>
-                ))}
+
+                  {/* Info */}
+                  <div className="space-y-2 text-center">
+                    <span className="text-[10px] text-stone-400 uppercase tracking-widest">{parfum.gender}</span>
+                    <h3 className={`${fontJudul.className} text-xl text-stone-800`}>{parfum.nama}</h3>
+                    <p className="text-stone-500 text-sm font-light italic">
+                      {parfum.karakter.slice(0, 2).join(" • ")}
+                    </p>
+                    <p className="text-stone-900 font-medium pt-2">
+                      Rp {parfum.harga.toLocaleString('id-ID')}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* WHY CHOOSE SECTION */}
-        <section id="why" className="py-24 px-6 max-w-5xl mx-auto text-center">
-
-          {/* text judul */}
-          <h2 className={`${fontJudul.className} text-gray-500 text-4xl font-serif mb-16 uppercase tracking-widest`}>
-            Why Evomi
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        {/* WHY CHOOSE US - Minimalist Icons */}
+        <section id="why" className="py-32 bg-stone-50 px-8 text-center">
+          <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12">
             {[
-              { title: "Long Lasting", desc: "Aroma hingga 12 jam" },
-              { title: "Identity Concept", desc: "Karakter wangi unik" },
-              { title: "Stylish Design", desc: "Botol premium & estetis" },
-              { title: "Versatile", desc: "Cocok untuk segala momen" },
+              { title: "12H+", desc: "Projection" },
+              { title: "Artisan", desc: "Batch" },
+              { title: "Recycled", desc: "Glass" },
+              { title: "Organic", desc: "Essence" },
             ].map((item, i) => (
-              <div key={i} className="p-4">
-                <h4 className="font-bold uppercase text-xs mb-2 tracking-widest text-amber-800">
-                  {item.title}
-                </h4>
-                <p className="text-sm text-stone-500">{item.desc}</p>
+              <div key={i} className="group">
+                <div className={`${fontJudul.className} text-3xl mb-2 text-stone-300 group-hover:text-amber-800 transition-colors`}>{item.title}</div>
+                <p className="text-[10px] uppercase tracking-[0.3em] text-stone-500">{item.desc}</p>
               </div>
             ))}
           </div>
         </section>
 
-        {/* TESTIMONIAL SECTION */}
-        <section className="py-24 bg-stone-900 text-white px-6">
-          <div className="max-w-7xl mx-auto">
-
-            {/* text judul */}
-            <h2 className={`${fontJudul.className} text-3xl font-serif text-center mb-16 italic`}>
-              "Aroma adalah bentuk paling kuat dari kenangan."
-            </h2>
-            <div className="grid md:grid-cols-3 gap-12 text-center">
-              {[
-                {
-                  name: "Clara S.",
-                  quote:
-                    "Velvet Night adalah aroma paling elegan yang pernah saya miliki.",
-                },
-                {
-                  name: "Dimas R.",
-                  quote:
-                    "Kesegaran Oceanic Mist tidak tertandingi. Tahan lama seharian.",
-                },
-                {
-                  name: "Sarah W.",
-                  quote:
-                    "Packaging Evomi sangat mewah, benar-benar brand berkelas.",
-                },
+        {/* TESTIMONIAL - Dark & Bold */}
+        <section className="py-32 bg-stone-900 text-white px-8">
+          <div className="max-w-5xl mx-auto text-center space-y-16">
+            <div className="space-y-4">
+              <div className="w-12 h-[1px] bg-amber-500 mx-auto"></div>
+              <h2 className={`${fontJudul.className} text-3xl md:text-5xl italic font-serif leading-tight text-stone-200`}>
+                "The scent of a woman, <br /> The presence of a soul."
+              </h2>
+            </div>
+            <div className="grid md:grid-cols-3 gap-16">
+              {[{ name: "Clara S.", text: "Velvet Night adalah aroma paling elegan yang pernah saya miliki." },
+              { name: "Dimas R.", text: "Kesegaran Oceanic Mist tidak tertandingi. Tahan lama seharian." },
+              { name: "Sarah W.", text: "Packaging Evomi sangat mewah, benar-benar brand berkelas." }
               ].map((t, i) => (
-                <div key={i} className="space-y-4">
-
-                  {/* text caption */}
-                  <p className={`${fontCaption.className} italic text-stone-400`}>"{t.quote}"</p>
-                  <p className="uppercase tracking-[0.2em] text-xs font-bold">
-                    — {t.name}
-                  </p>
+                <div key={i} className="space-y-6 group">
+                  <p className="text-stone-400 font-light leading-relaxed italic opacity-80 group-hover:opacity-100 transition-opacity">"{t.text}"</p>
+                  <div className="text-[10px] uppercase tracking-[0.4em] font-bold text-amber-500">— {t.name}</div>
                 </div>
               ))}
             </div>
@@ -269,55 +217,39 @@ export default function EvomiLandingPage() {
         </section>
 
         {/* FOOTER */}
-        <footer
-          id="footer"
-          className="bg-white py-16 px-6 border-t border-stone-200"
-        >
-          <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-12 text-sm">
-            <div>
-
-              {/* text judul */}
-              <h2 className={`${fontJudul.className} text-gray-500 text-2xl font-serif font-bold mb-6 tracking-widest`}>
-                EVOMI
-              </h2>
-              <p className="text-stone-500 italic">
-                Redefining Presence through Scent.
+        <footer className="bg-white pt-24 pb-12 px-8 border-t border-stone-100">
+          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
+            <div className="col-span-1 md:col-span-2">
+              <h2 className={`${fontJudul.className} text-3xl mb-6 tracking-widest`}>EVOMI</h2>
+              <p className="max-w-xs text-stone-400 font-light leading-relaxed">
+                Menghadirkan pengalaman sensorik melalui kurasi aroma terbaik. Bergabunglah dengan perjalanan kami.
               </p>
             </div>
             <div>
-
-              {/* text judul */}
-              <h4 className={`${fontJudul.className} text-gray-500 font-bold mb-6 uppercase tracking-widest`}>
-                Contact Info
-              </h4>
-              <p className="text-stone-600">Jakarta, Indonesia</p>
-              <p className="text-stone-600">hello@evomi.com</p>
-              <p className="text-stone-600">+62 812 3456 789</p>
+              <h4 className="font-bold text-xs uppercase tracking-[0.2em] mb-6">Contact</h4>
+              <ul className="text-stone-500 space-y-3 text-sm font-light">
+                <li>hello@evomi.com</li>
+                <li>Jakarta, Indonesia</li>
+                <li className="pt-4 flex space-x-4">
+                  <a href="#" className="hover:text-stone-900">IG</a>
+                  <a href="#" className="hover:text-stone-900">TW</a>
+                  <a href="#" className="hover:text-stone-900">TK</a>
+                </li>
+              </ul>
             </div>
             <div>
-
-              {/* text judul */}
-              <h4 className={`${fontJudul.className} text-gray-500 font-bold mb-6 uppercase tracking-widest`}>
-                Social Media
-              </h4>
-              <div className="flex space-x-4 text-stone-600">
-                <a href="#" className="hover:text-amber-700">
-                  Instagram
-                </a>
-                <a href="#" className="hover:text-amber-700">
-                  TikTok
-                </a>
-                <a href="#" className="hover:text-amber-700">
-                  Twitter
-                </a>
+              <h4 className="font-bold text-xs uppercase tracking-[0.2em] mb-6">Newsletter</h4>
+              <div className="flex border-b border-stone-200 pb-2">
+                <input type="email" placeholder="Email address" className="bg-transparent w-full text-sm outline-none" />
+                <button className="text-[10px] uppercase tracking-widest font-bold">Join</button>
               </div>
             </div>
           </div>
-          <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-stone-100 text-center text-stone-400 text-xs">
-            &copy; {new Date().getFullYear()} EVOMI FRAGRANCE. All Rights
-            Reserved.
+          <div className="text-center text-[10px] text-stone-300 uppercase tracking-[0.5em] pt-12 border-t border-stone-50">
+            &copy; {new Date().getFullYear()} EVOMI FRAGRANCE HOUSE
           </div>
         </footer>
+
       </div>
     </div>
   );
