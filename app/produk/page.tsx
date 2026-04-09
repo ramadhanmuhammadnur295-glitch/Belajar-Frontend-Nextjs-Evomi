@@ -51,7 +51,7 @@ const ProductCard = ({ parfum }) => {
 
         {/* Character Badges */}
         <div className="flex flex-wrap gap-1.5 mb-5">
-          {parfum.profil_aroma.karakter.map((char: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined, index: React.Key | null | undefined) => (
+          {parfum.profil_aroma.karakter.map((char: string, index: number) => (
             <span key={index} className="text-[10px] bg-stone-50 text-stone-500 border border-stone-200 px-2 py-0.5 rounded">
               {char}
             </span>
