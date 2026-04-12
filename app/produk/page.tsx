@@ -1,85 +1,71 @@
-import React from "react";
-import Head from "next/head";
-import Image from 'next/image';
-import Link from 'next/link';
-import localFont from 'next/font/local';
-import evomiData from '../../data/evomi.json';
+"use client";
+
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import localFont from "next/font/local";
 
 // --- Font Configuration ---
 const fontJudul = localFont({
   src: "./../fonts/8 Heavy.ttf",
   variable: "--font-brand",
-  display: 'swap',
+  display: "swap",
 });
 
 const fontCaption = localFont({
   src: "./../fonts/Nohemi-Regular.otf",
   variable: "--font-body",
-  display: 'swap',
+  display: "swap",
 });
-type Parfum = typeof evomiData.kategori_produk[number];
 
-const ProductCard = ({ parfum }: { parfum: Parfum }) => {
+// Komponen Card yang disesuaikan dengan field Database/API
+const ProductCard = ({ parfum }: { parfum: any }) => {
   return (
-    <div className="group flex flex-col bg-white border border-stone-100 rounded-2xl overflow-hidden hover:shadow-xl hover:shadow-stone-200/50 transition-all duration-500">
+    <div className="group flex flex-col bg-white border border-stone-100 rounded-2xl hover:shadow-2xl hover:shadow-stone-200/50 transition-all duration-700">
       {/* Image Area */}
-      <div className="relative w-full h-72 overflow-hidden bg-stone-100">
+      <div className="relative w-full h-[400px] bg-stone-100">
         <Image
-          // Menggunakan artboard_ref sebagai fallback nama file lokal
-          src={`/img/produk/${parfum.media.artboard_ref}.jpeg`}
+          src={parfum.image_url || "/img/placeholder.jpg"}
           alt={parfum.nama}
           fill
-          className="object-cover group-hover:scale-110 transition-transform duration-700"
+          unoptimized
+          className="object-cover group-hover:scale-110 transition-transform duration-1000"
         />
-        <div className="absolute top-4 right-4">
-          <span className="bg-white/90 backdrop-blur-sm text-stone-600 text-[10px] uppercase tracking-widest px-3 py-1 rounded-full font-medium shadow-sm">
-            {parfum.spesifikasi.gender}
+        <div className="absolute top-6 left-6">
+          <span className="bg-white/90 backdrop-blur-md text-stone-800 text-[10px] uppercase tracking-[0.2em] px-4 py-1.5 rounded-full font-bold shadow-sm">
+            EDP • {parfum.ukuran || "50ML"}
           </span>
         </div>
       </div>
 
       {/* Content Area */}
-      <div className="p-6 flex flex-col flex-grow">
+      <div className="p-8 flex flex-col flex-grow text-center">
         <div className="mb-4">
-          <h3 className="text-xl font-bold text-stone-900 mb-1 group-hover:text-amber-800 transition-colors">
+          <h3
+            className={`${fontJudul.className} text-2xl text-stone-900 mb-2 group-hover:text-amber-800 transition-colors`}
+          >
             {parfum.nama}
           </h3>
-          <p className="text-xs text-stone-400 uppercase tracking-tighter">
-            {parfum.spesifikasi.konsentrasi} • {parfum.spesifikasi.ukuran}
+          <div className="h-0.5 w-10 bg-amber-200 mx-auto group-hover:w-20 transition-all duration-500"></div>
+        </div>
+
+        <p className="text-[12px] text-stone-500 leading-relaxed mb-8 line-clamp-2 italic font-light">
+          &quot;
+          {parfum.deskripsi ||
+            "A signature masterpiece crafted for your identity."}
+          &quot;
+        </p>
+
+        <div className="mt-auto flex flex-col items-center gap-4">
+          <p className="text-xl font-medium text-stone-900">
+            IDR {Number(parfum.harga_retail).toLocaleString("id-ID")}
           </p>
-        </div>
 
-        {/* Character Badges */}
-        <div className="flex flex-wrap gap-1.5 mb-5">
-          {parfum.profil_aroma.karakter.map((char: string, index: number) => (
-            <span key={index} className="text-[10px] bg-stone-50 text-stone-500 border border-stone-200 px-2 py-0.5 rounded">
-              {char}
-            </span>
-          ))}
-        </div>
-
-        {/* Fragrance Notes Snippet */}
-        <div className="mb-6 space-y-1 border-l-2 border-amber-100 pl-3">
-          <p className="text-[11px] text-stone-500 leading-relaxed">
-            <span className="font-semibold text-stone-700">Top:</span> {parfum.profil_aroma.piramida_notes.top_notes.slice(0, 2).join(', ')}...
-          </p>
-        </div>
-
-        {/* Price & Action */}
-        <div className="mt-auto pt-4 border-t border-stone-50 flex items-center justify-between">
-          <div>
-            <p className="text-[10px] text-stone-400 uppercase">Investment</p>
-            <p className="text-lg font-bold text-stone-900">
-              {parfum.transaksi.mata_uang} {parfum.transaksi.harga_retail.toLocaleString('id-ID')}
-            </p>
-          </div>
           <Link
             href={`/produk/${parfum.id}`}
-            className="h-10 w-10 flex items-center justify-center rounded-full bg-stone-900 text-white hover:bg-amber-800 transition-colors shadow-lg"
+            className="w-full py-4 bg-stone-900 text-white text-[10px] uppercase tracking-[0.3em] font-bold hover:bg-amber-900 transition-all duration-300 rounded-xl"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-            </svg>
+            Explore Scent
           </Link>
         </div>
       </div>
@@ -87,101 +73,149 @@ const ProductCard = ({ parfum }: { parfum: Parfum }) => {
   );
 };
 
-// --- Main Page Component ---
-export default function Products() {
-  const topFourProducts = evomiData.kategori_produk.slice(0, 4);
+export default function ProductsPage() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/products", {
+          headers: { Accept: "application/json" },
+        });
+        const result = await response.json();
+
+        setProducts(result.data || result || []);
+        // const data = await response.json();
+        // setProducts(data.data || data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   return (
-    <div className={`${fontJudul.variable} ${fontCaption.variable} font-body selection:bg-amber-100`}>
-      <Head>
-        <title>Our Collections | {evomiData.brand} Fragrance</title>
-        <meta name="description" content="Explore the signature scents of Evomi. Redefining presence through scent." />
-      </Head>
-
-      <div className="min-h-screen bg-[#FDFCFB] text-stone-900">
-
-        {/* NAVBAR */}
-        <nav className="fixed w-full z-50 bg-white/70 backdrop-blur-lg border-b border-stone-100">
-          <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <Link href="/" className="hover:opacity-70 transition-opacity">
-              <Image
-                src="/img/Logo Evomi.png"
-                alt="Evomi Logo"
-                width={100}
-                height={40}
-                className="brightness-0"
-              />
+    <div
+      className={`${fontJudul.variable} ${fontCaption.variable} font-body bg-[#FDFCFB] selection:bg-amber-100`}
+    >
+      {/* NAVBAR */}
+      <nav className="fixed w-full z-900 bg-white/80 backdrop-blur-xl border-b border-stone-100">
+        <div className="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
+          <Link href="/" className="hover:opacity-70 transition-opacity">
+            <Image
+              src="/img/Logo Evomi.png"
+              alt="Evomi"
+              width={110}
+              height={40}
+              className="brightness-0"
+            />
+          </Link>
+          <div className="hidden md:flex space-x-10 text-[10px] uppercase tracking-[0.3em] font-bold text-stone-500">
+            <Link href="/" className="hover:text-stone-900 transition-colors">
+              Home
             </Link>
-            <div className="hidden md:flex space-x-8 text-[11px] uppercase tracking-[0.2em] font-medium">
-              <Link href="/" className="hover:text-amber-700">Home</Link>
-              <Link href="#product" className="text-amber-800">Collections</Link>
-              <Link href="#footer" className="hover:text-amber-700">Contact</Link>
-            </div>
+            <Link href="/produk" className="text-amber-800">
+              Collections
+            </Link>
+            <Link
+              href="#footer"
+              className="hover:text-stone-900 transition-colors"
+            >
+              Contact
+            </Link>
           </div>
-        </nav>
+        </div>
+      </nav>
 
-        {/* PRODUCT SECTION */}
-        <section id="product" className="pt-32 pb-24 px-6">
-          <div className="max-w-7xl mx-auto">
-            <header className="max-w-2xl mx-auto text-center mb-20">
-              <h2 className="font-brand text-stone-400 text-sm uppercase tracking-[0.4em] mb-4">
-                Curated Scents
-              </h2>
-              <h1 className="text-4xl md:text-5xl font-serif text-stone-900 mb-6">
-                Our Collections
-              </h1>
-              <div className="h-px w-20 bg-amber-200 mx-auto"></div>
-            </header>
+      {/* HERO / HEADER SECTION */}
+      <section className="pt-44 pb-20 px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <span className="inline-block text-[10px] uppercase tracking-[0.5em] text-amber-700 mb-6 font-bold">
+            The Art of Fragrance
+          </span>
+          <h1
+            className={`${fontJudul.className} text-5xl md:text-7xl text-stone-900 mb-8 leading-tight`}
+          >
+            Our Collections
+          </h1>
+          <p className="text-stone-500 max-w-xl mx-auto leading-relaxed text-sm md:text-base font-light">
+            Dikurasi dengan bahan-bahan organik terbaik untuk menciptakan jejak
+            aroma yang tak terlupakan. Temukan identitas Anda melalui koleksi
+            kami.
+          </p>
+        </div>
+      </section>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {topFourProducts.map((parfum) => (
+      {/* PRODUCT GRID */}
+      <section className="pb-32 px-8">
+        <div className="max-w-7xl mx-auto">
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+              {[1, 2, 3, 4].map((n) => (
+                <div
+                  key={n}
+                  className="h-[600px] bg-stone-100 animate-pulse rounded-2xl"
+                ></div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+              {products.map((parfum: any) => (
                 <ProductCard key={parfum.id} parfum={parfum} />
               ))}
             </div>
+          )}
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer id="footer" className="bg-stone-900 text-stone-400 py-24 px-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-20">
+          <div className="space-y-8">
+            <Image
+              src="/img/Logo Evomi.png"
+              alt="Evomi"
+              width={120}
+              height={40}
+              className="invert brightness-0"
+            />
+            <p className="italic text-sm leading-relaxed">
+              &quot;Redefining Presence through Scent.&quot; Identitas yang
+              tidak terlihat namun paling berkesan.
+            </p>
           </div>
-        </section>
-
-        {/* FOOTER */}
-        <footer id="footer" className="bg-stone-900 text-stone-300 py-20 px-6">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
-            <div className="md:col-span-2">
-              <h2 className="font-brand text-white text-3xl mb-6 tracking-[0.2em] uppercase">
-                {evomiData.brand}
-              </h2>
-              <p className="max-w-sm text-stone-400 leading-relaxed italic">
-                &quot;Redefining Presence through Scent.&quot; Kami percaya bahwa parfum adalah identitas yang tidak terlihat namun paling berkesan.
-              </p>
-            </div>
-
-            <div>
-              <h4 className="text-white text-xs uppercase tracking-widest mb-6 font-bold">Contact</h4>
-              <ul className="space-y-4 text-sm text-stone-400">
-                <li>Jakarta, Indonesia</li>
-                <li>hello@evomi.com</li>
-                <li>+62 812 3456 789</li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-white text-xs uppercase tracking-widest mb-6 font-bold">Socials</h4>
-              <div className="flex flex-col space-y-4 text-sm">
-                <a href="#" className="hover:text-white transition-colors">Instagram</a>
-                <a href="#" className="hover:text-white transition-colors">TikTok</a>
-                <a href="#" className="hover:text-white transition-colors">Twitter</a>
-              </div>
+          <div className="space-y-6">
+            <h4 className="text-white text-xs uppercase tracking-[0.2em] font-bold">
+              Location
+            </h4>
+            <p className="text-sm">
+              Jakarta, Indonesia
+              <br />
+              Sudirman Central Business District
+            </p>
+          </div>
+          <div className="space-y-6">
+            <h4 className="text-white text-xs uppercase tracking-[0.2em] font-bold">
+              Connect
+            </h4>
+            <div className="flex flex-col gap-4 text-sm">
+              <a href="#" className="hover:text-white transition-colors">
+                Instagram
+              </a>
+              <a href="#" className="hover:text-white transition-colors">
+                TikTok
+              </a>
             </div>
           </div>
-
-          <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-[10px] uppercase tracking-widest text-stone-500">
-            <p>&copy; {new Date().getFullYear()} {evomiData.brand.toUpperCase()} FRAGRANCE. ALL RIGHTS RESERVED.</p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
-              <a href="#">Privacy Policy</a>
-              <a href="#">Terms of Service</a>
-            </div>
-          </div>
-        </footer>
-
-      </div>
+        </div>
+        <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 text-[9px] uppercase tracking-widest flex justify-between">
+          <p>© {new Date().getFullYear()} EVOMI FRAGRANCE.</p>
+          <p>Handcrafted in Indonesia</p>
+        </div>
+      </footer>
     </div>
   );
 }

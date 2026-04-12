@@ -24,11 +24,16 @@ const fontCaption = localFont({
 
 export default function EvomiLandingPage() {
   const router = useRouter();
+
+  // State untuk User Auth
   const [user, setUser] = useState<{
     email: string;
     name: string;
     username: string;
   } | null>(null);
+
+  // State untuk Data Produk dari API
+  const [products, setProducts] = useState<any[]>([]);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -38,7 +43,6 @@ export default function EvomiLandingPage() {
     const token = localStorage.getItem("access_token");
     const savedUser = localStorage.getItem("user_data");
 
-    // 2. Jika keduanya ada, masukkan ke dalam state
     if (token && savedUser) {
       try {
         setUser(JSON.parse(savedUser));
@@ -46,6 +50,26 @@ export default function EvomiLandingPage() {
         console.error("Gagal membaca data user", error);
       }
     }
+
+    // 2. Fetch Data Produk dari API Laravel
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/products", {
+          headers: {
+            Accept: "application/json",
+          },
+        });
+        const result = await response.json();
+
+        // Asumsi API mengembalikan array langsung, atau object { data: [...] }
+        // Sesuaikan dengan response Laravel kamu
+        setProducts(result.data ? result.data : result);
+      } catch (error) {
+        console.error("Gagal mengambil data produk:", error);
+      }
+    };
+
+    fetchProducts();
   }, []);
 
   const handleLogout = async () => {
@@ -61,7 +85,6 @@ export default function EvomiLandingPage() {
     } catch (err) {
       console.error("Logout error", err);
     } finally {
-      // Hapus semua data saat logout
       localStorage.removeItem("access_token");
       localStorage.removeItem("user_data");
       setUser(null);
@@ -71,7 +94,8 @@ export default function EvomiLandingPage() {
 
   if (!mounted) return null;
 
-  const topFourProducts = evomiData.kategori_produk.slice(0, 4);
+  // Mengambil 4 produk pertama dari data API
+  const topFourProducts = products.slice(0, 4);
 
   return (
     <div
@@ -133,9 +157,12 @@ export default function EvomiLandingPage() {
               {user ? (
                 <div className="flex items-center space-x-6">
                   {/* Tampilan Baru: @username */}
-                  <span className="opacity-90 lowercase font-sans font-medium tracking-normal border-b border-white/20 pb-0.5">
-                    @{user.username}
-                  </span>
+                  {/* Ubah <span> menjadi <Link> */}
+                  <Link href="/profile" className="cursor-pointer group">
+                    <span className="opacity-90 lowercase font-sans font-medium tracking-normal border-b border-white/20 pb-0.5 group-hover:border-white transition-all text-white">
+                      @{user.username}
+                    </span>
+                  </Link>
                   <button
                     onClick={handleLogout}
                     className="bg-white text-[#0081D1] px-6 py-2 hover:bg-red-50 hover:text-red-600 transition-all rounded-full font-bold"
@@ -295,7 +322,6 @@ export default function EvomiLandingPage() {
         {/* PRODUCT SECTION */}
         <section id="product" className="py-32 px-8 bg-white">
           <div className="max-w-7xl mx-auto">
-            {/* HEADER: Sekarang Centered */}
             <div className="flex flex-col items-center text-center mb-20 space-y-4">
               <div className="space-y-2">
                 <h2
@@ -322,16 +348,17 @@ export default function EvomiLandingPage() {
               </div>
             </div>
 
-            {/* GRID PRODUK (Tetap sama) */}
+            {/* GRID PRODUK TERBARU DARI API */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
               {topFourProducts.map((parfum) => (
                 <div key={parfum.id} className="group cursor-pointer">
-                  {/* ... (Konten produk Anda tetap sama seperti sebelumnya) ... */}
                   <div className="relative aspect-[3/4] overflow-hidden bg-stone-100 mb-6">
+                    {/* Menggunakan image_url dari database, dengan fallback gambar kosong jika belum ada */}
                     <Image
-                      src={`/img/produk/${parfum.media.artboard_ref}.jpeg`}
+                      src={parfum.image_url || "/img/placeholder.jpg"}
                       alt={parfum.nama}
                       fill
+                      unoptimized // <--- Tambahkan baris ini
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors"></div>
@@ -347,22 +374,32 @@ export default function EvomiLandingPage() {
 
                   <div className="space-y-2 text-center">
                     <span className="text-[10px] text-stone-400 uppercase tracking-widest">
-                      {parfum.spesifikasi.gender} • {parfum.spesifikasi.ukuran}
+                      {/* Asumsi database kamu punya kolom gender dan ukuran. Jika tidak ada gender, cukup tampilkan ukuran */}
+                      Unisex • {parfum.ukuran}
                     </span>
                     <h3
                       className={`${fontJudul.className} text-xl text-stone-800`}
                     >
                       {parfum.nama}
                     </h3>
-                    <p className="text-stone-500 text-sm font-light italic">
-                      {parfum.profil_aroma.karakter.slice(0, 3).join(" • ")}
+                    <p className="text-stone-500 text-sm font-light italic truncate px-4">
+                      {/* Menampilkan deskripsi produk karena database kita flat, bukan nested objek profil_aroma */}
+                      {parfum.deskripsi}
                     </p>
                     <p className="text-stone-900 font-medium pt-2">
-                      Rp {parfum.transaksi.harga_retail.toLocaleString("id-ID")}
+                      {/* Format Harga */}
+                      Rp {Number(parfum.harga_retail).toLocaleString("id-ID")}
                     </p>
                   </div>
                 </div>
               ))}
+
+              {/* Fallback jika produk kosong / loading */}
+              {topFourProducts.length === 0 && (
+                <div className="col-span-full text-center text-stone-500 py-10">
+                  Memuat koleksi parfum...
+                </div>
+              )}
             </div>
           </div>
         </section>
