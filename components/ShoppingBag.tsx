@@ -181,9 +181,14 @@ export default function ShoppingBag() {
               </span>
             </div>
 
-            <button className="w-full bg-stone-900 hover:bg-stone-800 text-white py-4 transition-all uppercase tracking-widest text-sm font-medium">
-              Proceed to Checkout
-            </button>
+            <Link href="/checkout">
+              <button className="w-full bg-gray-900 text-white py-4 rounded-xl font-medium hover:bg-gray-800 transition-all shadow-md flex justify-center items-center gap-2 group">
+                Proceed to Checkout
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              </button>
+            </Link>
           </div>
         </div>
       )}
