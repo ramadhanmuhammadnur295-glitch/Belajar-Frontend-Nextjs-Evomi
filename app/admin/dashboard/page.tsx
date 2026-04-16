@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from "next/navigation";
-import { User, Mail, Lock, ShieldCheck, Save, Camera, LogOut } from "lucide-react";
+import { User, Mail, Lock, ShieldCheck, Save, Camera, LogOut, ChevronRight } from "lucide-react";
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<any>(null);
@@ -308,10 +308,10 @@ export default function AdminDashboard() {
 
         {/* Tabel Pesanan Terbaru */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="p-6 border-b border-gray-100 flex justify-between items-center">
+          {/* <div className="p-6 border-b border-gray-100 flex justify-between items-center">
             <h2 className="text-lg font-bold text-gray-800">Pesanan Terbaru</h2>
             <button className="text-sm text-indigo-600 font-semibold hover:underline">Lihat Semua</button>
-          </div>
+          </div> */}
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead className="bg-gray-50/50 text-gray-600 text-xs uppercase font-bold tracking-widest">
@@ -324,7 +324,19 @@ export default function AdminDashboard() {
               <tbody className="divide-y divide-gray-50">
                 {stats?.recent_orders?.map((order: any) => (
                   <tr key={order.id} className="hover:bg-gray-50/80 transition-colors">
-                    <td className="p-4 font-semibold text-gray-700">#{order.id}</td>
+                    {/* <td className="p-4 font-semibold text-gray-700">#{order.id}</td> */}
+
+                    {/* Ubah ini di tabel dashboard kamu */}
+                    <td className="p-4 font-semibold text-gray-700">
+                      <button
+                        onClick={() => router.push(`/admin/orders/${order.id}`)}
+                        className="hover:text-indigo-600 hover:underline transition-all flex items-center gap-1"
+                      >
+                        #{order.id}
+                        <ChevronRight size={14} className="opacity-0 group-hover:opacity-100" />
+                      </button>
+                    </td>
+
                     <td className="p-4">
                       <select
                         value={order.status_pembayaran || 'pending'}

@@ -1,4 +1,4 @@
-"use client"; // Diubah ke client component untuk handle auth state
+"use client";
 
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
@@ -9,7 +9,6 @@ import ImageCarousel from "@/components/ImageCarousel";
 import localFont from "next/font/local";
 import { useRouter } from "next/navigation";
 
-// Inisialisasi Font
 const fontJudul = localFont({
   src: "./fonts/8 Heavy.ttf",
   variable: "--font-brand",
@@ -24,54 +23,27 @@ const fontCaption = localFont({
 
 export default function EvomiLandingPage() {
   const router = useRouter();
-
-  // State untuk User Auth
-  const [user, setUser] = useState<{
-    email: string;
-    name: string;
-    username: string;
-    image: string;
-  } | null>(null);
-
-  // State untuk Menu Profile Dropdown
+  const [user, setUser] = useState<{ email: string; name: string; username: string; image: string; } | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  // State untuk Data Produk dari API
   const [products, setProducts] = useState<any[]>([]);
   const [mounted, setMounted] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-
-    // 1. Ambil token dan data user dari localStorage
     const token = localStorage.getItem("access_token");
     const savedUser = localStorage.getItem("user_data");
-
     if (token && savedUser) {
-      try {
-        setUser(JSON.parse(savedUser));
-      } catch (error) {
-        console.error("Gagal membaca data user", error);
-      }
+      try { setUser(JSON.parse(savedUser)); } catch (error) { console.error(error); }
     }
 
-    // 2. Fetch Data Produk dari API Laravel
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/products", {
-          headers: {
-            Accept: "application/json",
-          },
-        });
+        const response = await fetch("http://localhost:8000/api/products", { headers: { Accept: "application/json" } });
         const result = await response.json();
-
-        // Asumsi API mengembalikan array langsung, atau object { data: [...] }
         setProducts(result.data ? result.data : result);
-      } catch (error) {
-        console.error("Gagal mengambil data produk:", error);
-      }
+      } catch (error) { console.error(error); }
     };
-
     fetchProducts();
   }, []);
 
@@ -94,509 +66,287 @@ export default function EvomiLandingPage() {
       setIsMenuOpen(false); // Tutup menu saat logout
       router.refresh();
     }
+
+    setIsMobileMenuOpen(false); // Tutup menu mobile saat logout
   };
 
-  // Mengambil 4 produk pertama dari data API
+  if (!mounted) return null;
+
   const topFourProducts = products.slice(0, 4);
 
   return (
-    <div
-      className={`${fontCaption.variable} ${fontJudul.variable} selection:bg-amber-100`}
-    >
-      <Head>
-        <title>Evomi Fragrance | Redefining Presence</title>
-        <meta
-          name="description"
-          content="Artisan perfume house based in Jakarta"
-        />
-      </Head>
-
+    <div className={`${fontCaption.variable} ${fontJudul.variable} selection:bg-amber-100`}>
       <div className="min-h-screen bg-[#FBFBF9] text-stone-900 font-sans antialiased">
-        {/* NAVBAR */}
-        <nav className="fixed w-full z-50 bg-[#0081D1] backdrop-blur-xl border-b border-white/10">
-          <div className="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
+
+        {/* NAVBAR - Fixed Height and Fluid Spacing */}
+        <nav className="fixed w-full z-[100] bg-[#0081D1] backdrop-blur-xl border-b border-white/10">
+          <div className="max-w-7xl mx-auto px-6 md:px-8 h-20 flex items-center justify-between">
+
             {/* KIRI - LOGO */}
-            <div className="w-1/3 flex justify-start">
+            <div className="flex-1 md:w-1/3 flex justify-start">
               <Link href="/" className="hover:opacity-70 transition-opacity">
                 <Image
                   src="/img/Logo Evomi.png"
                   alt="Evomi Logo"
-                  width={100}
-                  height={40}
+                  width={90}
+                  height={36}
                   className="brightness-0 invert"
                 />
               </Link>
             </div>
 
-            {/* TENGAH - MENU UTAMA */}
-            <div
-              className={`hidden md:flex w-1/3 justify-center items-center space-x-10 ${fontJudul.className} text-[13px] tracking-[0.2em] uppercase text-white`}
-            >
-              <a
-                href="#about"
-                className="hover:text-white/70 transition-colors"
-              >
-                About
-              </a>
-              <a
-                href="#product"
-                className="hover:text-white/70 transition-colors"
-              >
-                Collection
-              </a>
-              <Link
-                href="/produk"
-                className="hover:text-white/70 transition-colors"
-              >
-                Shop
-              </Link>
+            {/* TENGAH - MENU UTAMA (Hidden on Mobile) */}
+            <div className={`hidden md:flex w-1/3 justify-center items-center space-x-10 ${fontJudul.className} text-[13px] tracking-[0.2em] uppercase text-white`}>
+              <a href="#about" className="hover:text-white/70 transition-colors">About</a>
+              <a href="#product" className="hover:text-white/70 transition-colors">Collection</a>
+              <Link href="/produk" className="hover:text-white/70 transition-colors">Shop</Link>
             </div>
 
-            {/* KANAN - USERNAME & LOGOUT */}
-            <div
-              className={`hidden md:flex w-1/3 justify-end items-center space-x-6 ${fontJudul.className} text-[11px] tracking-[0.15em] uppercase text-white`}
-            >
-              {user ? (
-                <div className="relative">
-                  {/* Tampilan Baru: Tombol Menu Profile (Avatar + Name) */}
-                  <button
-                    onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className="flex items-center space-x-3 bg-white/10 hover:bg-white/20 transition-all rounded-full py-1.5 px-2 pr-4 border border-white/20"
-                  >
-                    {/* Avatar Generate dari Nama User */}
-                    {/* <div className="w-8 h-8 rounded-full overflow-hidden bg-white flex items-center justify-center shrink-0">
-                     
-                      {user.image != 'default-avatar.png' ? (
-                        <img
-                          src={`http://127.0.0.1:8000/storage/profiles/${user.image}`}
-                          alt="Profile"
-                          className="h-full w-full object-cover rounded-full"
-                        />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center rounded-full bg-indigo-50 text-indigo-600 text-3xl font-bold border border-indigo-100">
-                          {user.name ? user.name.charAt(0).toUpperCase() : "A"}
-                        </div>
-                      )}
-                    </div> */}
+            {/* KANAN - USER & HAMBURGER */}
+            <div className="flex-1 md:w-1/3 flex justify-end items-center space-x-4">
 
-
-                    <div className="relative inline-block">
-                      <div className="w-8 h-8 rounded-fulloverflow-hidden relative">
+              {/* Desktop User Menu (Hidden on Mobile) */}
+              {/* NAVBAR ACTIONS */}
+              <div className="flex items-center space-x-6 md:space-x-8">
+                {user ? (
+                  // Bagian User yang sudah Login (tetap seperti kode kamu sebelumnya)
+                  <div className="relative">
+                    <button
+                      onClick={() => setIsMenuOpen(!isMenuOpen)}
+                      className="flex items-center space-x-3 border border-stone-200 rounded-full p-1 pr-4 bg-stone-100 hover:bg-stone-50 transition-all"
+                    >
+                      <div className="w-8 h-8 rounded-full bg-[#0081D1] text-white flex items-center justify-center text-[10px] font-bold uppercase overflow-hidden">
                         {user.image != 'default-avatar.png' ? (
-                          <Image
-                            src={`http://127.0.0.1:8000/storage/profiles/${user.image}`}
-                            alt="Profile Picture"
-                            fill
-                            className="h-full w-full object-cover rounded-full"
-                          />
+                          <img src={`http://127.0.0.1:8000/storage/profiles/${user.image}`} alt="Profile" className="w-full h-full object-cover" />
                         ) : (
-                          <div className="flex h-full w-full items-center justify-center rounded-full from-stone-900 to-stone-700 flex items-center justify-center">
-                            <span className="text-2xl text-white uppercase">{user.name.charAt(0)}</span>
-                          </div>
+                          user.name.charAt(0)
                         )}
                       </div>
-                    </div>
+                      <span className="hidden md:block text-[10px] font-bold uppercase tracking-widest text-stone-700">{user.username}</span>
+                    </button>
 
-
-                    {/* Nama User */}
-                    <span className="font-sans font-medium tracking-normal text-white normal-case text-sm">
-                      {user.username}
-                    </span>
-
-                    {/* Icon Dropdown Arrow */}
-                    <svg
-                      className={`w-4 h-4 text-white transition-transform duration-300 ${isMenuOpen ? "rotate-180" : "rotate-0"
-                        }`}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                    {isMenuOpen && (
+                      <div className="absolute right-0 mt-3 w-48 bg-white rounded-2xl shadow-xl border border-stone-100 py-2 z-50 overflow-hidden font-sans">
+                        <Link href="/profile" className="block px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-stone-600 hover:bg-stone-50 transition-colors">Profile</Link>
+                        <Link href="/orders" className="block px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-stone-600 hover:bg-stone-50 transition-colors">Orders</Link>
+                        <hr className="border-stone-50 my-1" />
+                        <button onClick={handleLogout} className="w-full text-left px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-red-500 hover:bg-red-50 transition-colors">Logout</button>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  // Tampilan LOGIN & REGISTER (Teks Putih + Gaya Menu Tengah)
+                  <div className="flex items-center space-x-6">
+                    <Link
+                      href="/login"
+                      className="relative text-[10px] font-bold uppercase tracking-[0.2em] text-white hover:opacity-70 transition-all duration-300 group"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                  </button>
+                      Login
+                      <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+                    </Link>
 
-                  {/* Dropdown Menu */}
-                  {isMenuOpen && (
-                    <div className="absolute right-0 mt-3 w-48 bg-white rounded-xl shadow-xl border border-stone-100 overflow-hidden py-2 flex flex-col font-sans normal-case tracking-normal z-50">
-                      <Link
-                        href="/profile"
-                        className="px-4 py-2.5 text-stone-700 hover:bg-stone-50 hover:text-[#0081D1] transition-colors flex items-center space-x-3 text-sm font-medium"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                        <span>My Profile</span>
-                      </Link>
+                    <Link
+                      href="/register"
+                      className="relative text-[10px] font-bold uppercase tracking-[0.2em] text-white hover:opacity-70 transition-all duration-300 group"
+                    >
+                      Register
+                      <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span>
+                    </Link>
+                  </div>
+                )}
+              </div>
 
-                      <div className="border-t border-stone-100 my-1"></div>
-
-                      <button
-                        onClick={handleLogout}
-                        className="w-full text-left px-4 py-2.5 text-red-600 hover:bg-red-50 transition-colors flex items-center space-x-3 text-sm font-medium"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                        </svg>
-                        <span>Logout</span>
-                      </button>
-                    </div>
+              {/* HAMBURGER BUTTON (Mobile Only) */}
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="md:hidden p-2 text-white focus:outline-none"
+              >
+                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  {isMobileMenuOpen ? (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  ) : (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8h16M4 16h16" />
                   )}
-                </div>
-              ) : (
-                <>
-                  <Link
-                    href="/login"
-                    className="hover:text-white/70 transition-colors"
-                  >
-                    Log In
-                  </Link>
-                  <Link
-                    href="/register"
-                    className="bg-white text-[#0081D1] px-7 py-2.5 hover:bg-stone-100 transition-all rounded-full font-bold"
-                  >
-                    Register
-                  </Link>
-                </>
-              )}
-            </div>
-
-            {/* MOBILE MENU TOGGLE */}
-            <div className="md:hidden flex justify-end w-1/3 text-white">
-              <button className="p-2">
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="square"
-                    strokeLinejoin="miter"
-                    strokeWidth="1.5"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  ></path>
                 </svg>
               </button>
             </div>
           </div>
+
+          {/* MOBILE MENU PANEL */}
+          <div className={`md:hidden absolute top-20 left-0 w-full bg-[#0081D1] border-b border-white/10 transition-all duration-300 ease-in-out overflow-hidden ${isMobileMenuOpen ? 'max-h-[100vh] opacity-100' : 'max-h-0 opacity-0'}`}>
+            <div className="px-8 py-10 flex flex-col space-y-8 bg-gradient-to-b from-[#0081D1] to-[#006bb0]">
+
+              {/* Profile Section on Mobile Menu */}
+              {user && (
+                <div className="flex items-center space-x-4 p-4 bg-white/10 rounded-2xl border border-white/10">
+                  <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white/20 shrink-0">
+                    {user.image != 'default-avatar.png' ? (
+                      <img src={`http://127.0.0.1:8000/storage/profiles/${user.image}`} alt="test" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center bg-white text-[#0081D1] text-xl font-bold">{user.name.charAt(0)}</div>
+                    )}
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-white font-bold text-lg leading-tight">{user.name}</span>
+                    <span className="text-white/60 text-sm italic">@{user.username}</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Navigation Links */}
+              <div className={`${fontJudul.className} flex flex-col space-y-6 text-2xl tracking-[0.2em] uppercase text-white`}>
+                <a href="#about" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-white/60 transition-colors">About</a>
+                <a href="#product" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-white/60 transition-colors">Collection</a>
+                <Link href="/produk" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-white/60 transition-colors">Shop</Link>
+
+                {user ? (
+                  <>
+                    <div className="h-[1px] bg-white/10 w-full my-2"></div>
+                    <Link href="/profile" onClick={() => setIsMobileMenuOpen(false)} className="text-lg opacity-80">My Profile</Link>
+                    <button onClick={handleLogout} className="text-lg text-red-300 text-left">Logout</button>
+                  </>
+                ) : (
+                  <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="bg-white text-[#0081D1] text-center py-4 rounded-xl font-bold text-sm tracking-widest mt-4">Login / Register</Link>
+                )}
+              </div>
+            </div>
+          </div>
         </nav>
 
-        {/* HERO SECTION */}
-        <section className="relative h-screen flex items-center justify-center bg-white overflow-hidden">
-          <div className="relative z-10 text-center px-4 max-w-3xl mx-auto space-y-8">
-            <div className="space-y-4">
-              {/* Sub-header */}
-              <p className="text-stone-400 tracking-[0.5em] uppercase text-[10px] md:text-xs">
-                The Artisan Fragrance House
-              </p>
-
-              {/* Judul Utama */}
-              <h1
-                className={`${fontJudul.className} text-7xl md:text-[120px] leading-none text-stone-900 tracking-tighter uppercase`}
-              >
+        {/* HERO SECTION - Adjusted Typography for Mobile */}
+        <section className="relative min-h-[90vh] md:h-screen flex items-center justify-center bg-white px-6 overflow-hidden">
+          <div className="relative z-10 text-center space-y-6 md:space-y-8 max-w-4xl">
+            <div className="space-y-2 md:space-y-4">
+              <p className="text-stone-400 tracking-[0.3em] md:tracking-[0.5em] uppercase text-[9px] md:text-xs">The Artisan Fragrance House</p>
+              <h1 className={`${fontJudul.className} text-5xl sm:text-7xl md:text-[120px] leading-tight md:leading-none text-stone-900 tracking-tighter uppercase`}>
                 EVOMI
               </h1>
-
-              {/* DESKRIPSI BARU */}
-              <p className="text-stone-500 text-sm md:text-base font-light leading-relaxed max-w-xl mx-auto italic">
-                "Kurasi aroma yang melampaui waktu. Kami meracik memori dalam
-                setiap tetes esens organik, menghadirkan kemewahan alam yang
-                tenang ke dalam ruang personal Anda."
+              <p className="text-stone-500 text-xs md:text-base font-light leading-relaxed max-w-xs md:max-w-xl mx-auto italic">
+                "Kurasi aroma yang melampaui waktu. Kami meracik memori dalam setiap tetes esens organik."
               </p>
             </div>
-
-            {/* Tombol Aksi */}
-            <div className="flex flex-col md:flex-row items-center justify-center gap-6 pt-4">
-              <Link
-                href="/produk"
-                className="bg-stone-900 text-white px-10 py-4 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-[#0081D1] transition-all duration-300 shadow-lg shadow-stone-200"
-              >
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6">
+              <Link href="/produk" className="w-full sm:w-auto bg-stone-900 text-white px-8 md:px-10 py-3 md:py-4 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-[#0081D1] transition-all">
                 Explore Collection
               </Link>
-
-              <Link
-                href="#about"
-                className="text-stone-900 border-b border-stone-900 pb-1 text-[10px] font-bold uppercase tracking-widest hover:text-[#0081D1] hover:border-[#0081D1] transition-all duration-300"
-              >
+              <Link href="#about" className="text-stone-900 border-b border-stone-900 pb-1 text-[10px] font-bold uppercase tracking-widest">
                 Our Story
               </Link>
             </div>
           </div>
-
-          {/* Scroll Indicator */}
-          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center space-y-4">
-            <div className="w-[1px] h-16 bg-gradient-to-b from-stone-300 to-transparent"></div>
-          </div>
         </section>
 
-        {/* ABOUT SECTION */}
-        <section id="about" className="py-32 px-8 max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-12 gap-16 items-center">
-            <div className="md:col-span-4">
-              {/* text-stone-900 membuat tulisan menjadi hitam pekat dan elegan */}
-              <h2
-                className={`${fontJudul.className} text-4xl text-stone-900 leading-tight uppercase`}
-              >
-                Crafting <br /> Memories
-              </h2>
+        {/* ABOUT SECTION - Stacked on Mobile */}
+        <section id="about" className="py-20 md:py-32 px-6 md:px-8 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 items-center">
+            <div className="md:col-span-4 text-center md:text-left">
+              <h2 className={`${fontJudul.className} text-3xl md:text-4xl text-stone-900 leading-tight uppercase`}>Crafting <br className="hidden md:block" /> Memories</h2>
             </div>
-            <div className="md:col-span-8 grid md:grid-cols-2 gap-12">
-              <div className="space-y-4">
-                <h3 className="font-bold text-amber-900 uppercase tracking-widest text-xs">
-                  Pionir Wewangian
-                </h3>
-                <p className="text-stone-600 leading-relaxed font-light">
-                  Evomi memadukan botani langka dengan teknik ekstraksi modern
-                  untuk menciptakan karakter aroma yang tidak ditemukan di
-                  tempat lain.
-                </p>
+            <div className="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-12">
+              <div className="space-y-3">
+                <h3 className="font-bold text-amber-900 uppercase tracking-widest text-[10px]">Pionir Wewangian</h3>
+                <p className="text-stone-600 text-sm md:text-base leading-relaxed font-light">Evomi memadukan botani langka dengan teknik ekstraksi modern untuk karakter aroma unik.</p>
               </div>
-              <div className="space-y-4">
-                <h3 className="font-bold text-amber-900 uppercase tracking-widest text-xs">
-                  Eksklusivitas
-                </h3>
-                <p className="text-stone-600 leading-relaxed font-light">
-                  Setiap batch diproduksi secara terbatas untuk menjamin
-                  kualitas material organik tetap terjaga hingga ke tangan Anda.
-                </p>
+              <div className="space-y-3">
+                <h3 className="font-bold text-amber-900 uppercase tracking-widest text-[10px]">Eksklusivitas</h3>
+                <p className="text-stone-600 text-sm md:text-base leading-relaxed font-light">Setiap batch diproduksi terbatas untuk menjamin kualitas material organik tetap terjaga.</p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* CAMPAIGN */}
-        <section className="bg-stone-50 py-24">
-          <div className="max-w-screen-2xl mx-auto px-4">
-            {/* JUDUL CAMPAIGN */}
-            <div className="flex flex-col items-center text-center mb-16 space-y-3">
-              <span className="text-[#0081D1] tracking-[0.4em] uppercase text-[10px] font-bold">
-                Editorial
-              </span>
-              <h2
-                className={`${fontJudul.className} text-4xl md:text-6xl text-stone-900 uppercase tracking-tighter`}
-              >
-                The Seasonal{" "}
-                <span className="italic font-light text-stone-400">
-                  Campaign
-                </span>
-              </h2>
-              <p className="text-stone-500 text-sm max-w-lg font-light leading-relaxed">
-                Menangkap esensi kemewahan dalam setiap bingkai. Jelajahi cerita
-                di balik koleksi terbaru kami melalui lensa artistik.
-              </p>
-            </div>
-
-            {/* CAROUSEL COMPONENT */}
-            <ImageCarousel />
-          </div>
-        </section>
-
-        {/* PRODUCT SECTION */}
-        <section id="product" className="py-32 px-8 bg-white">
+        {/* PRODUCT GRID - Optimized Columns */}
+        <section id="product" className="py-20 md:py-32 px-6 md:px-8 bg-white border-y border-stone-100">
           <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col items-center text-center mb-20 space-y-4">
-              <div className="space-y-2">
-                <h2
-                  className={`${fontJudul.className} text-5xl md:text-6xl uppercase tracking-tighter text-stone-800`}
-                >
-                  Signature Essence
-                </h2>
-                <div className="flex items-center justify-center space-x-4">
-                  <div className="w-8 h-[1px] bg-stone-200"></div>
-                  <p className="text-stone-400 tracking-[0.3em] uppercase text-[10px] md:text-xs">
-                    Featured Collection
-                  </p>
-                  <div className="w-8 h-[1px] bg-stone-200"></div>
-                </div>
-              </div>
-
-              <div className="pt-4">
-                <Link
-                  href="/produk"
-                  className="text-stone-400 hover:text-stone-900 transition-colors uppercase text-[10px] tracking-widest border-b border-stone-200 pb-1"
-                >
-                  View All Collection
-                </Link>
+            <div className="text-center mb-12 md:mb-20 space-y-4">
+              <h2 className={`${fontJudul.className} text-4xl md:text-6xl uppercase tracking-tighter text-stone-800`}>Signature Essence</h2>
+              <div className="flex items-center justify-center space-x-3">
+                <div className="w-6 md:w-8 h-[1px] bg-stone-200"></div>
+                <p className="text-stone-400 tracking-[0.2em] uppercase text-[9px] md:text-xs">Featured Collection</p>
+                <div className="w-6 md:w-8 h-[1px] bg-stone-200"></div>
               </div>
             </div>
 
-            {/* GRID PRODUK TERBARU DARI API */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10">
               {topFourProducts.map((parfum) => (
-                <div key={parfum.id} className="group cursor-pointer">
-                  <div className="relative aspect-[3/4] overflow-hidden bg-stone-100 mb-6">
-                    {/* Menggunakan image_url dari database, dengan fallback gambar kosong jika belum ada */}
-                    <Image
-                      src={parfum.image_url || "/img/placeholder.jpg"}
-                      alt={parfum.nama}
-                      fill
-                      unoptimized // <--- Tambahkan baris ini
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors"></div>
-                    <div className="absolute bottom-4 left-4 right-4 translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                      <Link
-                        href={`/produk/${parfum.id}`}
-                        className="block w-full bg-white/90 backdrop-blur text-center py-3 text-[10px] uppercase font-bold tracking-widest text-stone-900"
-                      >
-                        Lihat Detail
-                      </Link>
-                    </div>
+                <div key={parfum.id} className="group">
+                  <div className="relative aspect-[4/5] overflow-hidden bg-stone-100 mb-4 rounded-sm">
+                    <Image src={parfum.image_url || "/img/placeholder.jpg"} alt={parfum.nama} fill unoptimized className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <Link href={`/produk/${parfum.id}`} className="absolute inset-0 z-10 opacity-0 group-hover:opacity-100 bg-black/5 transition-opacity flex items-end p-4">
+                      <div className="w-full bg-white/90 backdrop-blur py-3 text-[9px] uppercase font-bold tracking-widest text-center translate-y-2 group-hover:translate-y-0 transition-transform">Lihat Detail</div>
+                    </Link>
                   </div>
-
-                  <div className="space-y-2 text-center">
-                    <span className="text-[10px] text-stone-400 uppercase tracking-widest">
-                      {/* Asumsi database kamu punya kolom gender dan ukuran. Jika tidak ada gender, cukup tampilkan ukuran */}
-                      Unisex • {parfum.ukuran}
-                    </span>
-                    <h3
-                      className={`${fontJudul.className} text-xl text-stone-800`}
-                    >
-                      {parfum.nama}
-                    </h3>
-                    <p className="text-stone-500 text-sm font-light italic truncate px-4">
-                      {/* Menampilkan deskripsi produk karena database kita flat, bukan nested objek profil_aroma */}
-                      {parfum.deskripsi}
-                    </p>
-                    <p className="text-stone-900 font-medium pt-2">
-                      {/* Format Harga */}
-                      Rp {Number(parfum.harga_retail).toLocaleString("id-ID")}
-                    </p>
+                  <div className="text-center space-y-1">
+                    <span className="text-[9px] text-stone-400 uppercase tracking-widest">Unisex • {parfum.ukuran}</span>
+                    <h3 className={`${fontJudul.className} text-lg md:text-xl text-stone-800 uppercase`}>{parfum.nama}</h3>
+                    <p className="text-stone-900 font-semibold text-sm">Rp {Number(parfum.harga_retail).toLocaleString("id-ID")}</p>
                   </div>
                 </div>
               ))}
-
-              {/* Fallback jika produk kosong / loading */}
-              {topFourProducts.length === 0 && (
-                <div className="col-span-full text-center text-stone-500 py-10">
-                  Memuat koleksi parfum...
-                </div>
-              )}
             </div>
           </div>
         </section>
 
-        {/* WHY CHOOSE US */}
-        <section id="why" className="py-32 bg-stone-50 px-8 text-center">
-          <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12">
+        {/* STATS SECTION - 2 columns on mobile */}
+        <section className="py-16 md:py-32 bg-stone-50 px-6 text-center">
+          <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
             {[
               { title: "12H+", desc: "Projection" },
               { title: "Artisan", desc: "Batch" },
               { title: "Recycled", desc: "Glass" },
               { title: "Organic", desc: "Essence" },
             ].map((item, i) => (
-              <div key={i} className="group">
-                <div
-                  className={`${fontJudul.className} text-3xl mb-2 text-stone-300 group-hover:text-amber-800 transition-colors`}
-                >
-                  {item.title}
-                </div>
-                <p className="text-[10px] uppercase tracking-[0.3em] text-stone-500">
-                  {item.desc}
-                </p>
+              <div key={i}>
+                <div className={`${fontJudul.className} text-2xl md:text-3xl mb-1 text-stone-300 hover:text-amber-800 transition-colors`}>{item.title}</div>
+                <p className="text-[9px] uppercase tracking-[0.2em] text-stone-500">{item.desc}</p>
               </div>
             ))}
           </div>
         </section>
 
-        {/* TESTIMONIAL */}
-        <section className="py-32 bg-stone-900 text-white px-8">
-          <div className="max-w-5xl mx-auto text-center space-y-16">
-            <div className="space-y-4">
-              <div className="w-12 h-[1px] bg-amber-500 mx-auto"></div>
-              <h2
-                className={`${fontJudul.className} text-3xl md:text-5xl italic font-serif leading-tight text-stone-200`}
-              >
-                "The scent of a woman, <br /> The presence of a soul."
-              </h2>
-            </div>
-            <div className="grid md:grid-cols-3 gap-16">
+        {/* TESTIMONIAL - Stacked for readability */}
+        <section className="py-20 md:py-32 bg-stone-900 text-white px-6">
+          <div className="max-w-5xl mx-auto text-center space-y-12 md:space-y-16">
+            <h2 className={`${fontJudul.className} text-2xl md:text-5xl italic leading-tight text-stone-200`}>"The scent of a woman, <br /> The presence of a soul."</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-16">
               {[
-                {
-                  name: "Clara S.",
-                  text: "Peaceful Calm adalah aroma paling segar yang pernah saya miliki.",
-                },
-                {
-                  name: "Dimas R.",
-                  text: "Rabel Brave sangat memikat perhatian di malam hari.",
-                },
-                {
-                  name: "Sarah W.",
-                  text: "Packaging Evomi sangat mewah, benar-benar brand berkelas.",
-                },
+                { name: "Clara S.", text: "Peaceful Calm adalah aroma paling segar yang pernah saya miliki." },
+                { name: "Dimas R.", text: "Rabel Brave sangat memikat perhatian di malam hari." },
+                { name: "Sarah W.", text: "Packaging Evomi sangat mewah, benar-benar brand berkelas." },
               ].map((t, i) => (
-                <div key={i} className="space-y-6 group">
-                  <p className="text-stone-400 font-light leading-relaxed italic opacity-80 group-hover:opacity-100 transition-opacity">
-                    "{t.text}"
-                  </p>
-                  <div className="text-[10px] uppercase tracking-[0.4em] font-bold text-amber-500">
-                    — {t.name}
-                  </div>
+                <div key={i} className="space-y-4">
+                  <p className="text-stone-400 text-sm md:text-base font-light italic leading-relaxed">"{t.text}"</p>
+                  <div className="text-[9px] uppercase tracking-[0.3em] font-bold text-amber-500">— {t.name}</div>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* FOOTER */}
-        <footer className="bg-white pt-24 pb-12 px-8 border-t border-stone-100">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
-            <div className="col-span-1 md:col-span-2">
-              <h2
-                className={`${fontJudul.className} text-3xl mb-6 tracking-widest`}
-              >
-                {evomiData.brand.toUpperCase()}
-              </h2>
-              <p className="max-w-xs text-stone-400 font-light leading-relaxed">
-                Menghadirkan pengalaman sensorik melalui kurasi aroma terbaik.
-                Bergabunglah dengan perjalanan kami.
-              </p>
+        {/* FOOTER - Stacked for mobile */}
+        <footer className="bg-white pt-16 pb-8 px-6 md:px-8 border-t border-stone-100">
+          <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 mb-16">
+            <div className="sm:col-span-2">
+              <h2 className={`${fontJudul.className} text-2xl mb-4 tracking-widest`}>EVOMI</h2>
+              <p className="max-w-xs text-stone-400 text-sm font-light leading-relaxed">Menghadirkan pengalaman sensorik melalui kurasi aroma terbaik.</p>
             </div>
             <div>
-              <h4 className="font-bold text-xs uppercase tracking-[0.2em] mb-6">
-                Contact
-              </h4>
-              <ul className="text-stone-500 space-y-3 text-sm font-light">
+              <h4 className="font-bold text-[10px] uppercase tracking-widest mb-4">Contact</h4>
+              <ul className="text-stone-500 space-y-2 text-xs">
                 <li>hello@evomi.com</li>
                 <li>Jakarta, Indonesia</li>
-                <li className="pt-4 flex space-x-4">
-                  <a href="#" className="hover:text-stone-900">
-                    IG
-                  </a>
-                  <a href="#" className="hover:text-stone-900">
-                    TW
-                  </a>
-                  <a href="#" className="hover:text-stone-900">
-                    TK
-                  </a>
-                </li>
               </ul>
             </div>
             <div>
-              <h4 className="font-bold text-xs uppercase tracking-[0.2em] mb-6">
-                Newsletter
-              </h4>
-              <div className="flex border-b border-stone-200 pb-2">
-                <input
-                  type="email"
-                  placeholder="Email address"
-                  className="bg-transparent w-full text-sm outline-none"
-                />
-                <button className="text-[10px] uppercase tracking-widest font-bold">
-                  Join
-                </button>
+              <h4 className="font-bold text-[10px] uppercase tracking-widest mb-4">Newsletter</h4>
+              <div className="flex border-b border-stone-200 pb-2 max-w-xs">
+                <input type="email" placeholder="Email address" className="bg-transparent w-full text-xs outline-none" />
+                <button className="text-[9px] uppercase font-bold">Join</button>
               </div>
             </div>
           </div>
-          <div className="text-center text-[10px] text-stone-300 uppercase tracking-[0.5em] pt-12 border-t border-stone-50">
-            &copy; {new Date().getFullYear()} {evomiData.brand.toUpperCase()}{" "}
-            FRAGRANCE HOUSE
+          <div className="text-center text-[9px] text-stone-300 uppercase tracking-[0.3em] pt-8 border-t border-stone-50">
+            &copy; {new Date().getFullYear()} EVOMI FRAGRANCE HOUSE
           </div>
         </footer>
       </div>
