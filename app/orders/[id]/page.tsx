@@ -23,6 +23,9 @@ export default function OrderDetailPage() {
     const [order, setOrder] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
+    // TAMBAHKAN STATE INI: Untuk efek loading pada tombol Pay Now
+    const [isPaying, setIsPaying] = useState(false);
+
     useEffect(() => {
         const token = localStorage.getItem("access_token");
         if (!token) {
@@ -53,6 +56,46 @@ export default function OrderDetailPage() {
         if (params.id) fetchOrderDetail();
     }, [params.id, router]);
 
+    // TAMBAHKAN FUNGSI INI: Untuk melakukan update status ke backend
+    const handlePayment = async () => {
+        const token = localStorage.getItem("access_token");
+        if (!token) return;
+
+        setIsPaying(true);
+        try {
+            const response = await fetch(`http://localhost:8000/api/orders/${params.id}`, {
+                method: "PUT", // Method PUT sesuai standar update data
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                    Accept: "application/json",
+                },
+                body: JSON.stringify({
+                    status_pembayaran: "success", // Data yang diupdate
+                }),
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                // Update local state agar UI langsung berubah tanpa perlu refresh halaman
+                setOrder((prevOrder: any) => ({
+                    ...prevOrder,
+                    status_pembayaran: "success",
+                }));
+                alert("Pembayaran berhasil!");
+            } else {
+                alert("Gagal memproses pembayaran: " + (result.message || "Unknown error"));
+            }
+        } catch (error) {
+            console.error("Payment error:", error);
+            alert("Terjadi kesalahan pada server.");
+        } finally {
+            setIsPaying(false);
+        }
+    };
+
+
     if (loading) return (
         <div className="min-h-screen flex items-center justify-center bg-[#FBFBF9]">
             <div className="w-8 h-8 border-4 border-stone-200 border-t-[#0081D1] rounded-full animate-spin"></div>
@@ -65,20 +108,28 @@ export default function OrderDetailPage() {
         <div className={`${fontCaption.variable} ${fontJudul.variable} min-h-screen bg-[#FBFBF9] font-sans antialiased pb-10 md:pb-20`}>
 
             {/* NAVBAR */}
-            <nav className="fixed w-full z-[100] bg-white/80 backdrop-blur-md border-b border-stone-100">
+            {/* NAVBAR */}
+            <nav className="fixed w-full z-[100] bg-[#0081D1] backdrop-blur-md border-b border-blue-800/20">
                 <div className="max-w-7xl mx-auto px-4 md:px-8 h-16 md:h-20 flex items-center">
                     <div className="flex items-center space-x-4 md:space-x-6">
-                        <Link href="/orders" className="flex items-center space-x-2 text-stone-500 hover:text-[#0081D1] transition-all group">
-                            <div className="w-8 h-8 rounded-full border border-stone-100 flex items-center justify-center group-hover:bg-[#0081D1]/5 group-hover:border-[#0081D1]/20 transition-all">
+                        <Link href="/orders" className="flex items-center space-x-2 text-white/70 hover:text-white transition-all group">
+                            <div className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white/10 group-hover:border-white/40 transition-all">
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path d="M15 19l-7-7 7-7" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
                             </div>
                             <span className="hidden md:inline text-[10px] font-bold uppercase tracking-[0.2em]">Kembali</span>
                         </Link>
-                        <div className="w-[1px] h-4 bg-stone-200"></div>
+                        <div className="w-[1px] h-4 bg-white/20"></div>
                         <Link href="/">
-                            <Image src="/img/Logo Evomi.png" alt="Evomi" width={65} height={25} className="brightness-0" />
+                            <Image
+                                src="/img/Logo Evomi.png"
+                                alt="Evomi"
+                                width={65}
+                                height={25}
+                                // Tambahkan brightness-0 invert agar logo menjadi putih
+                                className="brightness-0 invert"
+                            />
                         </Link>
                     </div>
                 </div>
@@ -185,9 +236,19 @@ export default function OrderDetailPage() {
                                 </div>
                             </div>
 
+                            {/* Di bagian RIGHT CONTENT: SUMMARY, ubah tombol Pay Now menjadi seperti ini: */}
+
                             {order.status_pembayaran === 'pending' ? (
-                                <button className="w-full bg-[#0081D1] hover:bg-white hover:text-[#0081D1] py-5 rounded-2xl text-[10px] font-bold uppercase tracking-[0.3em] transition-all duration-500 shadow-lg shadow-[#0081D1]/20">
-                                    Pay Now
+                                <button
+                                    onClick={handlePayment} // Panggil fungsi di sini
+                                    disabled={isPaying}     // Disable saat loading
+                                    className={`w-full py-5 rounded-2xl text-[10px] font-bold uppercase tracking-[0.3em] transition-all duration-500 shadow-lg 
+                                        ${isPaying
+                                            ? 'bg-stone-500 text-stone-300 cursor-not-allowed'
+                                            : 'bg-[#0081D1] hover:bg-white hover:text-[#0081D1] shadow-[#0081D1]/20 text-white'
+                                        }`}
+                                >
+                                    {isPaying ? 'Processing...' : 'Pay Now'}
                                 </button>
                             ) : (
                                 <div className="w-full border border-white/10 py-5 rounded-2xl text-[10px] text-center font-bold uppercase tracking-[0.3em] text-white/40">

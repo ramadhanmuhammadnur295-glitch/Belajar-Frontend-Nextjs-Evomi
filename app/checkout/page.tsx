@@ -9,8 +9,9 @@ interface CartItem {
     product_id: string;
     name: string;
     price: number;
-    image: string;
     quantity: number;
+    image_url: string;
+    image: string;
 }
 
 interface UserProfile {
@@ -204,16 +205,24 @@ export default function CheckoutPage() {
                 )}
 
                 {/* Header */}
-                <div className="flex justify-between items-end border-b border-stone-200 pb-6 mb-10">
+                {/* Header Berwarna Biru */}
+                <div className="flex justify-between items-center bg-[#0081D1] p-10 rounded-[2.5rem] shadow-xl shadow-blue-100 mb-12 text-white">
                     <div>
-                        <Link href="/profile" className="text-[10px] uppercase tracking-[0.2em] text-stone-400 hover:text-black transition-all mb-2 block">
+                        <Link
+                            href="/profile"
+                            className="text-[10px] uppercase tracking-[0.2em] text-white/70 hover:text-white transition-all mb-3 block"
+                        >
                             &larr; Back to Bag
                         </Link>
-                        <h1 className="text-4xl uppercase tracking-tighter font-light">Checkout</h1>
+                        <h1 className="text-4xl uppercase tracking-tighter font-bold">Checkout</h1>
                     </div>
-                    <span className="text-[10px] text-stone-400 uppercase tracking-widest font-bold">
-                        {cartItems.length} {cartItems.length > 1 ? 'Items' : 'Item'}
-                    </span>
+
+                    {/* Badge Jumlah Item dengan efek Glassmorphism */}
+                    <div className="bg-white/10 backdrop-blur-md px-6 py-3 rounded-2xl border border-white/20">
+                        <span className="text-[10px] text-white uppercase tracking-widest font-bold">
+                            {cartItems.length} {cartItems.length > 1 ? 'Items' : 'Item'}
+                        </span>
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
@@ -296,7 +305,7 @@ export default function CheckoutPage() {
                                     <div key={item.product_id} className="flex gap-4 items-center">
                                         <div className="relative w-14 h-16 bg-stone-200 shrink-0 overflow-hidden rounded-sm">
                                             <Image
-                                                src={`/img/produk/${item.image}.jpeg`}
+                                                src={`${item.image_url}`}
                                                 alt={item.name}
                                                 fill
                                                 className="object-cover"

@@ -331,23 +331,26 @@ export default function LuxuryProfilePage() {
       </div>
 
       {/* MINIMALIST NAV */}
-      <nav className="fixed w-full z-50 bg-white/30 backdrop-blur-xl border-b border-stone-200/30 px-8 h-20 flex items-center justify-between">
+      {/* MINIMALIST NAV */}
+      <nav className="fixed w-full z-50 bg-[#0081D1] backdrop-blur-xl border-b border-blue-800/20 px-8 h-20 flex items-center justify-between">
         <Link href="/" className="group flex items-center space-x-3">
-          <div className="w-8 h-8 bg-stone-900 rounded-full flex items-center justify-center transition-transform group-hover:rotate-12">
-            <span className="text-white text-[10px] font-black italic">E</span>
+          <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center transition-transform group-hover:rotate-12">
+            <span className="text-[#0081D1] text-[10px] font-black italic">E</span>
           </div>
           <Image
             src="/img/Logo Evomi.png"
             alt="Evomi"
             width={80}
             height={30}
-            className="brightness-0"
+            // Tambahkan invert & brightness agar logo hitam menjadi putih
+            className="brightness-0 invert"
           />
         </Link>
         <div className="flex items-center space-x-8">
           <button
             onClick={handleLogout}
-            className="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-400 hover:text-red-500 transition-colors"
+            // Mengubah warna teks logout menjadi putih agar kontras dengan bg biru
+            className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/70 hover:text-white transition-colors"
           >
             Logout Account
           </button>

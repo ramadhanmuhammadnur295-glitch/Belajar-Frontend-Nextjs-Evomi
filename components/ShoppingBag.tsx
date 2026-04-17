@@ -9,8 +9,9 @@ interface CartItem {
   product_id: string;
   name: string;
   price: number;
-  image: string;
   quantity: number;
+  image_url: string;
+  image: string;
 }
 
 export default function ShoppingBag() {
@@ -131,7 +132,7 @@ export default function ShoppingBag() {
                 {/* Gambar Produk */}
                 <div className="relative w-20 h-24 md:w-24 md:h-32 bg-stone-100 rounded-lg overflow-hidden shrink-0">
                   <Image
-                    src={`/img/produk/${item.image}.jpeg`}
+                    src={`${item.image_url}`}
                     alt={item.name}
                     fill
                     className="object-cover"

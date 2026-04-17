@@ -77,22 +77,31 @@ export default function OrderHistoryPage() {
         <div className={`${fontCaption.variable} ${fontJudul.variable} min-h-screen bg-[#FBFBF9] font-sans antialiased`}>
 
             {/* NAVBAR (Minimalis Version) */}
-            <nav className="fixed w-full z-[100] bg-white/80 backdrop-blur-md border-b border-stone-100">
+            {/* NAVBAR (Minimalis Version) */}
+            <nav className="fixed w-full z-[100] bg-[#0081D1] backdrop-blur-md border-b border-white/10">
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                     <Link href="/" className="hover:opacity-70 transition-opacity">
-                        <Image src="/img/Logo Evomi.png" alt="Evomi" width={80} height={32} className="brightness-0" />
+                        <Image
+                            src="/img/Logo Evomi.png"
+                            alt="Evomi"
+                            width={80}
+                            height={32}
+                            // Invert logo agar menjadi putih di atas background biru
+                            className="brightness-0 invert"
+                        />
                     </Link>
 
                     <div className="relative">
                         {user && (
                             <button
                                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                                className="flex items-center space-x-3 border border-stone-200 rounded-full p-1 pr-4 hover:bg-stone-50 transition-all"
+                                // Penyesuaian border dan hover agar kontras dengan warna biru
+                                className="flex items-center space-x-3 border border-white/20 rounded-full p-1 pr-4 hover:bg-white/10 transition-all text-white"
                             >
-                                <div className="w-8 h-8 rounded-full bg-[#0081D1] text-white flex items-center justify-center text-xs font-bold uppercase">
+                                <div className="w-8 h-8 rounded-full bg-white text-[#0081D1] flex items-center justify-center text-xs font-bold uppercase">
                                     {user.name.charAt(0)}
                                 </div>
-                                <span className="text-sm font-medium text-stone-700">{user.username}</span>
+                                <span className="text-sm font-medium">{user.username}</span>
                             </button>
                         )}
 

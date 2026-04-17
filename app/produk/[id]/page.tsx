@@ -136,13 +136,15 @@ export default function ProductDetailPage({ params }: ProductDetailProps) {
       )}
 
       {/* NAVBAR */}
-      <nav className="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-stone-200">
+      {/* NAVBAR */}
+      <nav className="fixed w-full z-50 bg-[#0081D1] backdrop-blur-md border-b border-blue-800/20">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/">
             <Image
               src="/img/Logo Evomi.png"
               alt="Evomi Logo"
-              className="brightness-0"
+              // Menambahkan filter agar logo menjadi putih supaya kontras dengan bg biru
+              className="brightness-0 invert"
               width={100}
               height={40}
               priority
@@ -150,7 +152,7 @@ export default function ProductDetailPage({ params }: ProductDetailProps) {
           </Link>
           <Link
             href="/#product"
-            className={`${fontCaption.className} text-xs uppercase tracking-widest text-stone-500 hover:text-stone-900 transition`}
+            className={`${fontCaption.className} text-xs uppercase tracking-widest text-white/70 hover:text-white transition`}
           >
             ← Back to Collections
           </Link>

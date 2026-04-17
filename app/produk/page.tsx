@@ -102,7 +102,7 @@ export default function ProductsPage() {
       className={`${fontJudul.variable} ${fontCaption.variable} font-body bg-[#FDFCFB] selection:bg-amber-100`}
     >
       {/* NAVBAR */}
-      <nav className="fixed w-full z-900 bg-white/80 backdrop-blur-xl border-b border-stone-100">
+      {/* <nav className="fixed w-full z-900 bg-white/80 backdrop-blur-xl border-b border-stone-100">
         <div className="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
           <Link href="/" className="hover:opacity-70 transition-opacity">
             <Image
@@ -123,6 +123,35 @@ export default function ProductsPage() {
             <Link
               href="#footer"
               className="hover:text-stone-900 transition-colors"
+            >
+              Contact
+            </Link>
+          </div>
+        </div>
+      </nav> */}
+      {/* NAVBAR */}
+      <nav className="fixed w-full z-900 bg-[#0081D1] backdrop-blur-xl border-b border-blue-800/20">
+        <div className="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
+          <Link href="/" className="hover:opacity-70 transition-opacity">
+            <Image
+              src="/img/Logo Evomi.png"
+              alt="Evomi"
+              width={110}
+              height={40}
+              // Tambahkan 'invert' agar logo yang aslinya hitam/gelap berubah jadi putih
+              className="brightness-0 invert"
+            />
+          </Link>
+          <div className="hidden md:flex space-x-10 text-[10px] uppercase tracking-[0.3em] font-bold text-white/70">
+            <Link href="/" className="hover:text-white transition-colors">
+              Home
+            </Link>
+            <Link href="/produk" className="text-white">
+              Collections
+            </Link>
+            <Link
+              href="#footer"
+              className="hover:text-white transition-colors"
             >
               Contact
             </Link>
