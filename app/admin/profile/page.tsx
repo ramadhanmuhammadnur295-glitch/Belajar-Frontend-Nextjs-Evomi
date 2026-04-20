@@ -144,32 +144,7 @@ export default function UserProfilePage() {
   return (
     <div className="bg-gray-50 min-h-screen">
       {/* --- NAVBAR --- */}
-      <nav className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16 items-center">
-            <div className="flex items-center gap-2 cursor-pointer" onClick={() => router.push('/admin/dashboard')}>
-              {/* <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">
-                E
-              </div>
-              <span className="text-xl font-bold text-gray-800 tracking-tight">Evomi Admin</span> */}
-            </div>
-
-            <div className="flex items-center gap-4">
-              <div className="hidden md:block text-right mr-2">
-                <p className="text-sm font-semibold text-gray-700 leading-none">{formData.name}</p>
-                <p className="text-xs text-gray-500 mt-1">Status: Online</p>
-              </div>
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-2 bg-white hover:bg-red-50 text-gray-600 hover:text-red-600 px-4 py-2 rounded-xl transition-all duration-200 font-medium text-sm border border-gray-200 hover:border-red-200 shadow-sm"
-              >
-                <LogOut size={16} />
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      
 
       {/* --- MAIN CONTENT --- */}
       <main className="max-w-7xl mx-auto p-6 sm:p-8">

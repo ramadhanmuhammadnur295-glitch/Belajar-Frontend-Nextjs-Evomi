@@ -21,7 +21,9 @@ const fontCaption = localFont({
 // Komponen Card yang disesuaikan dengan field Database/API
 const ProductCard = ({ parfum }: { parfum: any }) => {
   return (
-    <div className="group flex flex-col bg-white border border-stone-100 rounded-2xl hover:shadow-2xl hover:shadow-stone-200/50 transition-all duration-700">
+    // Ubah rounded-2xl menjadi rounded-lg agar lebih persegi
+    <div className="group flex flex-col bg-white border border-stone-200 rounded-lg hover:shadow-xl transition-all duration-500 overflow-hidden">
+
       {/* Image Area */}
       <div className="relative w-full h-[400px] bg-stone-100">
         <Image
@@ -29,41 +31,39 @@ const ProductCard = ({ parfum }: { parfum: any }) => {
           alt={parfum.nama}
           fill
           unoptimized
-          className="object-cover group-hover:scale-110 transition-transform duration-1000"
+          className="object-cover group-hover:scale-105 transition-transform duration-700"
         />
-        <div className="absolute top-6 left-6">
-          <span className="bg-white/90 backdrop-blur-md text-stone-800 text-[10px] uppercase tracking-[0.2em] px-4 py-1.5 rounded-full font-bold shadow-sm">
+        <div className="absolute top-4 left-4">
+          <span className="bg-white/90 backdrop-blur-md text-stone-800 text-[9px] uppercase tracking-[0.2em] px-3 py-1 font-bold">
             EDP • {parfum.ukuran || "50ML"}
           </span>
         </div>
       </div>
 
       {/* Content Area */}
-      <div className="p-8 flex flex-col flex-grow text-center">
+      <div className="p-6 flex flex-col flex-grow text-center">
         <div className="mb-4">
           <h3
-            className={`${fontJudul.className} text-2xl text-stone-900 mb-2 group-hover:text-amber-800 transition-colors`}
+            className={`${fontJudul.className} text-xl text-stone-900 mb-2`}
           >
             {parfum.nama}
           </h3>
-          <div className="h-0.5 w-10 bg-amber-200 mx-auto group-hover:w-20 transition-all duration-500"></div>
+          <div className="h-[1px] w-8 bg-stone-300 mx-auto"></div>
         </div>
 
-        <p className="text-[12px] text-stone-500 leading-relaxed mb-8 line-clamp-2 italic font-light">
-          &quot;
-          {parfum.deskripsi ||
-            "A signature masterpiece crafted for your identity."}
-          &quot;
+        <p className="text-[11px] text-stone-500 leading-relaxed mb-6 italic font-light line-clamp-2">
+          &quot;{parfum.deskripsi || "A signature masterpiece."}&quot;
         </p>
 
         <div className="mt-auto flex flex-col items-center gap-4">
-          <p className="text-xl font-medium text-stone-900">
+          <p className="text-sm font-bold text-stone-900">
             IDR {Number(parfum.harga_retail).toLocaleString("id-ID")}
           </p>
 
           <Link
             href={`/produk/${parfum.id}`}
-            className="w-full py-4 bg-stone-900 text-white text-[10px] uppercase tracking-[0.3em] font-bold hover:bg-amber-900 transition-all duration-300 rounded-xl"
+            // Tombol juga disesuaikan menjadi rounded-none atau rounded-sm untuk kesan persegi
+            className="w-full py-3 bg-stone-900 text-white text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-stone-700 transition-colors rounded-sm"
           >
             Explore Scent
           </Link>
@@ -101,34 +101,6 @@ export default function ProductsPage() {
     <div
       className={`${fontJudul.variable} ${fontCaption.variable} font-body bg-[#FDFCFB] selection:bg-amber-100`}
     >
-      {/* NAVBAR */}
-      {/* <nav className="fixed w-full z-900 bg-white/80 backdrop-blur-xl border-b border-stone-100">
-        <div className="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
-          <Link href="/" className="hover:opacity-70 transition-opacity">
-            <Image
-              src="/img/Logo Evomi.png"
-              alt="Evomi"
-              width={110}
-              height={40}
-              className="brightness-0"
-            />
-          </Link>
-          <div className="hidden md:flex space-x-10 text-[10px] uppercase tracking-[0.3em] font-bold text-stone-500">
-            <Link href="/" className="hover:text-stone-900 transition-colors">
-              Home
-            </Link>
-            <Link href="/produk" className="text-amber-800">
-              Collections
-            </Link>
-            <Link
-              href="#footer"
-              className="hover:text-stone-900 transition-colors"
-            >
-              Contact
-            </Link>
-          </div>
-        </div>
-      </nav> */}
       {/* NAVBAR */}
       <nav className="fixed w-full z-900 bg-[#0081D1] backdrop-blur-xl border-b border-blue-800/20">
         <div className="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">

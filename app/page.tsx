@@ -4,8 +4,6 @@ import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import evomiData from "../data/evomi.json";
-import ImageCarousel from "@/components/ImageCarousel";
 import localFont from "next/font/local";
 import { useRouter } from "next/navigation";
 
@@ -216,7 +214,6 @@ export default function EvomiLandingPage() {
         </nav>
 
         {/* HERO SECTION - Adjusted Typography for Mobile */}
-        {/* HERO SECTION - Center Vertical Alignment */}
         <section className="relative min-h-screen flex flex-col items-center justify-center bg-white px-6 overflow-hidden">
           {/* Tambahkan padding top (pt-20) untuk mengimbangi tinggi navbar agar konten benar-benar di tengah area yang terlihat */}
           <div className="relative z-10 text-center space-y-6 md:space-y-8 max-w-4xl pt-20">
