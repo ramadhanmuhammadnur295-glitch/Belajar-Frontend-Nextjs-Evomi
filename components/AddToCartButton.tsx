@@ -19,7 +19,7 @@ export default function AddToCartButton({
   price,
   image,
   stock,
-  
+
 }: CartProps) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
