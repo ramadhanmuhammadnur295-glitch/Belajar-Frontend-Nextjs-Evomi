@@ -1,12 +1,12 @@
 "use client";
 
 // Halaman landing page.tsx untuk Evomi, dengan desain yang dioptimalkan untuk mobile dan desktop, serta fitur user authentication dan dynamic product fetching.
-import React, { useState, useEffect } from "react";
-import Head from "next/head";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import localFont from "next/font/local";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 // Definisikan font lokal untuk judul dan caption
 const fontJudul = localFont({
@@ -31,7 +31,6 @@ export default function EvomiLandingPage() {
   const [mounted, setMounted] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // useEffect untuk memeriksa token dan mengambil data produk saat komponen dimount
   useEffect(() => {
     setMounted(true);
     const token = localStorage.getItem("access_token");
@@ -78,6 +77,16 @@ export default function EvomiLandingPage() {
 
   // Ambil 4 produk pertama untuk ditampilkan di halaman utama
   const topFourProducts = products.slice(0, 4);
+
+  const fadeUp = {
+    hidden: { opacity: 0, y: 40 },
+    show: { opacity: 1, y: 0 }
+  };
+
+  const fadeIn = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1 }
+  };
 
   // Render halaman dengan struktur yang dioptimalkan untuk mobile dan desktop, termasuk navbar, hero section, about section, product grid, stats, testimonial, dan footer.
   return (
@@ -222,49 +231,75 @@ export default function EvomiLandingPage() {
         </nav>
 
         {/* HERO SECTION - Adjusted Typography for Mobile */}
-        <section className="relative min-h-screen flex flex-col items-center justify-center bg-white px-6 overflow-hidden">
-          {/* Tambahkan padding top (pt-20) untuk mengimbangi tinggi navbar agar konten benar-benar di tengah area yang terlihat */}
-          <div className="relative z-10 text-center space-y-6 md:space-y-8 max-w-4xl pt-20">
-            <div className="space-y-2 md:space-y-4">
-              <p className="text-stone-400 tracking-[0.3em] md:tracking-[0.5em] uppercase text-[9px] md:text-xs">
-                The Artisan Fragrance House
-              </p>
-              <h1 className={`${fontJudul.className} text-5xl sm:text-7xl md:text-[120px] leading-tight md:leading-none text-stone-900 tracking-tighter uppercase`}>
-                EVOMI
-              </h1>
-              <p className="text-stone-500 text-xs md:text-base font-light leading-relaxed max-w-xs md:max-w-xl mx-auto italic">
-                "Kurasi aroma yang melampaui waktu. Kami meracik memori dalam setiap tetes esens organik."
-              </p>
-            </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-white via-white to-blue-50 opacity-50" />
+        <div className="absolute top-20 left-10 w-40 h-40 bg-blue-200 rounded-full blur-3xl opacity-30">
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6">
-              <Link href="/produk" className="w-full sm:w-auto bg-stone-900 text-white px-8 md:px-10 py-3 md:py-4 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-[#0081D1] transition-all">
-                Explore Collection
+          <div className="absolute bottom-20 right-10 w-40 h-40 bg-amber-200 rounded-full blur-3xl opacity-30"></div>
+        </div>
+
+        <section className="relative min-h-screen flex flex-col items-center justify-center bg-white px-6 overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="relative z-10 text-center space-y-6 md:space-y-8 max-w-4xl pt-20"
+          >
+            <p className="text-stone-400 tracking-[0.5em] uppercase text-xs">
+              The Artisan Fragrance House
+            </p>
+
+            <motion.h1
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.6 }}
+              className={`${fontJudul.className} text-6xl md:text-[120px] uppercase`}
+            >
+              EVOMI
+            </motion.h1>
+
+            <p className="text-stone-500 italic max-w-xl mx-auto">
+              Kurasi aroma yang melampaui waktu.
+            </p>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="flex gap-4 justify-center"
+            >
+              <Link href="/produk" className="bg-black text-white px-8 py-3 rounded-full">
+                Explore
               </Link>
-              <Link href="#about" className="text-stone-900 border-b border-stone-900 pb-1 text-[10px] font-bold uppercase tracking-widest">
-                Our Story
-              </Link>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </section>
 
         {/* ABOUT SECTION - Stacked on Mobile */}
         <section id="about" className="py-20 md:py-32 px-6 md:px-8 max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 items-center">
-            <div className="md:col-span-4 text-center md:text-left">
-              <h2 className={`${fontJudul.className} text-3xl md:text-4xl text-stone-900 leading-tight uppercase`}>Crafting <br className="hidden md:block" /> Memories</h2>
-            </div>
-            <div className="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-12">
-              <div className="space-y-3">
-                <h3 className="font-bold text-amber-900 uppercase tracking-widest text-[10px]">Pionir Wewangian</h3>
-                <p className="text-stone-600 text-sm md:text-base leading-relaxed font-light">Evomi memadukan botani langka dengan teknik ekstraksi modern untuk karakter aroma unik.</p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 items-center">
+              <div className="md:col-span-4 text-center md:text-left">
+                <h2 className={`${fontJudul.className} text-3xl md:text-4xl text-stone-900 leading-tight uppercase`}>Crafting <br className="hidden md:block" /> Memories</h2>
               </div>
-              <div className="space-y-3">
-                <h3 className="font-bold text-amber-900 uppercase tracking-widest text-[10px]">Eksklusivitas</h3>
-                <p className="text-stone-600 text-sm md:text-base leading-relaxed font-light">Setiap batch diproduksi terbatas untuk menjamin kualitas material organik tetap terjaga.</p>
+              <div className="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-12">
+                <div className="space-y-3">
+                  <h3 className="font-bold text-amber-900 uppercase tracking-widest text-[10px]">Pionir Wewangian</h3>
+                  <p className="text-stone-600 text-sm md:text-base leading-relaxed font-light">Evomi memadukan botani langka dengan teknik ekstraksi modern untuk karakter aroma unik.</p>
+                </div>
+                <div className="space-y-3">
+                  <h3 className="font-bold text-amber-900 uppercase tracking-widest text-[10px]">Eksklusivitas</h3>
+                  <p className="text-stone-600 text-sm md:text-base leading-relaxed font-light">Setiap batch diproduksi terbatas untuk menjamin kualitas material organik tetap terjaga.</p>
+                </div>
               </div>
             </div>
-          </div>
+          </motion.div>
+
+
         </section>
 
         {/* PRODUCT GRID - Optimized Columns */}
@@ -283,20 +318,25 @@ export default function EvomiLandingPage() {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-10">
               {topFourProducts.map((parfum) => (
                 <div key={parfum.id} className="group">
-                  <div className="relative aspect-[4/5] overflow-hidden bg-stone-100 mb-3 rounded-2xl border border-stone-50 transition-all duration-500 hover:shadow-sm">
-                    <Image
-                      src={parfum.image_url || "/img/placeholder.jpg"}
-                      alt={parfum.nama}
-                      fill
-                      unoptimized
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    {/* Overlay Lihat Detail: Disembunyikan di mobile agar tidak mengganggu tap, muncul di desktop */}
-                    <Link href={`/produk/${parfum.id}`} className="absolute inset-0 z-10 opacity-0 md:group-hover:opacity-100 bg-black/5 transition-opacity flex items-end p-2 md:p-4">
-                      <div className="w-full bg-white/90 backdrop-blur py-2 md:py-3 text-[8px] md:text-[9px] uppercase font-bold tracking-widest text-center translate-y-2 group-hover:translate-y-0 transition-transform rounded-lg">
-                        Lihat Detail
-                      </div>
-                    </Link>
+                  <div className="group relative">
+                    <div className="relative aspect-[4/5] overflow-hidden bg-stone-100 mb-3 rounded-2xl border border-stone-50 transition-all duration-500 hover:shadow-sm">
+                      <Image
+                        src={parfum.image_url || "/img/placeholder.jpg"}
+                        alt={parfum.nama}
+                        fill
+                        unoptimized
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      {/* Overlay Lihat Detail: Disembunyikan di mobile agar tidak mengganggu tap, muncul di desktop */}
+                      <Link href={`/produk/${parfum.id}`} className="absolute inset-0 z-10 opacity-0 md:group-hover:opacity-100 bg-black/5 transition-opacity flex items-end p-2 md:p-4">
+                        <div className="w-full bg-white/90 backdrop-blur py-2 md:py-3 text-[8px] md:text-[9px] uppercase font-bold tracking-widest text-center translate-y-2 group-hover:translate-y-0 transition-transform rounded-lg">
+                          Lihat Detail
+                        </div>
+                      </Link>
+                    </div>
+
+                    {/* overlay smooth */}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition duration-500 rounded-2xl" />
                   </div>
 
                   <div className="text-center space-y-1 px-1">

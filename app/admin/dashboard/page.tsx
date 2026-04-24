@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from "next/navigation";
-import { User, Mail, Lock, ShieldCheck, Save, Camera, LogOut, ChevronRight } from "lucide-react";
+import { User, Mail, Lock, ShieldCheck, Save, Camera, LogOut, ChevronRight, Trash2 } from "lucide-react";
+
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<any>(null);
@@ -16,12 +17,6 @@ export default function AdminDashboard() {
 
     setIsModalOpen(true);
   };
-
-  // Contoh penggunaan saat update status berhasil:
-  // if (response.ok) { 
-  //    showModal("Berhasil!", "Status pembayaran telah diperbarui.", "success"); 
-  //    fetchData(); 
-  // }
 
   // 1. Fungsi Fetching Utama
   const fetchData = async () => {
@@ -107,7 +102,6 @@ export default function AdminDashboard() {
         }
 
         const data = await response.json();
-
         // Di dalam useEffect setelah const data = await response.json();
 
         // Hitung pendapatan hanya dari status 'success'
@@ -134,23 +128,6 @@ export default function AdminDashboard() {
     fetchStats();
   }, [router]);
 
-  const handleLogout = async () => {
-    const token = localStorage.getItem('admin_token');
-    try {
-      await fetch('http://127.0.0.1:8000/api/admin/logout', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
-      });
-    } catch (error) {
-      console.error("Gagal koneksi ke server untuk logout:", error);
-    } finally {
-      localStorage.removeItem('admin_token');
-      router.push('/admin-login');
-    }
-  };
 
   if (loading) return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
@@ -193,6 +170,40 @@ export default function AdminDashboard() {
         await fetchData();
       } else {
         showModal("Gagal", "Terjadi kesalahan saat memperbarui status.", "error");
+      }
+    } catch (error) {
+      showModal("Koneksi Error", "Pastikan server Laravel kamu menyala.", "error");
+    }
+  };
+
+  const handleDeleteOrder = async (orderId: any) => {
+    const token = localStorage.getItem('admin_token');
+
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/admin/orders/${orderId}`, {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        // Update data di UI secara lokal agar hilang dari tabel seketika
+        setStats((prevStats: any) => ({
+          ...prevStats,
+          recent_orders: prevStats.recent_orders.filter((order: any) => order.id !== orderId),
+        }));
+
+        // Memanggil custom modal popup, menghindari dialog bawaan browser lama
+        showModal(
+          "Pesanan Dihapus",
+          `Data pesanan #${orderId} telah berhasil dihapus dari sistem.`,
+          "success"
+        );
+        await fetchData();
+      } else {
+        showModal("Gagal", "Terjadi kesalahan saat menghapus pesanan.", "error");
       }
     } catch (error) {
       showModal("Koneksi Error", "Pastikan server Laravel kamu menyala.", "error");
@@ -250,10 +261,6 @@ export default function AdminDashboard() {
         </div>
       )}
 
-      {/* --- HEADER / NAVBAR --- */}
-      {/* --- NAVBAR (Identik dengan Dashboard) --- */}
-      
-
       {/* --- MAIN CONTENT --- */}
       <main className="max-w-7xl mx-auto p-6 sm:p-8">
         <header className="mb-8">
@@ -283,10 +290,6 @@ export default function AdminDashboard() {
 
         {/* Tabel Pesanan Terbaru */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          {/* <div className="p-6 border-b border-gray-100 flex justify-between items-center">
-            <h2 className="text-lg font-bold text-gray-800">Pesanan Terbaru</h2>
-            <button className="text-sm text-indigo-600 font-semibold hover:underline">Lihat Semua</button>
-          </div> */}
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead className="bg-gray-50/50 text-gray-600 text-xs uppercase font-bold tracking-widest">
@@ -294,13 +297,12 @@ export default function AdminDashboard() {
                   <th className="p-4">ID Pesanan</th>
                   <th className="p-4">Status</th>
                   <th className="p-4">Total</th>
+                  <th className="p-4 text-center">Aksi</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
                 {stats?.recent_orders?.map((order: any) => (
                   <tr key={order.id} className="hover:bg-gray-50/80 transition-colors">
-                    {/* <td className="p-4 font-semibold text-gray-700">#{order.id}</td> */}
-
                     {/* Ubah ini di tabel dashboard kamu */}
                     <td className="p-4 font-semibold text-gray-700">
                       <button
@@ -311,7 +313,6 @@ export default function AdminDashboard() {
                         <ChevronRight size={14} className="opacity-0 group-hover:opacity-100" />
                       </button>
                     </td>
-
                     <td className="p-4">
                       <select
                         value={order.status_pembayaran || 'pending'}
@@ -335,6 +336,16 @@ export default function AdminDashboard() {
                         currency: 'IDR',
                         minimumFractionDigits: 0,
                       }).format(order.total_harga || 0)}
+                    </td>
+                    {/* --- Kolom Tombol Hapus --- */}
+                    <td className="p-4 text-center">
+                      <button
+                        onClick={() => handleDeleteOrder(order.id)}
+                        className="p-2 text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-xl transition-colors inline-flex items-center justify-center"
+                        title="Hapus Pesanan"
+                      >
+                        <Trash2 size={18} />
+                      </button>
                     </td>
                   </tr>
                 ))}
