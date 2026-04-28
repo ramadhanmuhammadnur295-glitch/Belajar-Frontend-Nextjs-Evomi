@@ -11,10 +11,10 @@ import ShoppingBag from "@/components/ShoppingBag";
 // --- Animasi Variants ---
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 30 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] } 
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }
   }
 };
 
@@ -165,8 +165,8 @@ export default function LuxuryProfilePage() {
 
   if (!mounted || !user) return (
     <div className="min-h-screen bg-[#FBFBF9] flex items-center justify-center">
-      <motion.div 
-        animate={{ opacity: [0.3, 1, 0.3] }} 
+      <motion.div
+        animate={{ opacity: [0.3, 1, 0.3] }}
         transition={{ duration: 2, repeat: Infinity }}
         className="text-[10px] uppercase tracking-[0.5em] text-stone-400 font-bold"
       >
@@ -192,11 +192,11 @@ export default function LuxuryProfilePage() {
 
       {/* AMBIENT BACKGROUND */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }} animate={{ opacity: 0.4 }} transition={{ duration: 2 }}
           className="absolute top-20 left-10 w-[30rem] h-[30rem] bg-stone-200/40 rounded-full blur-[100px]"
         ></motion.div>
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }} animate={{ opacity: 0.4 }} transition={{ duration: 2, delay: 0.5 }}
           className="absolute bottom-20 right-10 w-[30rem] h-[30rem] bg-amber-100/30 rounded-full blur-[100px]"
         ></motion.div>
@@ -206,7 +206,7 @@ export default function LuxuryProfilePage() {
 
         {/* LEFT: IDENTITY SIDEBAR */}
         <div className="md:col-span-4">
-          <motion.div 
+          <motion.div
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
@@ -293,17 +293,17 @@ export default function LuxuryProfilePage() {
       <AnimatePresence>
         {isModalOpen && (
           <div className="fixed inset-0 z-[110] flex items-center justify-center p-6">
-            <motion.div 
-              initial={{ opacity: 0 }} 
-              animate={{ opacity: 1 }} 
-              exit={{ opacity: 0 }} 
-              onClick={closeModal} 
-              className="absolute inset-0 bg-stone-900/20 backdrop-blur-sm" 
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={closeModal}
+              className="absolute inset-0 bg-stone-900/20 backdrop-blur-sm"
             />
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9, y: 20 }} 
-              animate={{ opacity: 1, scale: 1, y: 0 }} 
-              exit={{ opacity: 0, scale: 0.9, y: 20 }} 
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               className="relative bg-white w-full max-w-xl rounded-[2.5rem] p-10 md:p-14 shadow-2xl overflow-hidden border border-stone-100"
             >
@@ -314,7 +314,7 @@ export default function LuxuryProfilePage() {
                 </div>
 
                 {statusMessage.text && (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     className={`p-4 rounded-xl text-[10px] font-bold uppercase tracking-widest ${statusMessage.type === 'success' ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700'}`}
