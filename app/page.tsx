@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { motion, Variants, useScroll, useTransform } from "framer-motion";
 
 import ImageCarousel from "@/components/ImageCarousel";
+import { SocialIcon } from 'react-social-icons'
 
 // ... import lainnya
 import QuizModal from "@/components/QuizModal";
@@ -119,6 +120,36 @@ export default function EvomiLandingPage() {
   return (
     <div style={{ opacity: mounted ? 1 : 0 }} className={`${fontCaption.variable} ${fontJudul.variable} selection:bg-amber-200 selection:text-stone-900 transition-opacity duration-500`}>
 
+      {/* FLOATING ACTION BUTTON (WHATSAPP/CHAT) */}
+      {/* FLOATING ACTION BUTTON (WHATSAPP/CHAT) */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.5, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ delay: 1.5, duration: 0.8, type: "spring", bounce: 0.5 }}
+        className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[90]"
+      >
+        {/* Ganti <a> eksternal dengan <div> agar tidak terjadi nesting anchor */}
+        <div className="relative flex items-center justify-center w-14 h-14 bg-stone-900 rounded-full shadow-[0_10px_40px_rgba(0,0,0,0.15)] hover:shadow-[0_10px_40px_rgba(0,0,0,0.3)] hover:-translate-y-1 transition-all duration-300 group">
+
+          <span className="absolute inset-0 rounded-full bg-stone-500 opacity-20 animate-ping group-hover:animate-none"></span>
+
+          {/* Gunakan properti 'url' langsung di SocialIcon. Ini akan merender SATU tag <a> saja */}
+          <SocialIcon
+            url="https://wa.me/62800000000" // Link WhatsApp pindah ke sini
+            network="whatsapp"
+            target="_blank"
+            rel="noopener noreferrer"
+            fgColor="#FBFBF9"
+            bgColor="transparent"
+            style={{ height: 32, width: 32 }}
+            className="relative z-10"
+          />
+
+          <span className="absolute right-16 px-4 py-2.5 bg-white text-stone-800 text-[10px] font-bold uppercase tracking-[0.2em] rounded-xl opacity-0 pointer-events-none group-hover:opacity-100 transition-all duration-300 shadow-xl border border-stone-100 whitespace-nowrap translate-x-2 group-hover:translate-x-0">
+            Chat Admin
+          </span>
+        </div>
+      </motion.div>
 
       {/* Komponen Modal */}
       <QuizModal isOpen={isQuizOpen} onClose={() => setIsQuizOpen(false)} />
@@ -179,7 +210,10 @@ export default function EvomiLandingPage() {
         </nav>
 
         {/* HERO SECTION WITH PARALLAX */}
-        <section ref={heroRef} className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden pt-20">
+        <section
+          ref={heroRef}
+          className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden pt-20"
+        >
           <motion.div
             style={{ y: heroBgY }}
             className="absolute inset-0 bg-gradient-to-b from-[#FBFBF9] via-stone-50 to-[#F5F5F0] opacity-80 scale-125 origin-top"
@@ -322,7 +356,11 @@ export default function EvomiLandingPage() {
         </section>
 
         {/* TESTIMONIAL SECTION WITH PARALLAX */}
-        <section ref={testimonialRef} className="py-24 md:py-32 bg-stone-950 text-white px-6 relative overflow-hidden z-20">
+        <section
+          ref={testimonialRef}
+          className="relative py-24 md:py-32 bg-stone-950 text-white px-6 overflow-hidden z-20"
+        >
+          {/* Pastikan section ini 'relative' agar koordinat 'testimonialGlowY' dihitung dari sini */}
           <motion.div
             style={{ y: testimonialGlowY }}
             className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-full bg-stone-800/30 blur-[120px] rounded-full pointer-events-none"
@@ -385,15 +423,35 @@ export default function EvomiLandingPage() {
               </div>
             </div>
           </div>
-          <div className="flex flex-col md:flex-row justify-between items-center text-center text-[10px] text-stone-400 uppercase tracking-[0.2em] pt-8 border-t border-stone-100 gap-4">
-            <div>&copy; {new Date().getFullYear()} EVOMI FRAGRANCE HOUSE</div>
+          <div className="flex flex-col md:flex-row justify-around items-center text-center text-[10px] text-stone-400 uppercase tracking-[0.2em] pt-8 border-t border-stone-100 gap-4">
+            <div>
+              &copy; {mounted ? new Date().getFullYear() : "2026"} EVOMI FRAGRANCE HOUSE
+            </div>
             <div className="flex space-x-6">
-              <a href="#" className="hover:text-stone-900 transition-colors">Instagram</a>
-              <a href="#" className="hover:text-stone-900 transition-colors">TikTok</a>
-              <a href="#" className="hover:text-stone-900 transition-colors">Terms</a>
+              {/* Instagram */}
+              <SocialIcon
+                url="https://instagram.com/evomi"
+                network="instagram"
+                fgColor="currentColor"
+                bgColor="transparent"
+                className="hover:text-stone-900 transition-colors"
+                style={{ height: 25, width: 25 }} // Ukuran ikon disesuaikan agar proporsional dengan teks [10px]
+              />
+
+              {/* TikTok */}
+              <SocialIcon
+                url="https://tiktok.com/@evomi"
+                network="tiktok"
+                fgColor="currentColor"
+                bgColor="transparent"
+                className="hover:text-stone-900 transition-colors"
+                style={{ height: 25, width: 25 }}
+              />
             </div>
           </div>
         </motion.footer>
+
+
       </div>
     </div>
   );
