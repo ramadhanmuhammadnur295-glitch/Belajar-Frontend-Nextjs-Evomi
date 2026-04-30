@@ -19,7 +19,7 @@ const containerVariants = {
     }
 };
 
-const itemVariants = {
+const itemVariants = {  // Variants untuk animasi item
     hidden: { opacity: 0, y: 30 },
     visible: {
         opacity: 1,
@@ -35,12 +35,13 @@ const fontJudul = localFont({
     display: "swap",
 });
 
-const fontCaption = localFont({
+const fontCaption = localFont({ // Font untuk caption
     src: "../fonts/Nohemi-Regular.otf",
     variable: "--font-body",
     display: "swap",
 });
 
+// Komponen utama
 export default function OrderHistoryPage() {
     const router = useRouter();
     const [user, setUser] = useState<any>(null);

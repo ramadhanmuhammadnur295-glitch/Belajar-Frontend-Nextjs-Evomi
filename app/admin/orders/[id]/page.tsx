@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 
+// Component
 export default function AdminOrderDetail() {
   const params = useParams();
   const router = useRouter();
@@ -53,6 +54,7 @@ export default function AdminOrderDetail() {
     }
   };
 
+  // Lifecycle
   useEffect(() => {
     if (params.id) fetchOrderDetail();
   }, [params.id]);
@@ -82,6 +84,7 @@ export default function AdminOrderDetail() {
     }
   };
 
+  // Loading State
   if (loading) return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
@@ -90,6 +93,7 @@ export default function AdminOrderDetail() {
 
   if (!order) return <div className="p-10 text-center">Order tidak ditemukan.</div>;
 
+  // Render UI
   return (
     <div className="bg-[#F8FAFC] min-h-screen pb-20">
       {/* NAVBAR */}
@@ -105,6 +109,7 @@ export default function AdminOrderDetail() {
             <h1 className="font-bold text-gray-800">Detail Pesanan #{order.id}</h1>
           </div>
 
+          {/* Status Selector */}
           <div className="flex items-center gap-3">
             <span className="text-xs font-medium text-gray-400 uppercase tracking-widest">Status:</span>
             <select
@@ -122,6 +127,7 @@ export default function AdminOrderDetail() {
         </div>
       </nav>
 
+      {/* MAIN CONTENT */}
       <main className="max-w-6xl mx-auto p-6 md:p-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 

@@ -1,8 +1,10 @@
 "use client";
 
+// import module
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
+// TODO: Add discount logic here
 interface CartProps {
   productId: string;
   productName: string;
@@ -12,6 +14,7 @@ interface CartProps {
   onSuccess?: () => void; // Tambahkan prop ini
 }
 
+// TODO: Add discount logic here
 export default function AddToCartButton({
   onSuccess,
   productId,

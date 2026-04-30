@@ -1,20 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import localFont from "next/font/local";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-
-const fontJudul = localFont({
-  src: "../../public/fonts/8 Heavy.ttf",
-  variable: "--font-brand",
-});
-
-const fontCaption = localFont({
-  src: "../../public/fonts/Nohemi-Regular.otf",
-  variable: "--font-body",
-});
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { Lock, User, Mail, AtSign, Loader2, ArrowLeft } from "lucide-react";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -22,10 +12,10 @@ export default function RegisterPage() {
   // State untuk form sesuai kebutuhan API Laravel
   const [formData, setFormData] = useState({
     name: "",
-    username: "", // Tambahan field username
+    username: "",
     email: "",
     password: "",
-    password_confirmation: "", // Dibutuhkan oleh validasi 'confirmed' di Laravel
+    password_confirmation: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -52,14 +42,13 @@ export default function RegisterPage() {
         throw new Error(data.message || "Registrasi gagal.");
       }
 
-      // SIMPAN DATA PENTING: Token dan Objek User (termasuk username)
+      // Simpan Token dan Data User sesuai referensi
       localStorage.setItem("access_token", data.access_token);
       localStorage.setItem("user_data", JSON.stringify(data.user));
 
-      // Redirect ke Homepage
       router.push("/");
-
-      // Refresh untuk memastikan useEffect di Navbar membaca data terbaru
+      
+      // Refresh untuk memperbarui state auth di komponen lain
       setTimeout(() => {
         router.refresh();
       }, 100);
@@ -71,165 +60,172 @@ export default function RegisterPage() {
   };
 
   return (
-    <div
-      className={`${fontCaption.variable} ${fontJudul.variable} flex min-h-screen bg-[#FBFBF9] font-sans`}
-    >
+    <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC] px-4 py-12">
+      {/* Dekorasi Background */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-5%] right-[-5%] w-[35%] h-[35%] bg-slate-100 rounded-full blur-[100px]" />
+        <div className="absolute bottom-[-5%] left-[-5%] w-[35%] h-[35%] bg-blue-50/50 rounded-full blur-[100px]" />
+      </div>
+
+      {/* Back to Home Link */}
       <Link
         href="/"
-        className="absolute top-8 right-8 z-50 flex items-center space-x-2 text-white lg:text-stone-400 lg:hover:text-[#0081D1] transition-colors group"
+        className="absolute top-8 left-8 z-50 flex items-center space-x-2 text-slate-400 hover:text-slate-900 transition-colors group"
       >
+        <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
         <span className="text-[10px] uppercase tracking-[0.2em] font-bold">
           Back to Home
         </span>
-        <svg
-          className="w-4 h-4 transform group-hover:translate-x-1 transition-transform"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="square"
-            strokeLinejoin="miter"
-            strokeWidth="1.5"
-            d="M17 8l4 4m0 0l-4 4m4-4H3"
-          />
-        </svg>
       </Link>
 
-      <div className="w-full lg:w-1/2 flex items-center justify-center px-8 py-12 order-2 lg:order-1">
-        <div className="w-full max-w-sm space-y-10">
-          <div className="text-center space-y-4">
-            <Link href="/" className="inline-block">
-              <Image
-                src="/img/Logo Evomi.png"
-                alt="Logo"
-                width={100}
-                height={40}
-                className="brightness-0 mx-auto"
-              />
-            </Link>
-            <h1
-              className={`${fontJudul.className} text-4xl uppercase tracking-tighter text-stone-900`}
-            >
-              Join Us
-            </h1>
+      <motion.div 
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full max-w-lg z-10"
+      >
+        <div className="bg-white border border-slate-200 p-10 shadow-[0_8px_40px_rgba(0,0,0,0.03)] rounded-[2.5rem]">
+          {/* Header Konten */}
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold tracking-tight text-slate-900 leading-tight">
+              Join the community <br />
+              <span className="italic uppercase tracking-tighter font-black text-slate-800">Evomi</span>
+            </h2>
+            <div className="h-1 w-8 bg-slate-900 mx-auto mt-4 rounded-full" />
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {error && (
-              <div className="text-[10px] text-red-500 uppercase tracking-widest text-center">
-                {error}
+          {/* Pesan Error */}
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-600 text-xs font-bold rounded-2xl text-center uppercase tracking-wide">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {/* Full Name */}
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-widest text-slate-400 font-bold ml-1">
+                  Full Name
+                </label>
+                <div className="relative group">
+                  <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300 group-focus-within:text-slate-900 transition-colors" />
+                  <input
+                    type="text"
+                    required
+                    className="w-full bg-slate-50/50 border border-slate-200 rounded-2xl pl-12 pr-4 py-3.5 outline-none focus:bg-white focus:border-slate-900 focus:ring-4 focus:ring-slate-900/5 transition-all text-sm text-slate-900"
+                    placeholder="Full Name"
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  />
+                </div>
               </div>
-            )}
 
-            <div className="flex flex-col space-y-2">
-              <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-stone-400">
-                Full Name
-              </label>
-              <input
-                type="text"
-                required
-                className="border-b border-stone-200 bg-transparent py-2 outline-none focus:border-[#0081D1] transition-colors text-stone-900"
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-              />
+              {/* Username */}
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-widest text-slate-400 font-bold ml-1">
+                  Username
+                </label>
+                <div className="relative group">
+                  <AtSign className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300 group-focus-within:text-slate-900 transition-colors" />
+                  <input
+                    type="text"
+                    required
+                    className="w-full bg-slate-50/50 border border-slate-200 rounded-2xl pl-12 pr-4 py-3.5 outline-none focus:bg-white focus:border-slate-900 focus:ring-4 focus:ring-slate-900/5 transition-all text-sm text-slate-900"
+                    placeholder="Username"
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        username: e.target.value.toLowerCase().replace(/\s/g, ""),
+                      })
+                    }
+                  />
+                </div>
+              </div>
             </div>
 
-            {/* USERNAME (BARU) */}
-            <div className="flex flex-col space-y-1">
-              <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-stone-400">
-                Username
-              </label>
-              <input
-                type="text"
-                required
-                className="border-b border-stone-200 bg-transparent py-2 outline-none focus:border-[#0081D1] transition-colors text-stone-900"
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    username: e.target.value.toLowerCase().replace(/\s/g, ""),
-                  })
-                }
-              />
-            </div>
-
-            <div className="flex flex-col space-y-2">
-              <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-stone-400">
+            {/* Email Address */}
+            <div className="space-y-2">
+              <label className="text-[10px] uppercase tracking-widest text-slate-400 font-bold ml-1">
                 Email Address
               </label>
-              <input
-                type="email"
-                required
-                className="border-b border-stone-200 bg-transparent py-2 outline-none focus:border-[#0081D1] transition-colors text-stone-900"
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-              />
+              <div className="relative group">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300 group-focus-within:text-slate-900 transition-colors" />
+                <input
+                  type="email"
+                  required
+                  className="w-full bg-slate-50/50 border border-slate-200 rounded-2xl pl-12 pr-4 py-3.5 outline-none focus:bg-white focus:border-slate-900 focus:ring-4 focus:ring-slate-900/5 transition-all text-sm text-slate-900"
+                  placeholder="email@customer.com"
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                />
+              </div>
             </div>
 
-            <div className="flex flex-col space-y-2">
-              <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-stone-400">
-                Password
-              </label>
-              <input
-                type="password"
-                required
-                className="border-b border-stone-200 bg-transparent py-2 outline-none focus:border-[#0081D1] transition-colors text-stone-900"
-                onChange={(e) =>
-                  setFormData({ ...formData, password: e.target.value })
-                }
-              />
-            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {/* Password */}
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-widest text-slate-400 font-bold ml-1">
+                  Password
+                </label>
+                <div className="relative group">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300 group-focus-within:text-slate-900 transition-colors" />
+                  <input
+                    type="password"
+                    required
+                    className="w-full bg-slate-50/50 border border-slate-200 rounded-2xl pl-12 pr-4 py-3.5 outline-none focus:bg-white focus:border-slate-900 focus:ring-4 focus:ring-slate-900/5 transition-all text-sm text-slate-900"
+                    placeholder="••••••••"
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  />
+                </div>
+              </div>
 
-            {/* Tambahan: Confirm Password agar sinkron dengan AuthController Laravel */}
-            <div className="flex flex-col space-y-2">
-              <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-stone-400">
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                required
-                className="border-b border-stone-200 bg-transparent py-2 outline-none focus:border-[#0081D1] transition-colors text-stone-900"
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    password_confirmation: e.target.value,
-                  })
-                }
-              />
+              {/* Confirm Password */}
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-widest text-slate-400 font-bold ml-1">
+                  Confirm
+                </label>
+                <div className="relative group">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300 group-focus-within:text-slate-900 transition-colors" />
+                  <input
+                    type="password"
+                    required
+                    className="w-full bg-slate-50/50 border border-slate-200 rounded-2xl pl-12 pr-4 py-3.5 outline-none focus:bg-white focus:border-slate-900 focus:ring-4 focus:ring-slate-900/5 transition-all text-sm text-slate-900"
+                    placeholder="••••••••"
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        password_confirmation: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+              </div>
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-stone-900 py-4 text-white uppercase tracking-widest text-xs font-bold hover:bg-[#0081D1] transition-all rounded-full disabled:bg-stone-400"
+              className="w-full bg-slate-900 hover:bg-black disabled:bg-slate-400 text-white py-4.5 rounded-2xl text-xs font-bold uppercase tracking-[0.25em] transition-all mt-6 flex items-center justify-center gap-2 shadow-xl shadow-slate-200"
             >
-              {loading ? "Processing..." : "Create Account"}
+              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Create Account"}
             </button>
           </form>
 
-          <p className="text-center text-sm text-stone-500 font-light">
-            Already a member?{" "}
-            <Link
-              href="/login"
-              className="font-bold text-stone-900 underline underline-offset-4 hover:text-[#0081D1]"
-            >
-              Sign In
-            </Link>
-          </p>
+          <div className="mt-10 text-center">
+            <p className="text-[13px] text-slate-400 font-medium">
+              Already have an account?{" "}
+              <Link
+                href="/login"
+                className="text-slate-900 font-bold underline underline-offset-8 hover:text-slate-600 transition-colors"
+              >
+                Sign In Instead
+              </Link>
+            </p>
+          </div>
         </div>
-      </div>
-
-      <div className="relative hidden lg:block w-1/2 overflow-hidden bg-stone-100 order-1 lg:order-2">
-        <Image
-          src="/img/poster/Artboard 2.jpeg"
-          alt="Evomi Mood"
-          fill
-          className="object-contain"
-        />
-        <div className="absolute inset-0 bg-stone-900/5" />
-      </div>
+        
+        <p className="text-center mt-8 text-[9px] text-slate-400 font-medium uppercase tracking-[0.3em]">
+          Official Evomi Registration Portal
+        </p>
+      </motion.div>
     </div>
   );
 }

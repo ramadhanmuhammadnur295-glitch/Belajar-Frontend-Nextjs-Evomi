@@ -14,6 +14,7 @@ interface CartItem {
   image: string;
 }
 
+// shopping bag component
 export default function ShoppingBag() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);

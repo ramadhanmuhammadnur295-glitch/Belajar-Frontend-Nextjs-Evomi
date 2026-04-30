@@ -1,17 +1,19 @@
 "use client";
 
+// import module
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import Image from 'next/image';
 
-
+// poster data
 const posters = [
   { id: 1, src: '/images/poster1.jpg', alt: 'Promo Spesial 1' },
   { id: 2, src: '/images/poster2.jpg', alt: 'Koleksi Terbaru' },
   { id: 3, src: '/images/poster3.jpg', alt: 'Diskon Musim Ini' },
 ];
 
+// poster slider component
 const PosterSlider = () => {
   return (
     <section className="w-full py-12 bg-white">

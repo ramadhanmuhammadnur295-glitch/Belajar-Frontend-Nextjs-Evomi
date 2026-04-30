@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react"; // Import useEffect dan useState dari react
+import { useRouter } from "next/navigation"; // Import useRouter dari next/navigation
 import { LogOut, Menu } from "lucide-react"; // Pastikan lucide-react terinstall
 import Sidebar from "@/components/admin/Sidebar"; // Sesuaikan path jika berbeda
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+// AdminLayout adalah komponen layout untuk halaman admin
+export default function AdminLayout({ children }: { children: React.ReactNode }) {  
     const router = useRouter();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [adminData, setAdminData] = useState({ name: "Admin", email: "" });
@@ -18,6 +19,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             return;
         }
 
+        // 2. Fetch Data Admin
         const fetchAdminMe = async () => {
             try {
                 const res = await fetch("http://127.0.0.1:8000/api/admin/me", {
@@ -35,6 +37,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             }
         };
 
+        // 3. Panggil fungsi fetchAdminMe
         fetchAdminMe();
     }, [router]);
 
@@ -57,6 +60,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         }
     };
 
+    // 3. Return JSX
     return (
         <div className="flex min-h-screen bg-[#F8F8F8]">
             

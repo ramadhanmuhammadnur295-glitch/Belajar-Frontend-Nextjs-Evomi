@@ -15,13 +15,14 @@ const fontJudul = localFont({
     display: "swap",
 });
 
+// Font untuk caption
 const fontCaption = localFont({
     src: "../../fonts/Nohemi-Regular.otf",
     variable: "--font-body",
     display: "swap",
 });
 
-
+// Component utama
 export default function OrderDetailPage() {
     const params = useParams();
     const router = useRouter();
@@ -44,6 +45,7 @@ export default function OrderDetailPage() {
             return;
         }
 
+        // Fungsi untuk mengambil detail order
         const fetchOrderDetail = async () => {
             try {
                 const response = await fetch(`http://localhost:8000/api/orders/${params.id}`, {
@@ -63,7 +65,7 @@ export default function OrderDetailPage() {
             }
         };
 
-        if (params.id) fetchOrderDetail();
+        if (params.id) fetchOrderDetail();  // Memanggil fungsi untuk mengambil detail order
     }, [params.id, router]);
 
     // useEffect Fungsi ke 2, Modifikasi useEffect polling status
@@ -90,10 +92,10 @@ export default function OrderDetailPage() {
                     if (result.transaction_status === 'settlement' || result.transaction_status === 'capture') {
                         setOrder((prev: any) => ({ ...prev, status_pembayaran: "success" }));
 
-                        await updatePaymentStatusToSuccess();
-                        setIsModalOpen(false);
-                        setIsSuccessModalOpen(true);
-                        clearInterval(interval);
+                        await updatePaymentStatusToSuccess();   // Memanggil fungsi untuk update status pembayaran
+                        setIsModalOpen(false);  // Menutup modal
+                        setIsSuccessModalOpen(true);    // Menampilkan modal success
+                        clearInterval(interval);    // Menghentikan polling
                     }
                 } catch (error) {
                     console.error("Polling error:", error);

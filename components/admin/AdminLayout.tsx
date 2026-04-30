@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { LogOut, Menu, X, User, Bell } from "lucide-react";
 import Link from "next/link";
 
+// TODO: Add discount logic here
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const router = useRouter();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

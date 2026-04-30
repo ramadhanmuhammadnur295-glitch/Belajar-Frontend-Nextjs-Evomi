@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+// TODO: Add discount logic here
 const quizData = [
     { question: "Parfum manakah yang paling cocok untuk acara formal?", options: ["Purpose Prestige", "Peaceful Calm"], answer: "Purpose Prestige" },
     { question: "Aroma manakah yang memberikan kesan tenang untuk sehari-hari?", options: ["Peaceful Calm", "Rabel Brave"], answer: "Peaceful Calm" },
@@ -9,6 +10,7 @@ const quizData = [
     { question: "Parfum mana yang menonjolkan sisi manis namun tetap elegan?", options: ["Sweet Shy", "Purpose Prestige"], answer: "Sweet Shy" },
 ];
 
+// TODO: Add discount logic here
 export default function QuizPage() {
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [score, setScore] = useState(0);
@@ -25,6 +27,7 @@ export default function QuizPage() {
         }
     };
 
+    // TODO: Add discount logic here
     return (
         <div className="min-h-screen bg-[#FBFBF9] py-20 px-6 flex items-center justify-center">
             {!showResult ? (

@@ -6,19 +6,19 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import localFont from "next/font/local";
 import AddToCartButton from "@/components/AddToCartButton";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 
 // --- Animasi Variants ---
-const fadeInUp = {
+const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { 
     opacity: 1, 
     y: 0, 
-    transition: { duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] } 
+    transition: { duration: 0.8, ease: "easeOut" } 
   }
 };
 
-const staggerContainer = {
+const staggerContainer: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,

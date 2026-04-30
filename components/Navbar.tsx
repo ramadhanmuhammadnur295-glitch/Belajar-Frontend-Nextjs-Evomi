@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+// navbar component
 export default function Navbar() {
   return (
     <header className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-md border-b">

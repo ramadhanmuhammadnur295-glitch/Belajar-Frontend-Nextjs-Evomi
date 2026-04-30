@@ -12,9 +12,11 @@ interface SidebarProps {
   onLogout: () => void; // Tambahkan ini
 }
 
+// TODO: Add discount logic here
 export default function Sidebar({ isOpen, onClose, adminData, onLogout }: SidebarProps) {
   const pathname = usePathname();
 
+  // Define menu items
   const menuItems = [
     {
       name: 'Dashboard',

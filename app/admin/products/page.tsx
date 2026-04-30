@@ -18,6 +18,7 @@ interface Product {
     status_stok?: string;
 }
 
+// MAIN COMPONENT
 export default function ProductsMenu() {
     const [products, setProducts] = useState<Product[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -71,15 +72,18 @@ export default function ProductsMenu() {
         }
     };
 
+    // HANDLER FUNCTIONS
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
+    // handle file change
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) setImageFile(e.target.files[0]);
     };
 
+    // open create modal
     const openCreateModal = () => {
         setFormData({ id: "", nama: "", harga_retail: 0, stok_tersedia: 0, ukuran: "50ml", konsentrasi: "Eau de Parfum (EDP)", vibe: "", deskripsi: "" });
         setImageFile(null);
@@ -87,6 +91,7 @@ export default function ProductsMenu() {
         setIsModalOpen(true);
     };
 
+    // open edit modal
     const openEditModal = (product: Product) => {
         setFormData({
             id: product.id,
@@ -103,6 +108,7 @@ export default function ProductsMenu() {
         setIsModalOpen(true);
     };
 
+    // submit form
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
@@ -136,6 +142,7 @@ export default function ProductsMenu() {
         }
     };
 
+    // handle delete
     const handleDelete = async (id: string) => {
         if (!confirm(`Hapus produk ${id}?`)) return;
         try {
@@ -149,6 +156,7 @@ export default function ProductsMenu() {
         }
     };
 
+    // render page
     return (
         <div className="p-8 bg-gray-50 min-h-screen">
             {/* Success Popup Modal */}

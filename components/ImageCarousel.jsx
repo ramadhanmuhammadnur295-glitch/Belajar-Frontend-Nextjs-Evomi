@@ -1,9 +1,11 @@
 "use client";
 
+// import module
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
+// TODO: Add discount logic here
 const posters = [
   {
     id: 1,
@@ -28,6 +30,7 @@ const posters = [
   },
 ];
 
+// image carousel component
 export default function ImageCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
 

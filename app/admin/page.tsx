@@ -2,6 +2,7 @@
 
 import AdminLayout from "@/components/admin/AdminLayout";
 
+// AdminDashboard adalah halaman utama dashboard admin
 export default function AdminDashboard() {
   const stats = [
     { label: "Total Revenue", value: "Rp 12.450.000", change: "+12%" },
@@ -11,6 +12,7 @@ export default function AdminDashboard() {
   ];
 
   return (
+    // 1. Menggunakan komponen AdminLayout sebagai wrapper
     <AdminLayout>
       <header className="mb-12">
         <h2 className="text-3xl font-light tracking-tighter uppercase">Overview</h2>

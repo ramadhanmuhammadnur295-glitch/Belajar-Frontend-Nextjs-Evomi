@@ -25,6 +25,7 @@ const fadeInUp: Variants = {
   }
 };
 
+// 
 const staggerContainer: Variants = {
   hidden: { opacity: 0 },
   visible: {
@@ -35,18 +36,21 @@ const staggerContainer: Variants = {
   }
 };
 
+// Font untuk judul
 const fontJudul = localFont({
   src: "./fonts/8 Heavy.ttf",
   variable: "--font-brand",
   display: "swap",
 });
 
+// Font untuk caption
 const fontCaption = localFont({
   src: "./fonts/Nohemi-Regular.otf",
   variable: "--font-body",
   display: "swap",
 });
 
+// Component utama
 export default function EvomiLandingPage() {
   const router = useRouter();
   const [user, setUser] = useState<{ email: string; name: string; username: string; image: string; } | null>(null);
@@ -76,6 +80,7 @@ export default function EvomiLandingPage() {
   const testimonialGlowY = useTransform(testimonialScrollY, [0, 1], ["-40%", "40%"]);
   // ----------------------
 
+  // Effect untuk inisialisasi
   useEffect(() => {
     setMounted(true);
     const token = localStorage.getItem("access_token");
@@ -84,6 +89,7 @@ export default function EvomiLandingPage() {
       try { setUser(JSON.parse(savedUser)); } catch (error) { console.error(error); }
     }
 
+    // Fetch products
     const fetchProducts = async () => {
       try {
         const response = await fetch("http://localhost:8000/api/products", { headers: { Accept: "application/json" } });
@@ -94,6 +100,7 @@ export default function EvomiLandingPage() {
     fetchProducts();
   }, []);
 
+  // Handle logout
   const handleLogout = async () => {
     try {
       const token = localStorage.getItem("access_token");
@@ -113,14 +120,12 @@ export default function EvomiLandingPage() {
     setIsMobileMenuOpen(false);
   };
 
-  // if (!mounted) return null;
-
+  // Get top 4 products
   const topFourProducts = products.slice(0, 4);
 
   return (
     <div style={{ opacity: mounted ? 1 : 0 }} className={`${fontCaption.variable} ${fontJudul.variable} selection:bg-amber-200 selection:text-stone-900 transition-opacity duration-500`}>
 
-      {/* FLOATING ACTION BUTTON (WHATSAPP/CHAT) */}
       {/* FLOATING ACTION BUTTON (WHATSAPP/CHAT) */}
       <motion.div
         initial={{ opacity: 0, scale: 0.5, y: 20 }}
@@ -155,8 +160,6 @@ export default function EvomiLandingPage() {
       <QuizModal isOpen={isQuizOpen} onClose={() => setIsQuizOpen(false)} />
 
       <div className="min-h-screen bg-[#FBFBF9] text-stone-900 font-sans antialiased">
-
-
 
         {/* NAVBAR */}
         <nav className="fixed w-full z-[100] bg-stone-900/80 backdrop-blur-xl border-b border-white/5 shadow-[0_4px_30px_rgba(0,0,0,0.05)] transition-all duration-300">
@@ -424,10 +427,14 @@ export default function EvomiLandingPage() {
             </div>
           </div>
           <div className="flex flex-col md:flex-row justify-around items-center text-center text-[10px] text-stone-400 uppercase tracking-[0.2em] pt-8 border-t border-stone-100 gap-4">
+            
+            {/* Year and Company Name */}
             <div>
               &copy; {mounted ? new Date().getFullYear() : "2026"} EVOMI FRAGRANCE HOUSE
             </div>
+
             <div className="flex space-x-6">
+
               {/* Instagram */}
               <SocialIcon
                 url="https://instagram.com/evomi"
@@ -450,8 +457,6 @@ export default function EvomiLandingPage() {
             </div>
           </div>
         </motion.footer>
-
-
       </div>
     </div>
   );

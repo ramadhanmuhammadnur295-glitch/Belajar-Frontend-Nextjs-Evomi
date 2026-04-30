@@ -16,7 +16,7 @@ const fadeInUp: Variants = {
   }
 };
 
-const staggerContainer: Variants = {
+const staggerContainer: Variants = {  // Variants untuk stagger animation
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -33,7 +33,7 @@ const fontJudul = localFont({
   display: "swap",
 });
 
-const fontCaption = localFont({
+const fontCaption = localFont({ // Variants untuk font caption
   src: "./../fonts/Nohemi-Regular.otf",
   variable: "--font-body",
   display: "swap",
@@ -61,6 +61,7 @@ const ProductCard = ({ parfum }: { parfum: any }) => {
           </span>
         </div>
 
+        {/* Link to Product Detail */}
         <Link href={`/produk/${parfum.id}`} className="absolute inset-0 z-10 opacity-0 md:group-hover:opacity-100 bg-stone-900/10 backdrop-blur-[2px] transition-all duration-500 flex items-end p-4">
           <div className="w-full bg-white/95 backdrop-blur-md py-3.5 text-[10px] uppercase font-bold tracking-widest text-center text-stone-800 translate-y-4 group-hover:translate-y-0 transition-all duration-500 rounded-xl shadow-lg hover:bg-stone-900 hover:text-white">
             View Details
@@ -76,7 +77,8 @@ const ProductCard = ({ parfum }: { parfum: any }) => {
         <p className="text-[10px] text-stone-500 italic line-clamp-1 px-4">
           {parfum.deskripsi}
         </p>
-        <p className="text-stone-600 font-medium text-[11px] md:text-sm tracking-wide pt-2">
+        <p className="text-stone-700 font-medium text-[11px] md:text-sm tracking-wide pt-2">
+          {/* TODO: Add discount logic here */}
           Rp {Number(parfum.harga_retail).toLocaleString("id-ID")}
         </p>
       </div>
@@ -84,14 +86,15 @@ const ProductCard = ({ parfum }: { parfum: any }) => {
   );
 };
 
-export default function ProductsPage() {
+export default function ProductsPage() {  // TODO: Add discount logic here
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
 
+  // TODO: Add discount logic here
   useEffect(() => {
-    setMounted(true);
-    const fetchProducts = async () => {
+    setMounted(true); // Prevent hydration mismatch
+    const fetchProducts = async () => { // TODO: Add discount logic here
       try {
         const response = await fetch("http://localhost:8000/api/products", {
           headers: { Accept: "application/json" },
@@ -219,6 +222,8 @@ export default function ProductsPage() {
             </div>
           </div>
         </div>
+
+        {/* TODO: Add discount logic here */}
         <div className="max-w-7xl mx-auto pt-8 border-t border-stone-100 text-[10px] text-stone-400 uppercase tracking-[0.2em] flex flex-col md:flex-row justify-between items-center gap-4">
           <p>© {new Date().getFullYear()} EVOMI FRAGRANCE HOUSE.</p>
           <p>Handcrafted in Indonesia</p>

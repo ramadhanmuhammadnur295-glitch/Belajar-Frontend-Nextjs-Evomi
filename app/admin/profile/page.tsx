@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { User, Mail, Lock, ShieldCheck, Save, Camera, LogOut } from "lucide-react";
 
+// render page
 export default function UserProfilePage() {
   const [formData, setFormData] = useState({
     id: "",
@@ -15,16 +16,16 @@ export default function UserProfilePage() {
   });
 
   const [imagePreview, setImagePreview] = useState<string | null>(null); // State untuk preview lokal
-  const [loading, setLoading] = useState(true);
-  const [isUpdating, setIsUpdating] = useState(false);
-  const [message, setMessage] = useState({ type: "", text: "" });
-  const router = useRouter();
+  const [loading, setLoading] = useState(true); // state for loading
+  const [isUpdating, setIsUpdating] = useState(false); // state for updating
+  const [message, setMessage] = useState({ type: "", text: "" }); // state for message
+  const router = useRouter(); // router
 
   useEffect(() => {
-    fetchUserData();
+    fetchUserData(); // fetch user data
   }, []);
 
-  const fetchUserData = async () => {
+  const fetchUserData = async () => { // fetch user data
     const token = localStorage.getItem("admin_token");
     try {
       const res = await fetch("http://127.0.0.1:8000/api/admin/me", {
@@ -59,28 +60,28 @@ export default function UserProfilePage() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setFormData({ ...formData, image: file });
-      setImagePreview(URL.createObjectURL(file));
+      setFormData({ ...formData, image: file }); // set image
+      setImagePreview(URL.createObjectURL(file)); // set image preview
     }
   };
 
-  const handleUpdate = async (e: React.FormEvent) => {
+  const handleUpdate = async (e: React.FormEvent) => { // handle update
     e.preventDefault();
     if (!formData.id) return;
 
-    setIsUpdating(true);
-    setMessage({ type: "", text: "" });
-    const token = localStorage.getItem("admin_token");
+    setIsUpdating(true); // set is updating
+    setMessage({ type: "", text: "" }); // set message
+    const token = localStorage.getItem("admin_token"); // get token
 
     // Gunakan FormData untuk mendukung upload file
     const data = new FormData();
     data.append('_method', 'PUT'); // Laravel membaca ini sebagai PUT
-    data.append('name', formData.name);
-    data.append('username', formData.username);
-    data.append('email', formData.email);
+    data.append('name', formData.name); // append name
+    data.append('username', formData.username); // append username
+    data.append('email', formData.email); // append email
 
     if (formData.password) {
-      data.append('password', formData.password);
+      data.append('password', formData.password); // append password
     }
 
     if (formData.image) {
@@ -98,10 +99,11 @@ export default function UserProfilePage() {
         body: data,
       });
 
-      const result = await res.json();
-      if (res.ok || result.success) {
-        setMessage({ type: "success", text: "Profil berhasil diperbarui!" });
-        setFormData({
+      const result = await res.json(); // get result
+
+      if (res.ok || result.success) { // check if success
+        setMessage({ type: "success", text: "Profil berhasil diperbarui!" }); // set success message
+        setFormData({ // set form data
           ...formData,
           password: "",
           image: null,
@@ -117,10 +119,10 @@ export default function UserProfilePage() {
     }
   };
 
-  const handleLogout = async () => {
-    const token = localStorage.getItem('admin_token');
+  const handleLogout = async () => { // handle logout
+    const token = localStorage.getItem('admin_token'); // get token
     try {
-      await fetch('http://127.0.0.1:8000/api/admin/logout', {
+      await fetch('http://127.0.0.1:8000/api/admin/logout', { // logout
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -213,6 +215,7 @@ export default function UserProfilePage() {
                 </div>
               )}
 
+              {/* Form Update Profile */}
               <form onSubmit={handleUpdate} className="space-y-6">
                 <div>
                   <h4 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">Informasi Pribadi</h4>
@@ -276,13 +279,13 @@ export default function UserProfilePage() {
                     disabled={isUpdating}
                     className="flex items-center gap-2 rounded-xl bg-indigo-600 px-10 py-3 font-bold text-white transition-all hover:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-200 disabled:opacity-50"
                   >
-                    {isUpdating ? "Menyimpan..." : <><Save size={18} /> Simpan Perubahan</>}
+                    {/* Button Update Profile */}
+                    {isUpdating ? "Menyimpan..." : <><Save size={18} /> Simpan Perubahan</>} 
                   </button>
                 </div>
               </form>
             </div>
           </div>
-
         </div>
       </main>
     </div>

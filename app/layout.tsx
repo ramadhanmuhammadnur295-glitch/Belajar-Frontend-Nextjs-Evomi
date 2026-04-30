@@ -24,6 +24,7 @@ const bodyFont = localFont({
   variable: "--font-body",
 });
 
+// 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -39,6 +40,7 @@ export const metadata: Metadata = {
   description: "Deskripsi Evomi",
 };
 
+// TODO: Add discount logic here
 export default function RootLayout({
   children,
 }: Readonly<{

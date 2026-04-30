@@ -60,12 +60,14 @@ export default function QuizModal({ isOpen, onClose }: { isOpen: boolean; onClos
   const [userChoices, setUserChoices] = useState<string[]>([]);
   const [finished, setFinished] = useState(false);
 
+  // reset quiz function
   const resetQuiz = () => {
     setCurrent(0);
     setUserChoices([]);
     setFinished(false);
   };
 
+  // handle answer function
   const handleAnswer = (opt: string) => {
     setUserChoices([...userChoices, opt]);
     if (current + 1 < quizData.length) {
@@ -75,6 +77,7 @@ export default function QuizModal({ isOpen, onClose }: { isOpen: boolean; onClos
     }
   };
 
+  // get result function
   const getResult = () => {
     const counts: Record<string, number> = {};
     userChoices.forEach((choice, index) => {

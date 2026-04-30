@@ -17,6 +17,7 @@ const fadeInUp = {
     }
 };
 
+// 
 const staggerContainer = {
     hidden: { opacity: 0 },
     visible: {
@@ -32,12 +33,14 @@ const fontJudul = localFont({
     display: "swap",
 });
 
+// Font untuk caption
 const fontCaption = localFont({
     src: "../fonts/Nohemi-Regular.otf",
     variable: "--font-body",
     display: "swap",
 });
 
+// Interface untuk item keranjang
 interface CartItem {
     product_id: string;
     name: string;
@@ -47,6 +50,7 @@ interface CartItem {
     image: string;
 }
 
+// Interface untuk profil user
 interface UserProfile {
     name: string;
     email: string;
@@ -54,6 +58,7 @@ interface UserProfile {
     address?: string;
 }
 
+// Component utama
 export default function CheckoutPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [shippingAddress, setShippingAddress] = useState("");
@@ -65,6 +70,7 @@ export default function CheckoutPage() {
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [orderId, setOrderId] = useState<string | null>(null);
 
+    // Fungsi untuk mengambil data
     const fetchData = async () => {
         const token = localStorage.getItem("access_token");
         if (!token) {
@@ -98,8 +104,9 @@ export default function CheckoutPage() {
         }
     };
 
+    // Effect untuk mengambil data saat component dimount
     useEffect(() => {
-        fetchData();
+        fetchData();    
     }, []);
 
     // handle checkout ada ongkos kirim
@@ -108,6 +115,7 @@ export default function CheckoutPage() {
         if (!token) return alert("Silakan login terlebih dahulu");
         if (!shippingAddress) return alert("Mohon isi alamat pengiriman");
 
+        // Set state untuk menampilkan loading
         setIsSubmitting(true);
         const orderData = {
             total_harga: subtotal + 100,
@@ -119,7 +127,7 @@ export default function CheckoutPage() {
         };
 
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/orders/checkout`, {
+            const response = await fetch(`http://127.0.0.1:8000/api/orders/checkout`, { // Endpoint untuk checkout
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -196,6 +204,7 @@ export default function CheckoutPage() {
                 <div className="w-5" />
             </nav>
 
+            {/* Main content */}
             <motion.main
                 initial="hidden"
                 animate="visible"
@@ -288,7 +297,7 @@ export default function CheckoutPage() {
                             </div>
 
                             <button
-                                onClick={handleCheckout}
+                                onClick={handleCheckout}  // Fungsi untuk menangani checkout
                                 disabled={isSubmitting}
                                 className={`w-full bg-stone-900 text-white py-5 rounded-2xl flex flex-col items-center justify-center gap-1 hover:bg-stone-800 transition-all active:scale-[0.98] shadow-xl shadow-stone-100 group ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                             >

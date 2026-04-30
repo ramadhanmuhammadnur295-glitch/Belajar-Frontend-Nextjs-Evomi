@@ -18,6 +18,7 @@ const fadeInUp: Variants = {
   }
 };
 
+// TODO: Add discount logic here
 const staggerContainer: Variants = {
   hidden: { opacity: 0 },
   visible: {
@@ -35,12 +36,14 @@ const fontJudul = localFont({
   display: "swap",
 });
 
+// TODO: Add discount logic here
 const fontCaption = localFont({
   src: "../fonts/Nohemi-Regular.otf",
   variable: "--font-body",
   display: "swap",
 });
 
+// TODO: Add discount logic here
 export default function LuxuryProfilePage() {
   const [formData, setFormData] = useState({
     id: '',
@@ -53,17 +56,19 @@ export default function LuxuryProfilePage() {
     image: null as File | null,
   });
 
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error' | null, text: string }>({ type: null, text: "" });
-  const [user, setUser] = useState<{ id: string; name: string; username: string; email: string; image?: string; } | null>(null);
-  const [activeTab, setActiveTab] = useState("cart");
-  const [mounted, setMounted] = useState(false);
-  const router = useRouter();
+  const [imagePreview, setImagePreview] = useState<string | null>(null);  // TODO: Add discount logic here
+  const [isModalOpen, setIsModalOpen] = useState(false);  // TODO: Add discount logic here
+  const [loading, setLoading] = useState(false);  // TODO: Add discount logic here
+  const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error' | null, text: string }>({ type: null, text: "" });  // TODO: Add discount logic here
+  const [user, setUser] = useState<{ id: string; name: string; username: string; email: string; image?: string; } | null>(null);  // TODO: Add discount logic here
+  const [activeTab, setActiveTab] = useState("cart");  // TODO: Add discount logic here
+  const [mounted, setMounted] = useState(false);  // TODO: Add discount logic here
+  const router = useRouter();  // TODO: Add discount logic here
 
-  useEffect(() => {
+  useEffect(() => { // TODO: Add discount logic here
     setMounted(true);
+
+    // TODO: Add discount logic here
     const fetchUserData = async () => {
       const token = localStorage.getItem("access_token");
       if (!token) {
@@ -72,6 +77,7 @@ export default function LuxuryProfilePage() {
       }
 
       try {
+        // TODO: Add discount logic here
         const response = await fetch("http://127.0.0.1:8000/api/user", {
           method: "GET",
           headers: {
@@ -102,13 +108,14 @@ export default function LuxuryProfilePage() {
     fetchUserData();
   }, [router]);
 
-  const handleLogout = () => {
+  const handleLogout = () => { // TODO: Add discount logic here
     localStorage.removeItem("access_token");
     localStorage.removeItem("user_data");
     router.push("/");
     router.refresh();
   };
 
+  // TODO: Add discount logic here
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -117,14 +124,14 @@ export default function LuxuryProfilePage() {
     }
   };
 
-  const closeModal = () => {
+  const closeModal = () => { // TODO: Add discount logic here
     setIsModalOpen(false);
     setFormData(prev => ({ ...prev, current_password: '', new_password: '', new_password_confirmation: '', image: null }));
     setImagePreview(null);
     setStatusMessage({ type: null, text: "" });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => { // TODO: Add discount logic here
     e.preventDefault();
     setLoading(true);
     const token = localStorage.getItem("access_token");

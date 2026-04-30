@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 // Tambahkan ChevronLeft dan ChevronRight untuk navigasi
 import { User, Mail, Lock, ShieldCheck, Save, Camera, LogOut, ChevronRight, ChevronLeft, Trash2 } from "lucide-react";
 
+// Admin Dashboard Page
 export default function AdminDashboard() {
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -17,11 +18,13 @@ export default function AdminDashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalConfig, setModalConfig] = useState({ title: '', message: '', type: 'success' });
 
+  // Show modal
   const showModal = (title: any, message: any, type = 'success') => {
     setModalConfig({ title, message, type });
     setIsModalOpen(true);
   };
 
+  // Fetch data from API
   const fetchData = async () => {
     try {
       const token = localStorage.getItem('admin_token');
@@ -65,6 +68,7 @@ export default function AdminDashboard() {
   const currentOrders = stats?.recent_orders?.slice(indexOfFirstItem, indexOfLastItem) || [];
   const totalPages = Math.ceil((stats?.recent_orders?.length || 0) / itemsPerPage);
 
+  // Handle status change
   const handleStatusChange = async (orderId: any, newStatus: string) => {
     const token = localStorage.getItem('admin_token');
     try {
@@ -87,6 +91,7 @@ export default function AdminDashboard() {
     }
   };
 
+  // Handle delete order
   const handleDeleteOrder = async (orderId: any) => {
     const token = localStorage.getItem('admin_token');
     try {
@@ -113,6 +118,7 @@ export default function AdminDashboard() {
     </div>
   );
 
+  // Return dashboard
   return (
     <div className="bg-gray-50 min-h-screen">
       {/* Modal tetap sama seperti code awal Anda */}
@@ -127,6 +133,7 @@ export default function AdminDashboard() {
         </div>
       )}
 
+      {/* Main content */}
       <main className="max-w-7xl mx-auto p-6 sm:p-8">
         <header className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Dashboard Overview</h1>
@@ -174,6 +181,7 @@ export default function AdminDashboard() {
             </div>
           </div>
 
+          {/* Table */}
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead className="bg-gray-50/50 text-gray-600 text-xs uppercase font-bold tracking-widest">

@@ -1,11 +1,11 @@
 // app/api/midtrans/route.ts
 import { NextResponse } from "next/server";
 
-export async function POST(request: Request) {
+export async function POST(request: Request) {  // Handler untuk POST request
     try {
-        const body = await request.json();
+        const body = await request.json();  // Mendapatkan body request
 
-        const response = await fetch('https://api.sandbox.midtrans.com/v2/charge', {
+        const response = await fetch('https://api.sandbox.midtrans.com/v2/charge', {    // URL API Midtrans
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -16,8 +16,8 @@ export async function POST(request: Request) {
             body: JSON.stringify(body),
         });
 
-        const data = await response.json();
-        return NextResponse.json(data);
+        const data = await response.json(); // Mendapatkan response dari Midtrans
+        return NextResponse.json(data); // Mengembalikan response ke client
     } catch (error) {
         return NextResponse.json({ message: "Server Error", error }, { status: 500 });
     }
