@@ -1,19 +1,23 @@
 "use client";
 
 // React & Next
-import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import localFont from "next/font/local";
 import { useRouter } from "next/navigation";
-import { motion, Variants, useScroll, useTransform } from "framer-motion";
 
-import ImageCarousel from "@/components/ImageCarousel";
 import { SocialIcon } from 'react-social-icons'
 
 // ... import lainnya
 import QuizModal from "@/components/QuizModal";
+import ImageCarousel from "@/components/ImageCarousel";
 
+import { useState, useEffect, useRef } from "react";
+
+// Tambahkan import ChatModal di bagian atas
+import ChatModal from "@/components/ChatModal";
+
+import { motion, Variants, useScroll, useTransform, AnimatePresence } from "framer-motion";
 
 // --- Animasi Variants ---
 const fadeInUp: Variants = {
@@ -59,6 +63,8 @@ export default function EvomiLandingPage() {
   const [mounted, setMounted] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isQuizOpen, setIsQuizOpen] = useState(false);
+  // Di dalam component EvomiLandingPage(), tambahkan state ini di bawah state isQuizOpen:
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   // --- Parallax Hooks ---
   const heroRef = useRef(null);
@@ -79,6 +85,22 @@ export default function EvomiLandingPage() {
   // Cahaya blur bergerak naik turun saat scroll
   const testimonialGlowY = useTransform(testimonialScrollY, [0, 1], ["-40%", "40%"]);
   // ----------------------
+
+  // Hero slides
+  const heroSlides = [
+    { tagline: "The Artisan Fragrance House", title: "EVOMI", desc: "Kurasi aroma yang melampaui waktu." },
+    { tagline: "Every Version of Me", title: "ESSENCE", desc: "Menemukan jati diri melalui setiap semprotan." },
+    { tagline: "Unisex & Long Lasting", title: "CRAFTED", desc: "Ketahanan aroma hingga 12 jam lebih." },
+  ];
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 5000); // Berganti setiap 5 detik
+    return () => clearInterval(timer);
+  }, []);
 
   // Effect untuk inisialisasi
   useEffect(() => {
@@ -120,41 +142,55 @@ export default function EvomiLandingPage() {
     setIsMobileMenuOpen(false);
   };
 
+  const SectionDivider = () => (
+    <div className="max-w-7xl mx-auto px-6 md:px-8">
+      <motion.div
+        initial={{ scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.5, ease: [0.21, 0.47, 0.32, 0.98] }}
+        className="h-[1px] w-full bg-stone-200 origin-left"
+      />
+    </div>
+  );
+
   // Get top 4 products
   const topFourProducts = products.slice(0, 4);
 
   return (
     <div style={{ opacity: mounted ? 1 : 0 }} className={`${fontCaption.variable} ${fontJudul.variable} selection:bg-amber-200 selection:text-stone-900 transition-opacity duration-500`}>
 
-      {/* FLOATING ACTION BUTTON (WHATSAPP/CHAT) */}
+      {/* FLOATING ACTION BUTTON (CHAT MODAL TRIGGER) */}
       <motion.div
         initial={{ opacity: 0, scale: 0.5, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ delay: 1.5, duration: 0.8, type: "spring", bounce: 0.5 }}
         className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[90]"
       >
-        {/* Ganti <a> eksternal dengan <div> agar tidak terjadi nesting anchor */}
-        <div className="relative flex items-center justify-center w-14 h-14 bg-stone-900 rounded-full shadow-[0_10px_40px_rgba(0,0,0,0.15)] hover:shadow-[0_10px_40px_rgba(0,0,0,0.3)] hover:-translate-y-1 transition-all duration-300 group">
+        <button
+          onClick={() => setIsChatOpen(!isChatOpen)}
+          className="relative flex items-center justify-center w-14 h-14 bg-stone-900 rounded-full shadow-[0_10px_40px_rgba(0,0,0,0.15)] hover:shadow-[0_10px_40px_rgba(0,0,0,0.3)] hover:-translate-y-1 transition-all duration-300 group"
+        >
+          {/* Animasi ping (pulse) */}
+          {!isChatOpen && (
+            <span className="absolute inset-0 rounded-full bg-stone-500 opacity-20 animate-ping group-hover:animate-none"></span>
+          )}
 
-          <span className="absolute inset-0 rounded-full bg-stone-500 opacity-20 animate-ping group-hover:animate-none"></span>
+          {/* Ikon Chat Custom (Menggantikan SocialIcon) */}
+          <svg className="w-6 h-6 text-[#FBFBF9] relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+          </svg>
 
-          {/* Gunakan properti 'url' langsung di SocialIcon. Ini akan merender SATU tag <a> saja */}
-          <SocialIcon
-            url="https://wa.me/62800000000" // Link WhatsApp pindah ke sini
-            network="whatsapp"
-            target="_blank"
-            rel="noopener noreferrer"
-            fgColor="#FBFBF9"
-            bgColor="transparent"
-            style={{ height: 32, width: 32 }}
-            className="relative z-10"
-          />
-
+          {/* Tooltip Hover */}
           <span className="absolute right-16 px-4 py-2.5 bg-white text-stone-800 text-[10px] font-bold uppercase tracking-[0.2em] rounded-xl opacity-0 pointer-events-none group-hover:opacity-100 transition-all duration-300 shadow-xl border border-stone-100 whitespace-nowrap translate-x-2 group-hover:translate-x-0">
-            Chat Admin
+            {isChatOpen ? "Close Chat" : "Chat Admin"}
           </span>
-        </div>
+        </button>
       </motion.div>
+
+      {/* Render Komponen Modal Chat */}
+      <ChatModal isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
+
 
       {/* Komponen Modal */}
       <QuizModal isOpen={isQuizOpen} onClose={() => setIsQuizOpen(false)} />
@@ -162,7 +198,7 @@ export default function EvomiLandingPage() {
       <div className="min-h-screen bg-[#FBFBF9] text-stone-900 font-sans antialiased">
 
         {/* NAVBAR */}
-        <nav className="fixed w-full z-[100] bg-stone-900/80 backdrop-blur-xl border-b border-white/5 shadow-[0_4px_30px_rgba(0,0,0,0.05)] transition-all duration-300">
+        <nav className="fixed w-full z-[100] bg-stone-900/90 backdrop-blur-xl border-b border-white/5 shadow-[0_4px_30px_rgba(0,0,0,0.05)] transition-all duration-300">
           <div className="max-w-7xl mx-auto px-6 md:px-8 h-20 flex items-center justify-between">
             <div className="flex-1 md:w-1/3 flex justify-start">
               <Link href="/" className="hover:opacity-70 transition-opacity">
@@ -213,31 +249,49 @@ export default function EvomiLandingPage() {
         </nav>
 
         {/* HERO SECTION WITH PARALLAX */}
-        <section
-          ref={heroRef}
-          className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden pt-20"
-        >
-          <motion.div
-            style={{ y: heroBgY }}
-            className="absolute inset-0 bg-gradient-to-b from-[#FBFBF9] via-stone-50 to-[#F5F5F0] opacity-80 scale-125 origin-top"
-          />
-          <motion.div
-            style={{ y: heroTextY }}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-            className="relative z-10 text-center space-y-6 md:space-y-8 max-w-4xl"
-          >
-            <motion.p variants={fadeInUp} className="text-stone-400 tracking-[0.5em] uppercase text-xs font-semibold">The Artisan Fragrance House</motion.p>
-            <motion.h1 variants={fadeInUp} className={`${fontJudul.className} text-6xl md:text-[120px] uppercase text-stone-900 drop-shadow-sm`}>EVOMI</motion.h1>
-            <motion.p variants={fadeInUp} className="text-stone-500 italic max-w-xl mx-auto text-sm md:text-base">Kurasi aroma yang melampaui waktu.</motion.p>
-            <motion.div variants={fadeInUp} className="flex justify-center pt-4">
-              <Link href="/produk" className="group relative inline-flex items-center justify-center px-8 py-3.5 text-xs font-bold tracking-widest text-white uppercase bg-stone-900 rounded-full overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.2)] hover:-translate-y-0.5 transition-all duration-300">
-                <span className="relative z-10 group-hover:text-amber-100 transition-colors duration-300">Explore Collection</span>
-                <div className="absolute inset-0 h-full w-full bg-stone-800 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+        <section ref={heroRef} className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden pt-20">
+          <motion.div style={{ y: heroBgY }} className="absolute inset-0 bg-gradient-to-b from-[#FBFBF9] via-stone-50 to-[#F5F5F0] opacity-80 scale-125 origin-top" />
+          <motion.div style={{ y: heroTextY }} className="relative z-10 text-center space-y-6 md:space-y-8 max-w-4xl">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentSlide}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.8, ease: "circOut" }}
+                className="space-y-6"
+              >
+                <p className="text-stone-400 tracking-[0.5em] uppercase text-xl font-semibold">
+                  {heroSlides[currentSlide].tagline}
+                </p>
+                <h1 className={`${fontJudul.className} text-6xl md:text-[160px] uppercase text-stone-900 drop-shadow-sm`}>
+                  {heroSlides[currentSlide].title}
+                </h1>
+                <p className="text-stone-500 italic max-w-xl mx-auto text-xl md:text-base">
+                  {heroSlides[currentSlide].desc}
+                </p>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* CTA BUTTON - Tetap statis di bawah slider atau ikut slide */}
+            <motion.div variants={fadeInUp} initial="hidden" animate="visible" className="flex justify-center pt-4">
+              <Link href="/produk" className="group relative inline-flex items-center justify-center px-8 py-3.5 text-xs font-bold tracking-widest text-white uppercase bg-stone-900 rounded-full overflow-hidden shadow-lg transition-all duration-300">
+                <span className="relative z-10 group-hover:text-amber-100">Explore Collection</span>
+                <div className="absolute inset-0 bg-stone-800 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
               </Link>
             </motion.div>
+
+            {/* SLIDER INDICATORS */}
+            <div className="flex justify-center space-x-3 pt-8">
+              {heroSlides.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`h-1 transition-all duration-500 rounded-full ${currentSlide === index ? "w-8 bg-stone-900" : "w-4 bg-stone-300"
+                    }`}
+                />
+              ))}
+            </div>
           </motion.div>
         </section>
 
@@ -274,8 +328,10 @@ export default function EvomiLandingPage() {
           </div>
         </motion.section>
 
+        <SectionDivider /> {/* Divider setelah about */}
+
         {/* CAROUSEL POSTER */}
-        {/* <motion.section
+        <motion.section
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
@@ -283,9 +339,23 @@ export default function EvomiLandingPage() {
           className="relative py-10 md:py-20 px-6 md:px-16 z-20 bg-[#FBFBF9]"
         >
           <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeInUp}
+              className="text-center mb-16 md:mb-24 space-y-4"
+            >
+              <h2 className={`${fontJudul.className} text-3xl md:text-5xl uppercase tracking-tight text-stone-800`}>Product Characters</h2>
+              <div className="flex items-center justify-center space-x-4">
+                <div className="w-8 md:w-12 h-[1px] bg-stone-200"></div>
+                <p className="text-stone-400 tracking-[0.25em] uppercase text-[9px] md:text-xs font-semibold">Collections</p>
+                <div className="w-8 md:w-12 h-[1px] bg-stone-200"></div>
+              </div>
+            </motion.div>
             <ImageCarousel />
           </div>
-        </motion.section> */}
+        </motion.section>
 
         {/* PRODUCT GRID */}
         <section id="product" className="relative py-20 md:py-32 px-4 md:px-8 bg-white border-y border-stone-100 shadow-[0_0_50px_rgba(0,0,0,0.02)] z-20">
@@ -335,6 +405,7 @@ export default function EvomiLandingPage() {
           </div>
         </section>
 
+
         {/* STATS SECTION */}
         <section className="relative py-20 md:py-28 bg-[#FBFBF9] px-6 text-center z-20">
           <motion.div
@@ -357,6 +428,7 @@ export default function EvomiLandingPage() {
             ))}
           </motion.div>
         </section>
+
 
         {/* TESTIMONIAL SECTION WITH PARALLAX */}
         <section
@@ -427,7 +499,7 @@ export default function EvomiLandingPage() {
             </div>
           </div>
           <div className="flex flex-col md:flex-row justify-around items-center text-center text-[10px] text-stone-400 uppercase tracking-[0.2em] pt-8 border-t border-stone-100 gap-4">
-            
+
             {/* Year and Company Name */}
             <div>
               &copy; {mounted ? new Date().getFullYear() : "2026"} EVOMI FRAGRANCE HOUSE

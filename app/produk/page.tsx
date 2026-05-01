@@ -116,7 +116,7 @@ export default function ProductsPage() {  // TODO: Add discount logic here
     <div className={`${fontJudul.variable} ${fontCaption.variable} font-body min-h-screen bg-[#FBFBF9] text-stone-900 selection:bg-amber-200 selection:text-stone-900 antialiased`}>
 
       {/* NAVBAR */}
-      <nav className="fixed w-full z-[100] bg-stone-900/80 backdrop-blur-xl border-b border-white/5 shadow-[0_4px_30px_rgba(0,0,0,0.05)] transition-all duration-300">
+      <nav className="fixed w-full z-[100] bg-stone-900/90 backdrop-blur-xl border-b border-white/5 shadow-[0_4px_30px_rgba(0,0,0,0.05)] transition-all duration-300">
         <div className="max-w-7xl mx-auto px-6 md:px-8 h-20 flex items-center justify-between">
           <Link href="/" className="hover:opacity-70 transition-opacity">
             <Image

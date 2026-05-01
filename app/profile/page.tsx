@@ -186,7 +186,7 @@ export default function LuxuryProfilePage() {
     <div className={`${fontCaption.variable} ${fontJudul.variable} min-h-screen bg-[#FBFBF9] font-sans text-stone-900 selection:bg-amber-200/50 antialiased`}>
 
       {/* NAVBAR */}
-      <nav className="fixed w-full z-[100] bg-stone-900/80 backdrop-blur-xl border-b border-white/5 shadow-sm px-8 h-20 flex items-center justify-between">
+      <nav className="fixed w-full z-[100] bg-stone-900/90 backdrop-blur-xl border-b border-white/5 shadow-sm px-8 h-20 flex items-center justify-between">
         <Link href="/" className="hover:opacity-70 transition-opacity">
           <Image src="/img/Logo Evomi.png" alt="Evomi" width={80} height={30} className="brightness-0 invert" />
         </Link>

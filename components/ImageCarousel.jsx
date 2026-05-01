@@ -9,23 +9,30 @@ import Image from "next/image";
 const posters = [
   {
     id: 1,
-    title: "Every Version of You",
-    subtitle: "Discover Your Infinite Possibilities",
-    image: "http://127.0.0.1:8000/storage/poster/Gemini_Generated_Image_Artboard 1.png", // Ganti dengan path poster Anda
+    title: "Purpose Prestige",
+    subtitle: "Prestige, Elegant",
+    image: "http://127.0.0.1:8000/storage/new products/gemini - purpose prestige.png", // Ganti dengan path poster Anda
     color: "bg-stone-100",
   },
   {
     id: 2,
-    title: "Psychology Recycle Playful",
-    subtitle: "Recycle Your Mind, Play with Your Thoughts",
-    image: "http://127.0.0.1:8000/storage/poster/Gemini_Generated_Image_Artboard 2.png",
+    title: "Peaceful Calm",
+    subtitle: "Calm, Peaceful",
+    image: "http://127.0.0.1:8000/storage/new products/gemini - peaceful calm.png",
     color: "bg-stone-200",
   },
   {
     id: 3,
-    title: "Evomi",
-    subtitle: "The Essence of Elegance",
-    image: "http://127.0.0.1:8000/storage/poster/Gemini_Generated_Image_Artboard 3.png",
+    title: "Sweet Shy",
+    subtitle: "Shy, Sweet",
+    image: "http://127.0.0.1:8000/storage/new products/gemini - sweet shy.png",
+    color: "bg-stone-100",
+  },
+  {
+    id: 4,
+    title: "Rabel Brave",
+    subtitle: "Be Brave, Be You",
+    image: "http://127.0.0.1:8000/storage/new products/gemini - rabel brave.png",
     color: "bg-stone-100",
   },
 ];
@@ -48,7 +55,7 @@ export default function ImageCarousel() {
   }, []);
 
   return (
-    <div className="relative w-full h-[400px] md:h-[670px] overflow-hidden rounded-3xl group">
+    <div className="relative w-full h-[310px] md:h-[580] overflow-hidden rounded-3xl group">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentIndex}
@@ -59,7 +66,7 @@ export default function ImageCarousel() {
           className="relative w-full h-full"
         >
           {/* Overlay Konten */}
-          <div className="absolute inset-0 z-10 flex flex-col justify-center px-12 md:px-20 bg-gradient-to-r from-black/40 to-transparent text-white">
+          <div className="absolute inset-0 z-10 flex flex-col justify-center px-12 md:px-20 bg-gradient-to-r from-black/95 to-black/1 text-white">
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -82,7 +89,7 @@ export default function ImageCarousel() {
             src={posters[currentIndex].image}
             alt={posters[currentIndex].title}
             fill
-            className="object-cover"
+            className="object-contain rounded-xl" // Ini kuncinya: gambar mengecil agar pas di dalam div
             priority
           />
         </motion.div>

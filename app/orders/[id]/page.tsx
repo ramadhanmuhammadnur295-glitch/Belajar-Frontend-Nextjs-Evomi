@@ -345,7 +345,7 @@ export default function OrderDetailPage() {
             </AnimatePresence>
 
             {/* NAVBAR */}
-            <nav className="fixed w-full z-[100] bg-stone-900/80 backdrop-blur-xl border-b border-white/5 h-20 flex items-center px-8">
+            <nav className="fixed w-full z-[100] bg-stone-900/90 backdrop-blur-xl border-b border-white/5 h-20 flex items-center px-8">
                 <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
                     <Link href="/orders" className="flex items-center space-x-3 text-white/60 hover:text-white transition-all group">
                         <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
