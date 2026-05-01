@@ -33,7 +33,7 @@ export default function AdminLogin() {
 
             if (res.ok) {
                 // Menyimpan token dan mengalihkan halaman
-                localStorage.setItem("admin_token", data.token);
+                localStorage.setItem("admin_access_token", data.token);
                 router.push("/admin/dashboard");
             } else {
                 setError(data.message || "Invalid credentials. Please try again.");

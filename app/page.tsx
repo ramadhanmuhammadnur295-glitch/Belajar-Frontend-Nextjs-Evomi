@@ -108,7 +108,7 @@ export default function EvomiLandingPage() {
     const token = localStorage.getItem("access_token");
     const savedUser = localStorage.getItem("user_data");
     if (token && savedUser) {
-      try { setUser(JSON.parse(savedUser)); } catch (error) { console.error(error); }
+      try { setUser(JSON.parse(savedUser)); console.log("User loaded:", JSON.parse(savedUser)); } catch (error) { console.error(error); }
     }
 
     // Fetch products

@@ -25,7 +25,7 @@ export default function AdminOrderDetail() {
   const fetchOrderDetail = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem("admin_token");
+      const token = localStorage.getItem("admin_access_token");
 
       // Gunakan params.id langsung
       const response = await fetch(`http://127.0.0.1:8000/api/admin/orders/${params.id}`, {
@@ -61,7 +61,7 @@ export default function AdminOrderDetail() {
 
   // Fungsi Update Status (Sama seperti di dashboard)
   const handleStatusChange = async (newStatus: string) => {
-    const token = localStorage.getItem('admin_token');
+    const token = localStorage.getItem('admin_access_token');
     try {
       const response = await fetch(`http://127.0.0.1:8000/api/admin/orders/${order.id}`, {
         method: 'POST',

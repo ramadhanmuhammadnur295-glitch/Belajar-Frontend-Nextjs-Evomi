@@ -26,7 +26,7 @@ export default function UserProfilePage() {
   }, []);
 
   const fetchUserData = async () => { // fetch user data
-    const token = localStorage.getItem("admin_token");
+    const token = localStorage.getItem("admin_access_token");
     try {
       const res = await fetch("http://127.0.0.1:8000/api/admin/me", {
         headers: {
@@ -71,7 +71,7 @@ export default function UserProfilePage() {
 
     setIsUpdating(true); // set is updating
     setMessage({ type: "", text: "" }); // set message
-    const token = localStorage.getItem("admin_token"); // get token
+    const token = localStorage.getItem("admin_access_token"); // get token
 
     // Gunakan FormData untuk mendukung upload file
     const data = new FormData();
@@ -120,7 +120,7 @@ export default function UserProfilePage() {
   };
 
   const handleLogout = async () => { // handle logout
-    const token = localStorage.getItem('admin_token'); // get token
+    const token = localStorage.getItem('admin_access_token'); // get token
     try {
       await fetch('http://127.0.0.1:8000/api/admin/logout', { // logout
         method: 'POST',
@@ -132,7 +132,7 @@ export default function UserProfilePage() {
     } catch (error) {
       console.error("Gagal logout:", error);
     } finally {
-      localStorage.removeItem('admin_token');
+      localStorage.removeItem('admin_access_token');
       router.push('/admin-login');
     }
   };

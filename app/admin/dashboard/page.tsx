@@ -27,7 +27,7 @@ export default function AdminDashboard() {
   // Fetch data from API
   const fetchData = async () => {
     try {
-      const token = localStorage.getItem('admin_token');
+      const token = localStorage.getItem('admin_access_token');
       const response = await fetch('http://127.0.0.1:8000/api/admin/dashboard-stats/', {
         method: 'GET',
         headers: {
@@ -70,7 +70,7 @@ export default function AdminDashboard() {
 
   // Handle status change
   const handleStatusChange = async (orderId: any, newStatus: string) => {
-    const token = localStorage.getItem('admin_token');
+    const token = localStorage.getItem('admin_access_token');
     try {
       const response = await fetch(`http://127.0.0.1:8000/api/admin/orders/${orderId}`, {
         method: 'POST',
@@ -93,7 +93,7 @@ export default function AdminDashboard() {
 
   // Handle delete order
   const handleDeleteOrder = async (orderId: any) => {
-    const token = localStorage.getItem('admin_token');
+    const token = localStorage.getItem('admin_access_token');
     try {
       const response = await fetch(`http://127.0.0.1:8000/api/admin/orders/${orderId}`, {
         method: 'DELETE',

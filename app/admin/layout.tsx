@@ -13,7 +13,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     // 1. Proteksi Halaman & Fetch Data Admin
     useEffect(() => {
-        const token = localStorage.getItem("admin_token");
+        const token = localStorage.getItem("admin_access_token");
         if (!token) {
             router.push("/admin/login");
             return;
@@ -43,7 +43,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     // 2. Fungsi Logout
     const handleLogout = async () => {
-        const token = localStorage.getItem('admin_token');
+        const token = localStorage.getItem('admin_access_token');
         try {
             await fetch('http://127.0.0.1:8000/api/admin/logout', {
                 method: 'POST',
@@ -55,7 +55,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         } catch (error) {
             console.error("Gagal logout:", error);
         } finally {
-            localStorage.removeItem('admin_token');
+            localStorage.removeItem('admin_access_token');
             router.push('/admin-login');
         }
     };

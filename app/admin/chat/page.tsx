@@ -13,7 +13,7 @@ export default function AdminChatDashboard() {
     // 1. Ambil daftar user yang melakukan chat
     useEffect(() => {
         const fetchConversations = async () => {
-            const token = localStorage.getItem("access_token");
+            const token = localStorage.getItem("admin_access_token");
             const res = await fetch(`${API_URL}/conversations`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -27,7 +27,7 @@ export default function AdminChatDashboard() {
     useEffect(() => {
         if (selectedUser) {
             const fetchMessages = async () => {
-                const token = localStorage.getItem("access_token");
+                const token = localStorage.getItem("admin_access_token");
                 const res = await fetch(`${API_URL}/chats/${selectedUser.id}`, { // Menggunakan getMessages(contact_id)
                     headers: { Authorization: `Bearer ${token}` }
                 });
@@ -43,7 +43,7 @@ export default function AdminChatDashboard() {
     // 3. Kirim balasan sebagai Admin
     const handleReply = async (e: React.FormEvent) => {
         e.preventDefault();
-        const token = localStorage.getItem("access_token");
+        const token = localStorage.getItem("admin_access_token");
         if (!input.trim() || !selectedUser) return;
 
         const res = await fetch(`${API_URL}/chats`, { // Menggunakan sendMessage()
