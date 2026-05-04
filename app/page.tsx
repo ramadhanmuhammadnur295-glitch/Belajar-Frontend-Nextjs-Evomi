@@ -113,7 +113,7 @@ export default function EvomiLandingPage() {
     // Fetch products
     const fetchProducts = async () => {
       try {
-        const response = await fetch("https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api/products", { headers: { Accept: "application/json" } });
+        const response = await fetch("https://ramadhan.alwaysdata.net/api/products", { headers: { Accept: "application/json" } });
         const result = await response.json();
         setProducts(result.data ? result.data : result);
       } catch (error) { console.error(error); }
@@ -125,7 +125,7 @@ export default function EvomiLandingPage() {
   const handleLogout = async () => {
     try {
       const token = localStorage.getItem("access_token");
-      await fetch("https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api/logout", {
+      await fetch("https://ramadhan.alwaysdata.net/api/logout", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
       });

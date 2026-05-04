@@ -27,7 +27,7 @@ export default function RegisterPage() {
     setError("");
 
     try {
-      const response = await fetch("https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api/register", {
+      const response = await fetch("https://ramadhan.alwaysdata.net/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

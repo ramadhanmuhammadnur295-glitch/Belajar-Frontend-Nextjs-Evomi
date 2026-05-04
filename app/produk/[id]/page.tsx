@@ -53,7 +53,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     const getDetail = async () => {
       try {
         const resolvedParams = await params;
-        const response = await fetch(`https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api/products/${resolvedParams.id}`, {
+        const response = await fetch(`https://ramadhan.alwaysdata.net/api/products/${resolvedParams.id}`, {
           headers: { Accept: "application/json" },
         });
         if (!response.ok) { setError(true); return; }

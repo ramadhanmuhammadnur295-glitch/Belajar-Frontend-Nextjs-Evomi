@@ -20,7 +20,7 @@ export default function LoginPage() {
 
     try {
       // Menggunakan endpoint dan metode POST sesuai referensi
-      const response = await fetch("https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api/login", {
+      const response = await fetch("https://ramadhan.alwaysdata.net/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

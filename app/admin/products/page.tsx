@@ -54,7 +54,7 @@ export default function ProductsMenu() {
         deskripsi: ""
     });
 
-    const API_URL = "https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api/products";
+    const API_URL = "https://ramadhan.alwaysdata.net/api/products";
 
     useEffect(() => {
         fetchProducts();

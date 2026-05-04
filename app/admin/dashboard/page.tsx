@@ -28,7 +28,7 @@ export default function AdminDashboard() {
   const fetchData = async () => {
     try {
       const token = localStorage.getItem('admin_access_token');
-      const response = await fetch('https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api/admin/dashboard-stats/', {
+      const response = await fetch('https://ramadhan.alwaysdata.net/api/admin/dashboard-stats/', {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -42,7 +42,7 @@ export default function AdminDashboard() {
       }
 
       const data = await response.json();
-      
+
       const calculatedRevenue = data.recent_orders?.reduce((acc: number, order: any) => {
         return order.status_pembayaran === 'success' ? acc + parseFloat(order.total_harga) : acc;
       }, 0) || 0;
@@ -72,7 +72,7 @@ export default function AdminDashboard() {
   const handleStatusChange = async (orderId: any, newStatus: string) => {
     const token = localStorage.getItem('admin_access_token');
     try {
-      const response = await fetch(`https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api/admin/orders/${orderId}`, {
+      const response = await fetch(`https://ramadhan.alwaysdata.net/api/admin/orders/${orderId}`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -95,7 +95,7 @@ export default function AdminDashboard() {
   const handleDeleteOrder = async (orderId: any) => {
     const token = localStorage.getItem('admin_access_token');
     try {
-      const response = await fetch(`https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api/admin/orders/${orderId}`, {
+      const response = await fetch(`https://ramadhan.alwaysdata.net/api/admin/orders/${orderId}`, {
         method: 'DELETE',
         headers: {
           'Accept': 'application/json',
@@ -126,9 +126,9 @@ export default function AdminDashboard() {
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-gray-900/40 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
           <div className="relative bg-white rounded-3xl p-8 text-center max-w-sm w-full shadow-2xl transition-all animate-in fade-in zoom-in duration-300">
-             <h3 className="text-xl font-bold text-gray-900 mb-2">{modalConfig.title}</h3>
-             <p className="text-gray-500 text-sm mb-8">{modalConfig.message}</p>
-             <button onClick={() => setIsModalOpen(false)} className="w-full py-3 bg-indigo-600 text-white rounded-xl font-bold">Tutup</button>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">{modalConfig.title}</h3>
+            <p className="text-gray-500 text-sm mb-8">{modalConfig.message}</p>
+            <button onClick={() => setIsModalOpen(false)} className="w-full py-3 bg-indigo-600 text-white rounded-xl font-bold">Tutup</button>
           </div>
         </div>
       )}
@@ -165,7 +165,7 @@ export default function AdminDashboard() {
             <h2 className="text-lg font-bold text-gray-800">Recent Orders</h2>
             <div className="flex items-center gap-2">
               <span className="text-xs text-gray-500 font-medium">Tampilkan:</span>
-              <select 
+              <select
                 value={itemsPerPage}
                 onChange={(e) => {
                   setItemsPerPage(Number(e.target.value));
@@ -204,10 +204,9 @@ export default function AdminDashboard() {
                       <select
                         value={order.status_pembayaran || 'pending'}
                         onChange={(e) => handleStatusChange(order.id, e.target.value)}
-                        className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase border-none outline-none cursor-pointer ${
-                          order.status_pembayaran === 'success' ? 'bg-green-100 text-green-700' : 
-                          (order.status_pembayaran === 'failed' || order.status_pembayaran === 'expired' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700')
-                        }`}
+                        className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase border-none outline-none cursor-pointer ${order.status_pembayaran === 'success' ? 'bg-green-100 text-green-700' :
+                            (order.status_pembayaran === 'failed' || order.status_pembayaran === 'expired' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700')
+                          }`}
                       >
                         <option value="pending">Pending</option>
                         <option value="success">Success</option>

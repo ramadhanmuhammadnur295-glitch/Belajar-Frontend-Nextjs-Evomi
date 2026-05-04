@@ -8,7 +8,7 @@ export default function AdminChatDashboard() {
     const [messages, setMessages] = useState<any[]>([]);
     const [input, setInput] = useState("");
 
-    const API_URL = "https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api";
+    const API_URL = "http://localhost:8000/api";
 
     // 1. Ambil daftar user yang melakukan chat
     useEffect(() => {
