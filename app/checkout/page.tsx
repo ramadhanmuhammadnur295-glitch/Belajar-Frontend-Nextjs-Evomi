@@ -80,10 +80,10 @@ export default function CheckoutPage() {
         }
 
         try {
-            const cartRes = await fetch(`http://127.0.0.1:8000/api/cart`, {
+            const cartRes = await fetch(`https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api/cart`, {
                 headers: { Accept: "application/json", Authorization: `Bearer ${token}` },
             });
-            const userRes = await fetch(`http://127.0.0.1:8000/api/user`, {
+            const userRes = await fetch(`https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api/user`, {
                 headers: { Accept: "application/json", Authorization: `Bearer ${token}` },
             });
 
@@ -127,7 +127,7 @@ export default function CheckoutPage() {
         };
 
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/orders/checkout`, { // Endpoint untuk checkout
+            const response = await fetch(`https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api/orders/checkout`, { // Endpoint untuk checkout
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

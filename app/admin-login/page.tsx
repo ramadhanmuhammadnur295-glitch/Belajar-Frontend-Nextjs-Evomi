@@ -20,7 +20,7 @@ export default function AdminLogin() {
 
         try {
             // Menggunakan endpoint API dan metode POST sesuai referensi
-            const res = await fetch("http://127.0.0.1:8000/api/admin/login", {
+            const res = await fetch("https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api/admin/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

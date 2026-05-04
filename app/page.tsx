@@ -16,6 +16,8 @@ import { useState, useEffect, useRef } from "react";
 import ChatModal from "@/components/ChatModal";
 import { motion, Variants, useScroll, useTransform, AnimatePresence } from "framer-motion";
 
+import { getApiUrl } from "@/src/utils/settings";
+
 // --- Animasi Variants ---
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 40 },
@@ -111,7 +113,7 @@ export default function EvomiLandingPage() {
     // Fetch products
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/products", { headers: { Accept: "application/json" } });
+        const response = await fetch("https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api/products", { headers: { Accept: "application/json" } });
         const result = await response.json();
         setProducts(result.data ? result.data : result);
       } catch (error) { console.error(error); }
@@ -123,7 +125,7 @@ export default function EvomiLandingPage() {
   const handleLogout = async () => {
     try {
       const token = localStorage.getItem("access_token");
-      await fetch("http://localhost:8000/api/logout", {
+      await fetch("https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api/logout", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
       });

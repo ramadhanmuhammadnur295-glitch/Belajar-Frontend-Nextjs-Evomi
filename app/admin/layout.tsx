@@ -22,7 +22,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         // 2. Fetch Data Admin
         const fetchAdminMe = async () => {
             try {
-                const res = await fetch("http://127.0.0.1:8000/api/admin/me", {
+                const res = await fetch("https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api/admin/me", {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Accept': 'application/json'
@@ -45,7 +45,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const handleLogout = async () => {
         const token = localStorage.getItem('admin_access_token');
         try {
-            await fetch('http://127.0.0.1:8000/api/admin/logout', {
+            await fetch('https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api/admin/logout', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',

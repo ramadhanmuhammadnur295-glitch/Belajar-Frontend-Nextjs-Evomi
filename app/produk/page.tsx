@@ -96,7 +96,7 @@ export default function ProductsPage() {  // TODO: Add discount logic here
     setMounted(true); // Prevent hydration mismatch
     const fetchProducts = async () => { // TODO: Add discount logic here
       try {
-        const response = await fetch("http://localhost:8000/api/products", {
+        const response = await fetch("https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api/products", {
           headers: { Accept: "application/json" },
         });
         const result = await response.json();

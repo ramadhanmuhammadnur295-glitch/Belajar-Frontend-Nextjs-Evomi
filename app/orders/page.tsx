@@ -62,7 +62,7 @@ export default function OrderHistoryPage() {
 
         const fetchOrders = async () => {
             try {
-                const response = await fetch("http://localhost:8000/api/orders", {
+                const response = await fetch("https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api/orders", {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         Accept: "application/json",

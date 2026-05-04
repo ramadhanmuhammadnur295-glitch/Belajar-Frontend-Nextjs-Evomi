@@ -28,7 +28,7 @@ export default function AdminDashboard() {
   const fetchData = async () => {
     try {
       const token = localStorage.getItem('admin_access_token');
-      const response = await fetch('http://127.0.0.1:8000/api/admin/dashboard-stats/', {
+      const response = await fetch('https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api/admin/dashboard-stats/', {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -72,7 +72,7 @@ export default function AdminDashboard() {
   const handleStatusChange = async (orderId: any, newStatus: string) => {
     const token = localStorage.getItem('admin_access_token');
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/admin/orders/${orderId}`, {
+      const response = await fetch(`https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api/admin/orders/${orderId}`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -95,7 +95,7 @@ export default function AdminDashboard() {
   const handleDeleteOrder = async (orderId: any) => {
     const token = localStorage.getItem('admin_access_token');
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/admin/orders/${orderId}`, {
+      const response = await fetch(`https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api/admin/orders/${orderId}`, {
         method: 'DELETE',
         headers: {
           'Accept': 'application/json',

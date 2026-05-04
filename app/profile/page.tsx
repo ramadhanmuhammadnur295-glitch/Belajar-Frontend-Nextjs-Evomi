@@ -78,7 +78,7 @@ export default function LuxuryProfilePage() {
 
       try {
         // TODO: Add discount logic here
-        const response = await fetch("http://127.0.0.1:8000/api/user", {
+        const response = await fetch("https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api/user", {
           method: "GET",
           headers: {
             "Accept": "application/json",
@@ -147,7 +147,7 @@ export default function LuxuryProfilePage() {
     }
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/users/${formData.id}`, {
+      const response = await fetch(`https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/api/users/${formData.id}`, {
         method: "POST",
         headers: { "Accept": "application/json", "Authorization": `Bearer ${token}` },
         body: data,
@@ -222,7 +222,7 @@ export default function LuxuryProfilePage() {
             <motion.div variants={fadeInUp} className="relative group w-32 h-40">
               <div className="w-full h-full bg-stone-100 rounded-[2.5rem] overflow-hidden border border-stone-200 shadow-sm transition-transform duration-700 group-hover:scale-[1.02]">
                 {user.image && user.image !== 'default-avatar.png' ? (
-                  <Image src={`http://127.0.0.1:8000/storage/profiles/${user.image}`} alt="Profile" fill className="object-cover" unoptimized />
+                  <Image src={`https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/storage/profiles/${user.image}`} alt="Profile" fill className="object-cover" unoptimized />
                 ) : (
                   <div className="absolute inset-0 bg-stone-800 flex items-center justify-center text-3xl text-white uppercase font-light">
                     {user.name.charAt(0)}
@@ -335,7 +335,7 @@ export default function LuxuryProfilePage() {
                     <div className="relative group w-24 h-24">
                       <div className="w-full h-full bg-stone-50 rounded-[1.5rem] overflow-hidden border-2 border-dashed border-stone-200 flex items-center justify-center transition-all group-hover:border-stone-400">
                         {(imagePreview || (user.image && user.image !== 'default-avatar.png')) ? (
-                          <img src={imagePreview || `http://127.0.0.1:8000/storage/profiles/${user.image}`} className="w-full h-full object-cover" alt="Preview" />
+                          <img src={imagePreview || `https://belajar-laravel-evomi-main-dlc8ss.free.laravel.cloud/storage/profiles/${user.image}`} className="w-full h-full object-cover" alt="Preview" />
                         ) : (
                           <span className="text-[8px] text-stone-300 font-bold uppercase tracking-widest">No Portrait</span>
                         )}
