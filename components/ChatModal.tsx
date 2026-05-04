@@ -8,6 +8,7 @@ interface ChatModalProps {
   onClose: () => void;
 }
 
+// Interface untuk message
 interface Message {
   id?: number;
   sender_id: number;
@@ -16,6 +17,7 @@ interface Message {
   created_at?: string;
 }
 
+// Component ChatModal
 export default function ChatModal({ isOpen, onClose }: ChatModalProps) {
   const [message, setMessage] = useState("");
   const [chats, setChats] = useState<Message[]>([]);
@@ -63,6 +65,7 @@ export default function ChatModal({ isOpen, onClose }: ChatModalProps) {
     }
   };
 
+  // Fungsi untuk fetch messages
   useEffect(() => {
     if (isOpen) {
       fetchMessages();
@@ -71,12 +74,14 @@ export default function ChatModal({ isOpen, onClose }: ChatModalProps) {
     }
   }, [isOpen]);
 
+  // Fungsi untuk scroll ke bawah
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [chats]);
 
+  // Fungsi untuk send message
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
     if (typeof window === "undefined") return;
@@ -114,7 +119,7 @@ export default function ChatModal({ isOpen, onClose }: ChatModalProps) {
   // BARIS 130 YANG ERROR SUDAH DIHAPUS DI SINI
 
   return (
-    <AnimatePresence>
+    <AnimatePresence> {/* TODO: Add animation */}
       {isOpen && (
         <motion.div
           initial={{ opacity: 0, y: 50, scale: 0.9 }}

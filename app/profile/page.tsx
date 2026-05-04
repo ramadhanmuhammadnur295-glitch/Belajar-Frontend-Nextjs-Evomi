@@ -46,13 +46,13 @@ const fontCaption = localFont({
 // TODO: Add discount logic here
 export default function LuxuryProfilePage() {
   const [formData, setFormData] = useState({
-    id: '',
-    name: '',
-    username: '',
-    email: '',
-    current_password: '',
-    new_password: '',
-    new_password_confirmation: '',
+    id: '', // id user
+    name: '', // name user
+    username: '', // username user
+    email: '', // email user
+    current_password: '', // current password user
+    new_password: '', // new password user
+    new_password_confirmation: '', // new password confirmation user
     image: null as File | null,
   });
 

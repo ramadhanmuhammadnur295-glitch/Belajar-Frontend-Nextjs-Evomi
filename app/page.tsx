@@ -5,18 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import localFont from "next/font/local";
 import { useRouter } from "next/navigation";
-
 import { SocialIcon } from 'react-social-icons'
 
 // ... import lainnya
 import QuizModal from "@/components/QuizModal";
 import ImageCarousel from "@/components/ImageCarousel";
-
 import { useState, useEffect, useRef } from "react";
 
 // Tambahkan import ChatModal di bagian atas
 import ChatModal from "@/components/ChatModal";
-
 import { motion, Variants, useScroll, useTransform, AnimatePresence } from "framer-motion";
 
 // --- Animasi Variants ---

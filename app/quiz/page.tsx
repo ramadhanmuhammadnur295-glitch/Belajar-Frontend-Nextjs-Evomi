@@ -16,6 +16,7 @@ export default function QuizPage() {
     const [score, setScore] = useState(0);
     const [showResult, setShowResult] = useState(false);
 
+    // handle answer
     const handleAnswer = (option: string) => {
         if (option === quizData[currentQuestion].answer) setScore(score + 25);
 

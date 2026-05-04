@@ -18,6 +18,7 @@ const fadeInUp: Variants = {
   }
 };
 
+// 
 const staggerContainer: Variants = {
   hidden: { opacity: 0 },
   visible: {
@@ -28,12 +29,14 @@ const staggerContainer: Variants = {
   }
 };
 
+// --- Custom Fonts ---
 const fontJudul = localFont({
   src: "./../../fonts/8 Heavy.ttf",
   variable: "--font-brand",
   display: "swap",
 });
 
+// --- Custom Fonts ---
 const fontCaption = localFont({
   src: "./../../fonts/Nohemi-Regular.otf",
   variable: "--font-body",
@@ -41,10 +44,10 @@ const fontCaption = localFont({
 });
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const [showModal, setShowModal] = useState(false);
-  const [produk, setProduk] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [showModal, setShowModal] = useState(false);  // State for modal
+  const [produk, setProduk] = useState<any>(null);  // State for product data
+  const [loading, setLoading] = useState(true);  // State for loading
+  const [error, setError] = useState(false);  // State for error
 
   useEffect(() => {
     const getDetail = async () => {
@@ -62,7 +65,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         setLoading(false);
       }
     };
-    getDetail();
+    getDetail();  // Get detail product
   }, [params]);
 
   if (loading) return (

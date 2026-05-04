@@ -27,6 +27,7 @@ export default function AddToCartButton({
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  // Fungsi untuk add to cart
   const handleAddToCart = async () => {
     const token = localStorage.getItem("access_token");
 
@@ -74,7 +75,7 @@ export default function AddToCartButton({
 
   return (
     <button
-      onClick={handleAddToCart}
+      onClick={handleAddToCart} // TODO: Add discount logic here
       disabled={stock === 0 || loading}
       className="w-full bg-stone-900 hover:bg-stone-800 text-white py-4 transition-all uppercase tracking-widest text-sm font-medium disabled:bg-stone-300 disabled:cursor-not-allowed flex items-center justify-center gap-2"
     >

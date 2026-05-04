@@ -41,11 +41,11 @@ const posters = [
 export default function ImageCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const nextSlide = () => {
+  const nextSlide = () => { // next slide
     setCurrentIndex((prev) => (prev + 1) % posters.length);
   };
 
-  const prevSlide = () => {
+  const prevSlide = () => { // previous slide
     setCurrentIndex((prev) => (prev - 1 + posters.length) % posters.length);
   };
 
@@ -66,7 +66,7 @@ export default function ImageCarousel() {
           className="relative w-full h-full"
         >
           {/* Overlay Konten */}
-          <div className="absolute inset-0 z-10 flex flex-col justify-center px-12 md:px-20 bg-gradient-to-r from-black/95 to-black/1 text-white">
+          <div className="absolute inset-0 z-10 flex flex-col justify-center px-12 md:px-20 bg-gradient-to-r from-black/99 to-black/1 text-white">
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
