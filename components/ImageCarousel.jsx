@@ -11,28 +11,28 @@ const posters = [
     id: 1,
     title: "Purpose Prestige",
     subtitle: "Prestige, Elegant",
-    image: "http://127.0.0.1:8000/storage/new products/gemini - purpose prestige.png", // Ganti dengan path poster Anda
+    image: "https://ramadhan.alwaysdata.net/storage/new products/gemini - purpose prestige.png", // Ganti dengan path poster Anda
     color: "bg-stone-100",
   },
   {
     id: 2,
     title: "Peaceful Calm",
     subtitle: "Calm, Peaceful",
-    image: "http://127.0.0.1:8000/storage/new products/gemini - peaceful calm.png",
+    image: "https://ramadhan.alwaysdata.net/storage/new products/gemini - peaceful calm.png",
     color: "bg-stone-200",
   },
   {
     id: 3,
     title: "Sweet Shy",
     subtitle: "Shy, Sweet",
-    image: "http://127.0.0.1:8000/storage/new products/gemini - sweet shy.png",
+    image: "https://ramadhan.alwaysdata.net/storage/new products/gemini - sweet shy.png",
     color: "bg-stone-100",
   },
   {
     id: 4,
     title: "Rabel Brave",
     subtitle: "Be Brave, Be You",
-    image: "http://127.0.0.1:8000/storage/new products/gemini - rabel brave.png",
+    image: "https://ramadhan.alwaysdata.net/storage/new products/gemini - rabel brave.png",
     color: "bg-stone-100",
   },
 ];

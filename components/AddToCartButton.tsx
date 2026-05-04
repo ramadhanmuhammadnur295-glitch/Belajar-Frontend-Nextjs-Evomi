@@ -41,7 +41,7 @@ export default function AddToCartButton({
 
     try {
       // Memanggil API Laravel untuk update field 'cart' di DB
-      const response = await fetch(`http://127.0.0.1:8000/api/cart/add`, {
+      const response = await fetch(`https://ramadhan.alwaysdata.net/api/cart/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -49,10 +49,10 @@ const quizData = [
 
 // Mapping gambar produk berdasarkan hasil
 const productImages: Record<string, string> = {
-  "Purpose Prestige": "http://127.0.0.1:8000/storage/new products/gemini - purpose prestige.png",
-  "Peaceful Calm": "http://127.0.0.1:8000/storage/new products/gemini - peaceful calm.png",
-  "Rabel Brave": "http://127.0.0.1:8000/storage/new products/gemini - sweet shy.png",
-  "Sweet Shy": "http://127.0.0.1:8000/storage/new products/gemini - rabel brave.png"
+  "Purpose Prestige": "https://ramadhan.alwaysdata.net/storage/new products/gemini - purpose prestige.png",
+  "Peaceful Calm": "https://ramadhan.alwaysdata.net/storage/new products/gemini - peaceful calm.png",
+  "Rabel Brave": "https://ramadhan.alwaysdata.net/storage/new products/gemini - sweet shy.png",
+  "Sweet Shy": "https://ramadhan.alwaysdata.net/storage/new products/gemini - rabel brave.png"
 };
 
 export default function QuizModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
@@ -151,7 +151,7 @@ export default function QuizModal({ isOpen, onClose }: { isOpen: boolean; onClos
                       target="_blank" 
                       className="flex items-center justify-center gap-3 w-full py-3 bg-white border border-stone-200 hover:border-stone-900 transition-all rounded-xl shadow-sm"
                     >
-                      {/* <Image src="http://127.0.0.1:8000/storage/toko online/tokopedia.png" alt="Tokopedia" width={18} height={18} /> */}
+                      {/* <Image src="https://ramadhan.alwaysdata.net/storage/toko online/tokopedia.png" alt="Tokopedia" width={18} height={18} /> */}
                       <span className="uppercase text-[10px] tracking-widest font-bold text-stone-700">Tokopedia</span>
                     </a>
                     
@@ -161,7 +161,7 @@ export default function QuizModal({ isOpen, onClose }: { isOpen: boolean; onClos
                       target="_blank" 
                       className="flex items-center justify-center gap-3 w-full py-3 bg-white border border-stone-200 hover:border-stone-900 transition-all rounded-xl shadow-sm"
                     >
-                      {/* <Image src="http://127.0.0.1:8000/storage/toko online/shopee.png" alt="Shopee" width={18} height={18} /> */}
+                      {/* <Image src="https://ramadhan.alwaysdata.net/storage/toko online/shopee.png" alt="Shopee" width={18} height={18} /> */}
                       <span className="uppercase text-[10px] tracking-widest font-bold text-stone-700">Shopee</span>
                     </a>
                   </div>

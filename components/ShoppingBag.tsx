@@ -31,7 +31,7 @@ export default function ShoppingBag() {
     }
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/cart`, {
+      const response = await fetch(`https://ramadhan.alwaysdata.net/api/cart`, {
         method: "GET",
         headers: {
           Accept: "application/json",
@@ -66,7 +66,7 @@ export default function ShoppingBag() {
     );
 
     try {
-      await fetch(`http://127.0.0.1:8000/api/cart/${productId}`, {
+      await fetch(`https://ramadhan.alwaysdata.net/api/cart/${productId}`, {
         method: "DELETE",
         headers: {
           Accept: "application/json",

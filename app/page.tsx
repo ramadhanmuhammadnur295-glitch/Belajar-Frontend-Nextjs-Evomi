@@ -217,7 +217,7 @@ export default function EvomiLandingPage() {
                     <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="flex items-center space-x-3 border border-stone-600/50 rounded-full p-1 pr-4 bg-stone-800/50 hover:bg-stone-700/50 transition-all duration-300 backdrop-blur-sm">
                       <div className="w-8 h-8 rounded-full bg-stone-200 text-stone-900 flex items-center justify-center text-[10px] font-bold uppercase overflow-hidden shadow-sm">
                         {user.image !== 'default-avatar.png' ? (
-                          <img src={`http://127.0.0.1:8000/storage/profiles/${user.image}`} alt="Profile" className="w-full h-full object-cover" />
+                          <img src={`https://ramadhan.alwaysdata.net/storage/profiles/${user.image}`} alt="Profile" className="w-full h-full object-cover" />
                         ) : (user.name.charAt(0))}
                       </div>
                       <span className="hidden md:block text-[10px] font-bold uppercase tracking-widest text-stone-200">{user.username}</span>

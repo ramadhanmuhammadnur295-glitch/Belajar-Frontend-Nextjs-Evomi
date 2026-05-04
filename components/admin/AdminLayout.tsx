@@ -21,7 +21,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         // Ambil data admin untuk ditampilkan di Navbar
         const fetchAdminMe = async () => {
             try {
-                const res = await fetch("http://127.0.0.1:8000/api/admin/me", {
+                const res = await fetch("https://ramadhan.alwaysdata.net/api/admin/me", {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Accept': 'application/json'
@@ -43,7 +43,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const handleLogout = async () => {
         const token = localStorage.getItem('admin_token');
         try {
-            await fetch('http://127.0.0.1:8000/api/admin/logout', {
+            await fetch('https://ramadhan.alwaysdata.net/api/admin/logout', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',

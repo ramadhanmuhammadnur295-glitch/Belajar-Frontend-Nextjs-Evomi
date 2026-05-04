@@ -27,7 +27,7 @@ export default function ChatModal({ isOpen, onClose }: ChatModalProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const ADMIN_ID = 1;
-  const API_BASE_URL = "http://localhost:8000/api";
+  const API_BASE_URL = "https://ramadhan.alwaysdata.net/api";
 
   // 2. Ambil ID User hanya di sisi Client (Hydration Safe)
   useEffect(() => {
